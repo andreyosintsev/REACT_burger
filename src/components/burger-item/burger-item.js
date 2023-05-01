@@ -20,11 +20,11 @@ function BurgerItem({image, price, title, isLocked, type}) {
 }
 
 BurgerItem.propTypes = {
-  image: PropTypes.string,
-  price: PropTypes.number,
-  title: PropTypes.string,
-  isLocked: PropTypes.bool,
-  type: PropTypes.string,
+  image: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  isLocked: PropTypes.bool, //в ConstructorElement может быть и undefined, поэтому не isRequired
+  type: PropTypes.string,   //то же самое
 }
 
 export default BurgerItem

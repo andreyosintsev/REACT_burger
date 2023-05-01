@@ -34,9 +34,9 @@ function BurgerIngredient({image, price, title}) {
 }
 
 BurgerIngredient.propTypes = {
-  image: PropTypes.string,
-  price: PropTypes.number,
-  title: PropTypes.string
+  image: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired
 }
 
 export default BurgerIngredient

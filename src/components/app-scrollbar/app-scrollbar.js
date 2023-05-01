@@ -12,8 +12,8 @@ function AppScrollbar(props) {
 }
 
 AppScrollbar.propTypes = {
-  style: PropTypes.object,
-  children: PropTypes.node
+  style: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired
 }
 
 export default AppScrollbar

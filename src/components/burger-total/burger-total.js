@@ -14,7 +14,7 @@ function BurgerTotal({sum}) {
 }
 
 BurgerTotal.propTypes = {
-  sum: PropTypes.number
+  sum: PropTypes.number.isRequired
 }
 
 export default BurgerTotal
