@@ -1,11 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import BurgerItem from '../burger-item/burger-item';
 import BurgerTotal from '../burger-total/burger-total';
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
+
+import BurgerIngredientsProps from '../burger-ingredients/burger-ingredients-props';
 
 import BurgerConstructorStyles from './burger-constructor.module.css';
 
@@ -61,7 +62,7 @@ function BurgerConstructor({data}) {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object).isRequired
+  data: BurgerIngredientsProps
 }
 
 export default BurgerConstructor

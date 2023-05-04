@@ -14,7 +14,7 @@ const BurgerIngredientsProps = PropTypes.arrayOf(
         image_mobile: PropTypes.string.isRequired,
         image_large: PropTypes.string.isRequired,
         __v: PropTypes.number.isRequired
-    })
+    }).isRequired
 );
 
 export default BurgerIngredientsProps;
