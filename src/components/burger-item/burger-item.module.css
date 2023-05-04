@@ -1,0 +1,14 @@
+.content {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.drag {
+    width: 32px;
+}
+ul {
+    max-width: 100%;
+    padding: 0;
+    list-style-type: none;
+}
