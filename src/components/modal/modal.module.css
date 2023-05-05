@@ -1,0 +1,20 @@
+.modal {
+  position: relative;
+  box-sizing: border-box;
+
+  width: 720px;
+  overflow: hidden;
+
+  border-radius: 40px;
+  background-color: #1C1C21;
+  z-index: 200;
+}
+.modal_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal_close {
+  z-index: 1000;
+  cursor: pointer;
+}

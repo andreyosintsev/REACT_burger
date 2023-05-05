@@ -1,13 +1,13 @@
 .cover {
-    overflow-y: overlay;
+  overflow-y: overlay;
 }
 .cover::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  width: 8px;
+  height: 8px;
 }
 .cover::-webkit-scrollbar-thumb {
-    background-color: #8585AD;
+  background-color: #8585AD;
 }
 .cover::-webkit-scrollbar-track {
-    background-color: #2F2F37;
+  background-color: #2F2F37;
 }

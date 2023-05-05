@@ -1,21 +1,39 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
 import Ingredient from '../burger-ingredient/burger-ingredient';
-import BurgerIngredientsProps from './burger-ingredients-props';
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
+import BurgerIngredientsProps from './burger-ingredients-props';
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 function BurgerIngredients({data}) {
+
   const [current, setCurrent] = React.useState('buns');
+  const [modalShow, setModalShow] = React.useState(false);
+  const [ingredient, setIngredient] = React.useState({});
 
   const buns = data.filter(data => data.type === "bun");
-  const sauces = data.filter(data => data.type === "sauces");
+  const sauces = data.filter(data => data.type === "sauce");
   const mains = data.filter(data => data.type === "main");
 
+  const getIngredientDataById = (data, id) => data.filter(data => data._id === id)[0];
+
+  const showIngredientDetails = (e) => {
+    if (!modalShow) {
+      setIngredient(getIngredientDataById(data, e.currentTarget.dataset.id));
+      setModalShow(true);
+    }  else {
+      setModalShow(false);
+    }
+  };
+
   return (
+    <>
     <section className={BurgerIngredientsStyles.content}>
       <h2 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h2>
       <div style={{ display: 'flex' }} className="mb-8">
@@ -35,7 +53,7 @@ function BurgerIngredients({data}) {
           <ul>
             { 
               buns.map((ingredient) => (
-                <li key={ingredient._id}>
+                <li data-id={ingredient._id} key={ingredient._id} onClick={showIngredientDetails}>
                   <Ingredient 
                     image = {ingredient.image} 
                     price = {ingredient.price} 
@@ -51,7 +69,7 @@ function BurgerIngredients({data}) {
           <ul>
             { 
               sauces.map((ingredient) => (
-                <li key={ingredient._id}>
+                <li data-id={ingredient._id} key={ingredient._id} onClick={showIngredientDetails}>
                   <Ingredient 
                     image = {ingredient.image} 
                     price = {ingredient.price} 
@@ -67,7 +85,7 @@ function BurgerIngredients({data}) {
           <ul>
             { 
               mains.map((ingredient) => (
-                <li key={ingredient._id}>
+                <li data-id={ingredient._id} key={ingredient._id} onClick={showIngredientDetails}>
                   <Ingredient 
                     image = {ingredient.image} 
                     price = {ingredient.price} 
@@ -80,11 +98,16 @@ function BurgerIngredients({data}) {
         </div>
       </AppScrollbar>
     </section>
+    {modalShow && 
+      <Modal header={'Детали ингредиента'} onclick={showIngredientDetails}>
+        <IngredientDetails ingredientData={ingredient}/>
+      </Modal>}
+    </>
   );
 }
 
 BurgerIngredients.propTypes = {
-  data: BurgerIngredientsProps
+  data: PropTypes.arrayOf(BurgerIngredientsProps)
 }
 
 export default BurgerIngredients
