@@ -116,7 +116,7 @@ const testData =
     }
 ];
 
- const api = 'https://norma.nomoreparties.space/api/ingredients';
+ const NORMA_API = 'https://norma.nomoreparties.space/api';
 
 
 function App() {
@@ -132,13 +132,21 @@ function App() {
       getIngredientsData();
    }, []);
 
+   const checkFetchResponse = (res) => {
+      if (res.ok) {
+         return res.json();
+      } else {
+         return res
+               .json()
+               .then((err) => Promise.reject(err));
+      }
+   };
+
    const getIngredientsData = () => {
       try {
          setState({ ...state, hasError: false, isLoading: true});
-         fetch(api)
-         .then((res)=> {
-            return res.json();
-         })
+         fetch(`${NORMA_API}/ingredients`)
+         .then(checkFetchResponse)
          .then((data)=>{
             setState({...state, ingredientsData: data.data, hasError: false, isLoading: false});
          })
