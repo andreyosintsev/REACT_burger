@@ -7,7 +7,7 @@ import BurgerIngredientStyles from './burger-ingredient.module.css';
 
 function BurgerIngredient({image, price, title}) {
 
-  //Состояние хранит количество ингридиента
+  //Состояние хранит количество ингредиента
   //Временно, только для демонстрации цифры количества ингредиентов
   const [count, setCount] = useState(Math.trunc(price/1000));
 

@@ -1,28 +1,31 @@
 .card {
-    position: relative;
-    box-sizing: border-box;
-    width: 272px;
-    height: 208px;
+  position: relative;
+  box-sizing: border-box;
+  width: 272px;
+  height: 208px;
 }
 .card_price {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+}
+.card_price, .card_image, .card_title {
+  cursor: pointer;
 }
 .card_count {
-    position: absolute;
-    width: 32px;
-    height: 32px;
-    top: 0;
-    right: 0;
-    border-radius: 50%;
-    background-color: #4C4CFF;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  background-color: #4C4CFF;
 }
 .card_count p {
-    margin-top: 4px;
+  margin-top: 4px;
 }
 .show {
-    display: block;
+  display: block;
 }
 .hide {
-    display: none;
+  display: none;
 }
