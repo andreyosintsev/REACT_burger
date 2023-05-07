@@ -8,25 +8,19 @@ const checkFetchResponse = (res) => {
   }
  };
 
-const getIngredientsFromAPI = (api) => {
-  let ingredientsData = [];
+ const getIngredientsFromApi = (api) => {
   try {
-    fetch(`${api}/ingredients`)
+    return fetch(`${api}/ingredients`)
       .then(checkFetchResponse)
       .then((data) => {
-        ingredientsData = [...data.data];
-        console.log(ingredientsData);
-      })
-      .catch(error => {
-        throw new Error(`Ingredient data fetch error: ${error}`);
-      }
-    );
+          if (data.success) {
+              return data.data;
+          }
+          return Promise.reject(data);
+      });
   } catch (error) {
-    ingredientsData = [];
+      throw new Error(`Ingredient data fetch error: ${error}`);
   }
+};
 
-
-  return ingredientsData;
- };
-
- export default getIngredientsFromAPI
+ export default getIngredientsFromApi

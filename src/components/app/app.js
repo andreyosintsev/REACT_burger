@@ -9,6 +9,8 @@ import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 
+import getIngredientsFromApi from '../../utils/burger-api';
+
 // Тестовые testData данные для конструктора бургеров.
 // Раньше данные брались из файла cdata.js
 // но ревьюер написал удалить этот файл.
@@ -132,31 +134,18 @@ function App() {
       getIngredientsData();
    }, []);
 
-   const checkFetchResponse = (res) => {
-      if (res.ok) {
-         return res.json();
-      } else {
-         return res
-               .json()
-               .then((err) => Promise.reject(err));
-      }
-   };
-
-   const getIngredientsData = () => {
-      try {
-         setState({ ...state, hasError: false, isLoading: true});
-         fetch(`${NORMA_API}/ingredients`)
-         .then(checkFetchResponse)
-         .then((data)=>{
-            setState({...state, ingredientsData: data.data, hasError: false, isLoading: false});
-         })
-         .catch(error => {
-            setState({...state, ingredientsData: [], hasError: true, isLoading: false});
-         });
-      } catch (error) {
-         setState({...state, ingredientsData: [], hasError: true, isLoading: false});
-      }
-   };
+  const getIngredientsData = () => {
+    setState({...state, hasError: false, isLoading: true});
+    try {
+      getIngredientsFromApi(NORMA_API)
+      .then(data => setState({...state, ingredientsData: data, isLoading: false}))
+      .catch (() => {
+        setState({...state, ingredientsData: [], hasError: true, isLoading: false});
+      });
+    } catch (error) {
+      setState({...state, ingredientsData: [], hasError: true, isLoading: false});
+    }
+  };
    
   return (
    <>
