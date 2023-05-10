@@ -29,7 +29,7 @@ function Modal({onclick, header, children}) {
   return ReactDOM.createPortal(
     (
       <>
-      <ModalOverlay onclick={onclick} />
+      <ModalOverlay onClick={onclick} />
       <div className={`${ModalStyles.modal} pt-10 pr-10 pb-15 pl-10`} onClick={e => e.stopPropagation()}>
         <div className={`${ModalStyles.modal_header} mt-5`}>
           <p className="text text_type_main-large">{header}</p>
