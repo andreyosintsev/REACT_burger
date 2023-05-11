@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,10 +8,14 @@ import Ingredient from '../burger-ingredient/burger-ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
+import {BurgerIngredientsContext} from '../../utils/burger-api';
+
 import BurgerIngredientsProps from './burger-ingredients-props';
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
-function BurgerIngredients({data}) {
+function BurgerIngredients() {
+
+  const data = useContext(BurgerIngredientsContext);
 
   const [current, setCurrent] = React.useState('buns');
   const [modalShow, setModalShow] = React.useState(false);
