@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useContext } from 'react';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -9,12 +8,9 @@ import AppScrollbar from '../app-scrollbar/app-scrollbar';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
-import { postBurgerIngredientsToApi } from '../../utils/burger-api';
-
 import { BurgerConstructorContext } from '../../utils/burger-api';
 import { BurgerTotalContext } from '../../utils/burger-api';
-
-import BurgerIngredientsProps from '../burger-ingredients/burger-ingredients-props';
+import { getDataFromApi } from '../../utils/burger-api';
 
 import BurgerConstructorStyles from './burger-constructor.module.css';
 
@@ -22,7 +18,9 @@ const NORMA_API = 'https://norma.nomoreparties.space/api';
 
 function BurgerConstructor() {
   const data = useContext(BurgerConstructorContext);
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [orderNum, setOrderNum] = useState({num:'----', isLoading: false, hasError: false});
+
   const [state, dispatch] = React.useReducer(reducer, {sum: 0});
 
   function reducer(state, action) {
@@ -36,34 +34,38 @@ function BurgerConstructor() {
     }
   }
 
-  const payload = { 
-    "ingredients": ["609646e4dc916e00276b286e","609646e4dc916e00276b2870"]
-  } ;
-
-  const postBurgerIngredients = (NORMA_API, payload) => {
-    //setState({...state, hasError: false, isLoading: true});
+  const getOrderNumber = () => {
     try {
-      postBurgerIngredientsToApi(NORMA_API, payload)
-      .then(
-        // data => setState({...state, ingredientsData: data, isLoading: false})
-           data => { console.log(data);}
-        );
-      // .catch (() => {
-      //   setState({...state, ingredientsData: [], hasError: true, isLoading: false});
-      // });
+      getDataFromApi(
+        NORMA_API, 
+        'post', 
+        {'ingredients': data.map(ingredient => ingredient._id)}
+      )
+      .then(data => setOrderNum({...orderNum, num: data.number, isLoading: false}))
+      .catch ((error) => {
+        console.error(error);
+        setOrderNum({...orderNum, num: 'ERROR!', hasError: true, isLoading: false});
+      });
     } catch (error) {
-      // setState({...state, ingredientsData: [], hasError: true, isLoading: false});
+      console.error(error);
+      setOrderNum({...orderNum, num: 'ERROR!', hasError: true, isLoading: false});
     }
   };
 
   React.useEffect (()=> {
-    dispatch({type: 'reset'});
-    dispatch({type: 'add', price: +bun.price * 2 });
-    ingredients.forEach(item => dispatch({type: 'add', price: +item.price}));
+    dispatch({ type: 'reset' });
+    dispatch({ type: 'add', price: +bun.price * 2 });
+    ingredients.forEach(item => dispatch({ type: 'add', price: +item.price }));
   }, [data]);
 
   const showOrderDetails = () => {
-    postBurgerIngredients(NORMA_API, payload);
+    if (!modalShow) {
+      getOrderNumber();
+      setModalShow(true);
+    }  else {
+      setModalShow(false);
+    }
+
     setModalShow(!modalShow);
   };
 
@@ -74,7 +76,7 @@ function BurgerConstructor() {
     <>
     <section className={`${BurgerConstructorStyles.content} pt-25`}>
       
-      <BurgerItem onClick={showOrderDetails}
+      <BurgerItem
         image = {bun.image}
         price = {bun.price} 
         title = {`${bun.name} (верх)`} 
@@ -126,15 +128,11 @@ function BurgerConstructor() {
     </section>
     {modalShow && 
       <Modal header={''} onclick={showOrderDetails}>
-        <OrderDetails />
+        <OrderDetails orderNum={orderNum.num}/>
       </Modal>
     }
     </>
   );
-}
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(BurgerIngredientsProps)
 }
 
 export default BurgerConstructor

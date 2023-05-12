@@ -9,7 +9,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 
-import {getIngredientsFromApi, testData} from '../../utils/burger-api';
+import {getDataFromApi, testData} from '../../utils/burger-api';
 import {BurgerIngredientsContext, BurgerConstructorContext} from '../../utils/burger-api';
 
 const NORMA_API = 'https://norma.nomoreparties.space/api';
@@ -31,7 +31,7 @@ function App() {
   const getIngredientsData = () => {
     setState({...state, hasError: false, isLoading: true});
     try {
-      getIngredientsFromApi(NORMA_API)
+      getDataFromApi(NORMA_API, 'get')
       .then(data => setState({...state, ingredientsData: data, isLoading: false}))
       .catch (() => {
         setState({...state, ingredientsData: [], hasError: true, isLoading: false});

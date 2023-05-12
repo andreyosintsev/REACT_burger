@@ -1,14 +1,14 @@
-import React from 'react';
+import PropTypes from 'react';
 
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import OrderDetailsStyles from './order-details.module.css';
 
-function OrderDetails() {
+function OrderDetails({orderNum}) {
   return (
     <div className={OrderDetailsStyles.content}>
       <div className={`${OrderDetailsStyles.num} mt-8 mb-8`}>
-        <p className="text text_type_digits-large">034536</p>
+        <p className="text text_type_digits-large">{orderNum}</p>
       </div>
       <div className="mb-15">
         <p className="text text_type_main-medium">идентификатор заказа</p>
@@ -24,6 +24,10 @@ function OrderDetails() {
       </div>
     </div>
   );
+}
+
+OrderDetails.propTypes = {
+  orderNum: PropTypes.number.isRequired
 }
 
 export default OrderDetails

@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import {BurgerTotalContext} from '../../utils/burger-api';
+import { BurgerTotalContext } from '../../utils/burger-api';
 
 function BurgerTotal() {
   const sum = useContext(BurgerTotalContext);

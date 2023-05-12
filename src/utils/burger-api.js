@@ -1,48 +1,44 @@
 import React from 'react';
 
 const checkFetchResponse = (res) => {
-  if (res.ok) {
-    return res.json();
-  } else {
-    return res
-      .json()
-      .then((err) => Promise.reject(err));
-  }
- };
-
-export const getIngredientsFromApi = (api) => {
-  try {
-    return fetch(`${api}/ingredients`)
-      .then(checkFetchResponse)
-      .then((data) => {
-          if (data.success) {
-              return data.data;
-          }
-          return Promise.reject(data);
-      });
-  } catch (error) {
-      throw new Error(`Ingredient data fetch error: ${error}`);
-  }
+  return res.ok 
+    ? res.json()
+    : res.json().then((err) => Promise.reject(err));
 };
 
-export const postBurgerIngredientsToApi = (api, payload) => {
-  try {
-    return fetch(`${api}/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(payload)
-    })
+export const getDataFromApi = (api, method, payload) => {
+  let request = { info: '', init: '' };
+  
+  switch (method) {
+    case 'get':   request.info = `${api}/ingredients`;
+                  request.init = {
+                    method: 'GET',
+                  };
+                  break;
+    case 'post':  request.info = `${api}/orders`;
+                  request.init = {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(payload)
+                  };
+                  break;
+    default:  throw new Error('Не указана операция get/post');
+  }  
+  
+  try {  
+    return fetch(request.info, request.init)
       .then(checkFetchResponse)
       .then((data) => {
           if (data.success) {
-              return data.data;
+              return method === 'get' ? data.data : data.order;
           }
           return Promise.reject(data);
       });
   } catch (error) {
-      throw new Error(`Ingredient data fetch error: ${error}`);
+    console.error((`Не удалось получить данные от API: ${error.message}`));
+    throw new Error(`Не удалось получить данные от API: ${error.message}`);
   }
 };
 
