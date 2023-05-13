@@ -10,7 +10,7 @@ import OrderDetails from '../order-details/order-details';
 
 import { BurgerConstructorContext } from '../../utils/burger-api';
 import { BurgerTotalContext } from '../../utils/burger-api';
-import { getDataFromApi } from '../../utils/burger-api';
+import { postConstructorDataToApi } from '../../utils/burger-api';
 
 import BurgerConstructorStyles from './burger-constructor.module.css';
 
@@ -36,9 +36,8 @@ function BurgerConstructor() {
 
   const getOrderNumber = () => {
     try {
-      getDataFromApi(
+      postConstructorDataToApi(
         NORMA_API, 
-        'post', 
         {'ingredients': data.map(ingredient => ingredient._id)}
       )
       .then(data => setOrderNum({...orderNum, num: data.number, isLoading: false}))
@@ -128,7 +127,7 @@ function BurgerConstructor() {
     </section>
     {modalShow && 
       <Modal header={''} onclick={showOrderDetails}>
-        <OrderDetails orderNum={orderNum.num}/>
+        <OrderDetails orderNum={orderNum.num.toString()}/>
       </Modal>
     }
     </>
