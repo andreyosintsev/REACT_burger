@@ -1,9 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function BurgerTotal({sum}) {
+import { BurgerTotalContext } from '../../utils/burger-api';
+
+function BurgerTotal() {
+  const sum = useContext(BurgerTotalContext);
+
   return (
     <div>
       <p className="text text_type_digits-medium">
@@ -11,10 +14,6 @@ function BurgerTotal({sum}) {
       </p>
     </div>
   );
-}
-
-BurgerTotal.propTypes = {
-  sum: PropTypes.number.isRequired
 }
 
 export default BurgerTotal
