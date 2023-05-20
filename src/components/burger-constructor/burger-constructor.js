@@ -84,7 +84,7 @@ function BurgerConstructor() {
       />
 
       <AppScrollbar style={{maxHeight: 'calc(100vh - 500px)'}}>
-      <ul>
+      <ul className={`${BurgerConstructorStyles.collected}`}>
         {ingredients.map((ingredient, index) => 
           {
             return (
