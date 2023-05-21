@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -13,7 +14,7 @@ import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 function BurgerIngredients() {
 
-  const data = useContext(BurgerIngredientsContext);
+  const data = useSelector(store => store.burgerIngredients.ingredientsList);
 
   const [current, setCurrent] = React.useState('buns');
   const [modalShow, setModalShow] = React.useState(false);

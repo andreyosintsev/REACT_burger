@@ -58,6 +58,4 @@ export const testData = (data, count) => {
   return randomData;
 };
 
-export const BurgerConstructorContext = React.createContext();
-export const BurgerIngredientsContext = React.createContext();
 export const BurgerTotalContext = React.createContext();

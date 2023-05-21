@@ -1,10 +1,13 @@
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import OrderDetailsStyles from './order-details.module.css';
 
-function OrderDetails({orderNum}) {
+function OrderDetails() {
+
+  const orderNum = useSelector(store => store.burgerConstructor.orderNum).toString();
+
   return (
     <div className={OrderDetailsStyles.content}>
       <div className={`${OrderDetailsStyles.num} mt-8 mb-8`}>
@@ -24,10 +27,6 @@ function OrderDetails({orderNum}) {
       </div>
     </div>
   );
-}
-
-OrderDetails.propTypes = {
-  orderNum: PropTypes.string.isRequired
 }
 
 export default OrderDetails

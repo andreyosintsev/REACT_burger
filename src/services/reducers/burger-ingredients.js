@@ -7,7 +7,7 @@ import { INGREDIENTS_GET_INGREDIENTS_FAILED } from "../actions/burger-ingredient
 
 
 const initialState = {
-  ingredientsList: {},
+  ingredientsList: [],
   ingredientSelected: null,
 
   ingredientsIsLoading: false,

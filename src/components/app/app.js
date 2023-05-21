@@ -11,7 +11,6 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 
 import { getIngredients } from '../../services/reducers/burger-ingredients';
 import { testData } from '../../utils/burger-api';
-import { BurgerIngredientsContext, BurgerConstructorContext } from '../../utils/burger-api';
 
 export const NORMA_API = 'https://norma.nomoreparties.space/api';
 
@@ -41,12 +40,8 @@ function App() {
       }
       {!isLoading && !hasError && ingredientsList.length > 0 &&
         <>
-        <BurgerIngredientsContext.Provider value={ingredientsList}>
           <BurgerIngredients />
-        </BurgerIngredientsContext.Provider>
-        <BurgerConstructorContext.Provider value={testData(ingredientsList, 7)}>
           <BurgerConstructor />
-        </BurgerConstructorContext.Provider>
         </>
       }
       </main>

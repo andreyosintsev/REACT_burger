@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -8,25 +9,24 @@ import AppScrollbar from '../app-scrollbar/app-scrollbar';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
-import { BurgerConstructorContext } from '../../utils/burger-api';
 import { BurgerTotalContext } from '../../utils/burger-api';
-import { postConstructorDataToApi } from '../../utils/burger-api';
+import { getOrderNumber } from '../../services/reducers/burger-constructor';
 
 import BurgerConstructorStyles from './burger-constructor.module.css';
 
-const NORMA_API = 'https://norma.nomoreparties.space/api';
-
 function BurgerConstructor() {
-  const data = useContext(BurgerConstructorContext);
+  const data = useSelector(store => store.burgerIngredients.ingredientsList);
+  const dispatch = useDispatch();
+
   const [modalShow, setModalShow] = useState(false);
   const [orderNum, setOrderNum] = useState({num:'----', isLoading: false, hasError: false});
 
-  const [state, dispatch] = React.useReducer(reducer, {sum: 0});
+  const [sumState, sumDispatch] = React.useReducer(reducer, {sum: 0});
 
-  function reducer(state, action) {
+  function reducer(sumState, action) {
     switch (action.type) {
       case "add":
-        return { sum: state.sum + action.price };
+        return { sum: sumState.sum + action.price };
       case "reset":
         return { sum: 0 };
       default:
@@ -34,32 +34,16 @@ function BurgerConstructor() {
     }
   }
 
-  const getOrderNumber = () => {
-    try {
-      postConstructorDataToApi(
-        NORMA_API, 
-        {'ingredients': data.map(ingredient => ingredient._id)}
-      )
-      .then(data => setOrderNum({...orderNum, num: data.number, isLoading: false}))
-      .catch ((error) => {
-        console.error(error);
-        setOrderNum({...orderNum, num: 'ERROR!', hasError: true, isLoading: false});
-      });
-    } catch (error) {
-      console.error(error);
-      setOrderNum({...orderNum, num: 'ERROR!', hasError: true, isLoading: false});
-    }
-  };
-
-  React.useEffect (()=> {
-    dispatch({ type: 'reset' });
-    dispatch({ type: 'add', price: +bun.price * 2 });
-    ingredients.forEach(item => dispatch({ type: 'add', price: +item.price }));
+  useEffect (()=> {
+    sumDispatch({ type: 'reset' });
+    sumDispatch({ type: 'add', price: +bun.price * 2 });
+    ingredients.forEach(item => sumDispatch({ type: 'add', price: +item.price }));
   }, [data]);
+
 
   const showOrderDetails = () => {
     if (!modalShow) {
-      getOrderNumber();
+      dispatch(getOrderNumber(data));
       setModalShow(true);
     }  else {
       setModalShow(false);
@@ -111,7 +95,7 @@ function BurgerConstructor() {
 
       <div className={`${BurgerConstructorStyles.summary} mt-10`}>
         <div className={`${BurgerConstructorStyles.total} mr-10`}>
-          <BurgerTotalContext.Provider value={state.sum}>
+          <BurgerTotalContext.Provider value={sumState.sum}>
             <BurgerTotal/>
           </BurgerTotalContext.Provider>
         </div>
@@ -127,7 +111,7 @@ function BurgerConstructor() {
     </section>
     {modalShow && 
       <Modal header={''} onclick={showOrderDetails}>
-        <OrderDetails orderNum={orderNum.num.toString()}/>
+        <OrderDetails />
       </Modal>
     }
     </>
