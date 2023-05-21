@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
@@ -8,17 +7,17 @@ import Ingredient from '../burger-ingredient/burger-ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
-import { BurgerIngredientsContext } from '../../utils/burger-api';
+import { INGREDIENTS_SELECT_INGREDIENT } from "../../services/actions/burger-ingredients";
 
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 function BurgerIngredients() {
 
   const data = useSelector(store => store.burgerIngredients.ingredientsList);
+  const dispatch = useDispatch();
 
   const [current, setCurrent] = React.useState('buns');
   const [modalShow, setModalShow] = React.useState(false);
-  const [ingredient, setIngredient] = React.useState({});
 
   const buns = data.filter(data => data.type === "bun");
   const sauces = data.filter(data => data.type === "sauce");
@@ -28,7 +27,10 @@ function BurgerIngredients() {
 
   const showIngredientDetails = (e) => {
     if (!modalShow) {
-      setIngredient(getIngredientDataById(data, e.currentTarget.dataset.id));
+      dispatch({
+        type: INGREDIENTS_SELECT_INGREDIENT,
+        ingredientSelected: getIngredientDataById(data, e.currentTarget.dataset.id)
+      });
       setModalShow(true);
     }  else {
       setModalShow(false);
@@ -103,7 +105,7 @@ function BurgerIngredients() {
     </section>
     {modalShow && 
       <Modal header={'Детали ингредиента'} onclick={showIngredientDetails}>
-        <IngredientDetails ingredientData={ingredient}/>
+        <IngredientDetails />
       </Modal>}
     </>
   );

@@ -1,6 +1,8 @@
 import { getIngredientsFromApi } from '../../utils/burger-api';
 import { NORMA_API } from '../../components/app/app';
 
+import { INGREDIENTS_SELECT_INGREDIENT } from "../actions/burger-ingredients";
+
 import { INGREDIENTS_GET_INGREDIENTS } from "../actions/burger-ingredients";
 import { INGREDIENTS_GET_INGREDIENTS_SUCCESS } from "../actions/burger-ingredients";
 import { INGREDIENTS_GET_INGREDIENTS_FAILED } from "../actions/burger-ingredients";
@@ -8,7 +10,7 @@ import { INGREDIENTS_GET_INGREDIENTS_FAILED } from "../actions/burger-ingredient
 
 const initialState = {
   ingredientsList: [],
-  ingredientSelected: null,
+  ingredientSelected: {},
 
   ingredientsIsLoading: false,
   ingredientsHasError: false
@@ -63,6 +65,11 @@ export const burgerIngredients = (state = initialState, action) => {
         ingredientsIsLoading: false,
         ingredientsHasError: true
       };
+    case INGREDIENTS_SELECT_INGREDIENT:
+      return {
+        ...state,
+        ingredientSelected: action.ingredientSelected
+      }
     default: return state;
   }
 };

@@ -9,7 +9,7 @@ import { CONSTRUCTOR_ADD_INGRIDIENT } from "../actions/burger-constructor";
 const initialState = {
   constructorList : [],
   
-  orderNum: {},
+  orderNum: '----',
   orderIsLoading: false,
   orderHasError: false
 };

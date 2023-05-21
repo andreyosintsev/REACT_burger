@@ -19,7 +19,6 @@ function BurgerConstructor() {
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
-  const [orderNum, setOrderNum] = useState({num:'----', isLoading: false, hasError: false});
 
   const [sumState, sumDispatch] = React.useReducer(reducer, {sum: 0});
 
