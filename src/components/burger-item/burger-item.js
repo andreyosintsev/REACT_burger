@@ -6,7 +6,9 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 
 import BurgerItemStyles from './burger-item.module.css';
 
-function BurgerItem({image, price, title, isLocked, type}) {
+function BurgerItem(props) {
+
+  const {id, image, price, title, isLocked, type, removeHandler} = props;
 
   const drag = () => !isLocked ? <div className={BurgerItemStyles.drag}><DragIcon /></div> :
         <div className={BurgerItemStyles.drag}></div>
@@ -14,7 +16,14 @@ function BurgerItem({image, price, title, isLocked, type}) {
   return (
     <div className={`${BurgerItemStyles.content} ml-4 mr-4`}>
       {drag()}
-      <ConstructorElement isLocked={isLocked} text={title} price={price} thumbnail={image} type={type}/>
+      <ConstructorElement 
+        isLocked={isLocked} 
+        text={title} 
+        price={price} 
+        thumbnail={image} 
+        type={type} 
+        handleClose={() => removeHandler(id)}
+      />
     </div>
   );
 }

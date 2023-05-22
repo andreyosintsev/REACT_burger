@@ -1,5 +1,10 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+
+import { 
+  useSelector,
+  useDispatch 
+} from 'react-redux';
+
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
@@ -7,7 +12,10 @@ import Ingredient from '../burger-ingredient/burger-ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 
-import { INGREDIENTS_SELECT_INGREDIENT } from "../../services/actions/burger-ingredients";
+import { 
+  INGREDIENTS_SELECT_INGREDIENT,
+  INGREDIENTS_DESELECT_INGREDIENT
+} from "../../services/actions/burger-ingredients";
 
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
@@ -33,6 +41,9 @@ function BurgerIngredients() {
       });
       setModalShow(true);
     }  else {
+      dispatch({
+        type: INGREDIENTS_DESELECT_INGREDIENT
+      });
       setModalShow(false);
     }
   };

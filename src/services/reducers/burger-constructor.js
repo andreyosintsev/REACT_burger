@@ -1,10 +1,12 @@
 import { postConstructorDataToApi } from '../../utils/burger-api';
 import { NORMA_API } from '../../components/app/app';
 
+import { CONSTRUCTOR_ADD_INGREDIENT } from "../actions/burger-constructor";
+import { CONSTRUCTOR_REMOVE_INGREDIENT } from "../actions/burger-constructor";
+import { CONSTRUCTOR_CLEAR_INGREDIENTS } from "../actions/burger-constructor";
 import { CONSTRUCTOR_GET_ORDERNUM } from "../actions/burger-constructor";
 import { CONSTRUCTOR_GET_ORDERNUM_SUCCESS } from "../actions/burger-constructor";
 import { CONSTRUCTOR_GET_ORDERNUM_FAILED } from "../actions/burger-constructor";
-import { CONSTRUCTOR_ADD_INGRIDIENT } from "../actions/burger-constructor";
 
 const initialState = {
   constructorList : [],
@@ -22,7 +24,7 @@ export const getOrderNumber = (data) => {
     try {
       postConstructorDataToApi(
         NORMA_API, 
-        {'ingredients': data.map(ingredient => ingredient._id)}
+        {'ingredients': data.map(item => item.ingredient._id)}
       )
       .then(data => {
         dispatch({
@@ -46,7 +48,28 @@ export const getOrderNumber = (data) => {
 };
 
 export const burgerConstructor = (state = initialState, action) => {
+  console.log(action);
   switch (action.type) {
+    case CONSTRUCTOR_ADD_INGREDIENT:
+      return {
+        ...state,
+          constructorList: [...state.constructorList, 
+            { 
+              id: action.id, 
+              ingredient: action.ingredient
+            }
+          ]
+      };
+    case CONSTRUCTOR_REMOVE_INGREDIENT:
+      return {
+        ...state,
+          constructorList: state.constructorList.filter(ingredient => ingredient.id !== action.id)
+      };
+    case CONSTRUCTOR_CLEAR_INGREDIENTS:
+      return {
+        ...state,
+          constructorList: []
+      };
     case CONSTRUCTOR_GET_ORDERNUM:
       return {
         ...state,

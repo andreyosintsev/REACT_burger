@@ -25,7 +25,7 @@ export const getIngredientsFromApi = (api) => {
 export const postConstructorDataToApi = (api, payload) => {
   try {  
     return fetch(
-      `${api}/orders`,
+      `${api}/orders/`,
       {
         method: 'POST',
         headers: {
