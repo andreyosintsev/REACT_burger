@@ -5,7 +5,7 @@ import AppScrollbarStyles from './app-scrollbar.module.css';
 
 function AppScrollbar(props) {  
   return (
-    <div className={AppScrollbarStyles.cover} style={props.style}>
+    <div className={`${AppScrollbarStyles.cover} ingredientsViewport`} style={props.style}>
       {props.children}
     </div>
   );

@@ -1,7 +1,4 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
-
-import BurgerIngredientsProps from '../burger-ingredients/burger-ingredients-props';
 
 import IngredientDetailsStyles from './ingredient-details.module.css';
 
@@ -40,10 +37,6 @@ function IngredientDetails() {
       </div>
     </div>
   );
-}
-
-IngredientDetails.propTypes = {
-  ingredientData: BurgerIngredientsProps
 }
 
 export default IngredientDetails

@@ -21,8 +21,6 @@ import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 function BurgerIngredients() {
 
-  let observer;
-
   const data = useSelector(store => store.burgerIngredients.ingredientsList);
   const dispatch = useDispatch();
 
@@ -56,7 +54,26 @@ function BurgerIngredients() {
   };
 
   useEffect(() => {
-    
+    const intersectOptions = {
+      root: document.querySelector('.ingredientsViewport'),
+      rootMargin: '0px 0px 100px 0px',
+      threshold: 1
+    };    
+
+    const intersectCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio === 1) {
+          setCurrent(entry.target.id);
+        }
+      });
+    };
+
+    let observer = new IntersectionObserver(intersectCallback, intersectOptions);
+
+    const ingredientSections = document.querySelectorAll('h3');
+    ingredientSections.forEach((ingredientSection) => {
+      observer.observe(ingredientSection);
+    });
   }, []);
 
   return (
