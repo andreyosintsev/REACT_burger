@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { 
   useSelector,
@@ -8,9 +8,9 @@ import {
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
-import Ingredient from '../burger-ingredient/burger-ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import BurgerSection from '../burger-section/burger-section';
 
 import { 
   INGREDIENTS_SELECT_INGREDIENT,
@@ -20,6 +20,8 @@ import {
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 function BurgerIngredients() {
+
+  let observer;
 
   const data = useSelector(store => store.burgerIngredients.ingredientsList);
   const dispatch = useDispatch();
@@ -48,70 +50,34 @@ function BurgerIngredients() {
     }
   };
 
+  const setTabAndScroll = (tab) => {
+    setCurrent(tab);
+    document.querySelector(`#${tab}`).scrollIntoView({behavior: 'smooth'});
+  };
+
+  useEffect(() => {
+    
+  }, []);
+
   return (
     <>
     <section className={BurgerIngredientsStyles.content}>
       <h2 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h2>
       <div style={{ display: 'flex' }} className="mb-8">
-        <Tab value="buns" active={current === 'buns'} onClick={setCurrent}>
+        <Tab value="buns" active={current === 'buns'} onClick={() => setTabAndScroll('buns')}>
           Булки
         </Tab>
-        <Tab value="sauses" active={current === 'sauses'} onClick={setCurrent}>
+        <Tab value="sauces" active={current === 'sauces'} onClick={() => setTabAndScroll('sauces')}>
           Соусы
         </Tab>
-        <Tab value="mains" active={current === 'mains'} onClick={setCurrent}>
+        <Tab value="mains" active={current === 'mains'} onClick={() => setTabAndScroll('mains')}>
           Начинки
         </Tab>
       </div>
       <AppScrollbar style={{maxHeight: 'calc(100vh - 304px)'}}>
-        <h3 className="text text_type_main-medium mt-2">Булки</h3>
-        <div className={`${BurgerIngredientsStyles.sections} pl-4`}>
-          <ul>
-            { 
-              buns.map((ingredient) => (
-                <li data-id={ingredient._id} key={ingredient._id} onClick={showIngredientDetails}>
-                  <Ingredient 
-                    image = {ingredient.image} 
-                    price = {ingredient.price} 
-                    title = {ingredient.name}
-                  />
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-        <h3 className="text text_type_main-medium mt-2">Соусы</h3>
-        <div className={`${BurgerIngredientsStyles.sections} pl-4`}>
-          <ul>
-            { 
-              sauces.map((ingredient) => (
-                <li data-id={ingredient._id} key={ingredient._id} onClick={showIngredientDetails}>
-                  <Ingredient 
-                    image = {ingredient.image} 
-                    price = {ingredient.price} 
-                    title = {ingredient.name}
-                  />
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-        <h3 className="text text_type_main-medium mb-6">Начинки</h3>
-        <div className={`${BurgerIngredientsStyles.sections} pl-4`}>
-          <ul>
-            { 
-              mains.map((ingredient) => (
-                <li data-id={ingredient._id} key={ingredient._id} onClick={showIngredientDetails}>
-                  <Ingredient 
-                    image = {ingredient.image} 
-                    price = {ingredient.price} 
-                    title = {ingredient.name}
-                  />
-                </li>
-              ))
-            }
-          </ul>          
-        </div>
+        <BurgerSection id="buns" title="Булки" ingredients={buns} onShowDetails={showIngredientDetails}/>
+        <BurgerSection id="sauces" title="Соусы" ingredients={sauces} onShowDetails={showIngredientDetails}/>
+        <BurgerSection id="mains" title="Начинки" ingredients={mains} onShowDetails={showIngredientDetails}/>
       </AppScrollbar>
     </section>
     {modalShow && 

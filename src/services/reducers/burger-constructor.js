@@ -10,6 +10,7 @@ import { CONSTRUCTOR_GET_ORDERNUM_FAILED } from "../actions/burger-constructor";
 
 const initialState = {
   constructorList : [],
+  // ingredientsCounters : [],
   
   orderNum: '----',
   orderIsLoading: false,
@@ -48,7 +49,6 @@ export const getOrderNumber = (data) => {
 };
 
 export const burgerConstructor = (state = initialState, action) => {
-  console.log(action);
   switch (action.type) {
     case CONSTRUCTOR_ADD_INGREDIENT:
       return {
@@ -58,8 +58,26 @@ export const burgerConstructor = (state = initialState, action) => {
               id: action.id, 
               ingredient: action.ingredient
             }
-          ]
-      };
+          ],
+          // ingredientsCounters: [...state.ingredientsCounters, 
+          //   { _id: action.ingredient._id, 
+          //     counter: 1}
+          // ]
+        };
+          // ingredientsCounters: state.constructorList.forEach((item, i ,arr) => {
+          //   let newElement = true;
+
+          //   state.ingredientsCounters.forEach(el => {
+          //     if (el._id === item._id) {
+          //       el.counter++;
+          //       newElement = false;
+          //     }
+          //   });
+
+          //   if (newElement) {
+          //     state.ingredientsCounters = [...state.ingredientsCounters, {_id: item._id, counter: 1}]; 
+          //   }
+          // })
     case CONSTRUCTOR_REMOVE_INGREDIENT:
       return {
         ...state,
@@ -68,7 +86,8 @@ export const burgerConstructor = (state = initialState, action) => {
     case CONSTRUCTOR_CLEAR_INGREDIENTS:
       return {
         ...state,
-          constructorList: []
+          constructorList: [],
+          ingredientsCounters: []
       };
     case CONSTRUCTOR_GET_ORDERNUM:
       return {

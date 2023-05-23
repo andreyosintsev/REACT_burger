@@ -1,15 +1,24 @@
-import React, {useState}  from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import BurgerIngredientStyles from './burger-ingredient.module.css';
 
-function BurgerIngredient({image, price, title}) {
+function BurgerIngredient({_id, image, price, title}) {
 
-  //Состояние хранит количество ингредиента
-  //Временно, только для демонстрации цифры количества ингредиентов
-  const [count, setCount] = useState(Math.trunc(price/1000));
+  const constructorList = useSelector(state => state.burgerConstructor.constructorList);
+  
+  let count = 0;
+  constructorList.forEach(item => {
+    if (item.ingredient._id === _id) { 
+      if (item.ingredient.type === 'bun') {
+        count = count + 2;
+      } else {
+        count++;
+      }
+    }
+  });
 
   const outCount = () => {
     return count > 0 ? {count: count, style: {display: "block"}} : {count: 0, style: {display: "none"}};

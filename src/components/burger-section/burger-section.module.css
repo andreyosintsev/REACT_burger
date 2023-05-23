@@ -1,0 +1,19 @@
+.sections {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+ul {
+  display: flex;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  list-style-type: none;
+}
+ul li {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}

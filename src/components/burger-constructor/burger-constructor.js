@@ -70,7 +70,6 @@ function BurgerConstructor() {
       }
     );  
     if (data1 && data1.length > 0) {
-      console.log('data1', data1[0]);
       dispatch(
         {
           type: CONSTRUCTOR_ADD_INGREDIENT,
@@ -103,8 +102,6 @@ function BurgerConstructor() {
       }
     );
   };
-
-  console.log('burger-constructor removeHandler: ', removeHandler);
 
   const bun = data && data.length > 0 ? data.filter(item => item.ingredient.type === "bun")[0] : null;
   const ingredients = data && data.length > 0 ? data.filter(item => item.ingredient.type !== "bun"): [];
