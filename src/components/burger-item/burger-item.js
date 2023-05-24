@@ -13,6 +13,22 @@ function BurgerItem(props) {
   const drag = () => !isLocked ? <div className={BurgerItemStyles.drag}><DragIcon /></div> :
         <div className={BurgerItemStyles.drag}></div>
 
+  // ref={isLocked ? null : (e) => { ref(e); dropTarget(e); }}
+
+  // const [, dropTarget] = useDrop({
+  //   accept: 'ConstructorItem',
+  //   collect: monitor => ({
+  //     isHover: monitor.isOver()
+  //   }),
+  //   drop(item) {
+  //     dispatch ({
+  //       type: 'ITEMS_SWAP',
+  //       itemSource: itemIndex,
+  //       itemTarget: item.itemIndex
+  //     })
+  //   }
+  // });
+
   return (
     <div className={`${BurgerItemStyles.content} ml-4 mr-4`}>
       {drag()}

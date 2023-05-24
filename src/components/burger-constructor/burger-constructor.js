@@ -7,6 +7,7 @@ import { v4 as uuid } from 'uuid';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import BurgerItem from '../burger-item/burger-item';
+import BurgerStub from '../burger-stub/burger-stub';
 import BurgerTotal from '../burger-total/burger-total';
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
 import Modal from '../modal/modal';
@@ -100,29 +101,6 @@ function BurgerConstructor() {
         type: CONSTRUCTOR_CLEAR_INGREDIENTS
       }
     );  
-    if (ingredientsList && ingredientsList.length > 0) {
-      dispatch(
-        {
-          type: CONSTRUCTOR_ADD_INGREDIENT,
-          ingredient: ingredientsList[0],
-          uuid: uuid()
-        }
-      );
-      dispatch(
-        {
-          type: CONSTRUCTOR_ADD_INGREDIENT,
-          ingredient: ingredientsList[1],
-          uuid: uuid()
-        }
-      );
-      dispatch(
-        {
-          type: CONSTRUCTOR_ADD_INGREDIENT,
-          ingredient: ingredientsList[2],
-          uuid: uuid()
-        }
-      );
-    }
   }, [ingredientsList]);
 
   const removeHandler = (uuid) => {
@@ -144,8 +122,9 @@ function BurgerConstructor() {
 
   return (
     <>
-    <section className={`${BurgerConstructorStyles.content} pt-25`} ref={dropTarget}>
+    <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget}>
       
+      <div className={BurgerConstructorStyles.topbottom}>
       {
         bun && <BurgerItem
           uuid = {bun.uuid}
@@ -156,9 +135,10 @@ function BurgerConstructor() {
           type="top"
         />
       }
+      </div>
 
-      <AppScrollbar style={{maxHeight: 'calc(100vh - 500px)'}}>
-      <ul className={`${BurgerConstructorStyles.collected}`}>
+      <AppScrollbar>
+      {ingredients.length > 0 && <ul className={`${BurgerConstructorStyles.collected}`}>
         {ingredients.map(item => 
           {
             return (
@@ -175,8 +155,13 @@ function BurgerConstructor() {
           })
         }
       </ul>
+      }
+      {ingredients.length === 0 && !bun && <BurgerStub text={`Соберите свой бургер.
+        Начните с булок и не забудьте о начинке и соусах!\nДавай, перетаскивайте сюда скорее всё самое вкусное!`} />}
+      {ingredients.length === 0 && bun && <BurgerStub text={`Булочки без начинки - это невкусно! Добавьте начинку и соусы!`} />}
       </AppScrollbar>
 
+      <div className={BurgerConstructorStyles.topbottom}>
       {
         bun && <BurgerItem
           uuid = {bun.uuid}
@@ -187,9 +172,10 @@ function BurgerConstructor() {
           type="bottom"
         />
       }
+      </div>
 
-      <div className={`${BurgerConstructorStyles.summary} mt-10`}>
-        <div className={`${BurgerConstructorStyles.total} mr-10`}>
+      <div className={`${BurgerConstructorStyles.summary}`}>
+        <div className={`mr-10`}>
           <BurgerTotalContext.Provider value={sumState.sum}>
             <BurgerTotal/>
           </BurgerTotalContext.Provider>
