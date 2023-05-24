@@ -1,5 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import AppStyles from './app.module.css';
 
@@ -23,9 +25,9 @@ function App() {
 
   const dispatch = useDispatch();
 
-   React.useEffect( ()=> {
-      dispatch(getIngredients());
-   }, []);
+  React.useEffect( ()=> {
+    dispatch(getIngredients());
+  }, []);
 
   return (
    <>
@@ -38,10 +40,10 @@ function App() {
          </p>
       }
       {!isLoading && !hasError && ingredientsList.length > 0 &&
-        <>
+        <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
           <BurgerConstructor />
-        </>
+        </DndProvider>
       }
       </main>
     </div>

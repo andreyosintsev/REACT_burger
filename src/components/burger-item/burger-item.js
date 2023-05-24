@@ -8,7 +8,7 @@ import BurgerItemStyles from './burger-item.module.css';
 
 function BurgerItem(props) {
 
-  const {id, image, price, title, isLocked, type, removeHandler} = props;
+  const {uuid, image, price, title, isLocked, type, removeHandler} = props;
 
   const drag = () => !isLocked ? <div className={BurgerItemStyles.drag}><DragIcon /></div> :
         <div className={BurgerItemStyles.drag}></div>
@@ -22,7 +22,7 @@ function BurgerItem(props) {
         price={price} 
         thumbnail={image} 
         type={type} 
-        handleClose={() => removeHandler(id)}
+        handleClose={() => removeHandler(uuid)}
       />
     </div>
   );

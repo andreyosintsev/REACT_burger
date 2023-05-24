@@ -55,7 +55,7 @@ export const burgerConstructor = (state = initialState, action) => {
         ...state,
           constructorList: [...state.constructorList, 
             { 
-              id: action.id, 
+              uuid: action.uuid, 
               ingredient: action.ingredient
             }
           ],
@@ -79,9 +79,10 @@ export const burgerConstructor = (state = initialState, action) => {
           //   }
           // })
     case CONSTRUCTOR_REMOVE_INGREDIENT:
+      console.log('Constructor Remove', action.uuid);
       return {
         ...state,
-          constructorList: state.constructorList.filter(ingredient => ingredient.id !== action.id)
+          constructorList: state.constructorList.filter(ingredient => ingredient.uuid !== action.uuid)
       };
     case CONSTRUCTOR_CLEAR_INGREDIENTS:
       return {

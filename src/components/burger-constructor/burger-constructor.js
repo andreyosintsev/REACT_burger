@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from "react-dnd";
 
 import { v4 as uuid } from 'uuid';
 
@@ -22,14 +23,44 @@ import {
 } from '../../services/actions/burger-constructor';
 
 function BurgerConstructor() {
-  let data = useSelector(store => store.burgerConstructor.constructorList);
-  let data1 = useSelector(store => store.burgerIngredients.ingredientsList);
+  let constructorList = useSelector(store => store.burgerConstructor.constructorList);
+  let ingredientsList = useSelector(store => store.burgerIngredients.ingredientsList);
 
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
-
   const [sumState, sumDispatch] = React.useReducer(reducer, {sum: 0});
+
+  const [{isHover}, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      onDropHandler(item._id);
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+    })
+  });
+
+  const getIngredientById = (_id, ingredients) => 
+    ingredients.find(ingredient => ingredient._id === _id);
+
+  const onDropHandler = (itemId) => {
+    const droppedIngredient = getIngredientById(itemId, ingredientsList);
+    if (droppedIngredient.type === 'bun') {
+      const existedBun = constructorList.find(ingredient => ingredient.ingredient.type === 'bun');
+      if (existedBun) {
+        dispatch({
+          type: CONSTRUCTOR_REMOVE_INGREDIENT,
+          uuid: existedBun.uuid
+        });
+      }
+    } 
+    dispatch({
+      type: CONSTRUCTOR_ADD_INGREDIENT,
+      uuid: uuid(),
+      ingredient: droppedIngredient
+    });
+  };
 
   function reducer(sumState, action) {
     switch (action.type) {
@@ -50,11 +81,11 @@ function BurgerConstructor() {
     if (ingredients && ingredients.length > 0) {
       ingredients.forEach(item => sumDispatch({ type: 'add', price: +item.ingredient.price }));
     }
-  }, [data]);
+  }, [constructorList]);
 
   const showOrderDetails = () => {
     if (!modalShow) {
-      dispatch(getOrderNumber(data));
+      dispatch(getOrderNumber(constructorList));
       setModalShow(true);
     }  else {
       setModalShow(false);
@@ -69,50 +100,55 @@ function BurgerConstructor() {
         type: CONSTRUCTOR_CLEAR_INGREDIENTS
       }
     );  
-    if (data1 && data1.length > 0) {
+    if (ingredientsList && ingredientsList.length > 0) {
       dispatch(
         {
           type: CONSTRUCTOR_ADD_INGREDIENT,
-          ingredient: data1[0],
-          id: uuid()
+          ingredient: ingredientsList[0],
+          uuid: uuid()
         }
       );
       dispatch(
         {
           type: CONSTRUCTOR_ADD_INGREDIENT,
-          ingredient: data1[1],
-          id: uuid()
+          ingredient: ingredientsList[1],
+          uuid: uuid()
         }
       );
       dispatch(
         {
           type: CONSTRUCTOR_ADD_INGREDIENT,
-          ingredient: data1[2],
-          id: uuid()
+          ingredient: ingredientsList[2],
+          uuid: uuid()
         }
       );
     }
-  }, [data1]);
+  }, [ingredientsList]);
 
-  const removeHandler = (id) => {
+  const removeHandler = (uuid) => {
     dispatch(
       {
         type: CONSTRUCTOR_REMOVE_INGREDIENT,
-        id: id
+        uuid: uuid
       }
     );
   };
 
-  const bun = data && data.length > 0 ? data.filter(item => item.ingredient.type === "bun")[0] : null;
-  const ingredients = data && data.length > 0 ? data.filter(item => item.ingredient.type !== "bun"): [];
+  const bun = constructorList && constructorList.length > 0 
+  ? constructorList.filter(item => item.ingredient.type === "bun")[0] 
+  : null;
+
+  const ingredients = constructorList && constructorList.length > 0 
+  ? constructorList.filter(item => item.ingredient.type !== "bun")
+  : [];
 
   return (
     <>
-    <section className={`${BurgerConstructorStyles.content} pt-25`}>
+    <section className={`${BurgerConstructorStyles.content} pt-25`} ref={dropTarget}>
       
       {
         bun && <BurgerItem
-          id = {bun.id}
+          uuid = {bun.uuid}
           image = {bun.ingredient.image}
           price = {bun.ingredient.price} 
           title = {`${bun.ingredient.name} (верх)`} 
@@ -128,7 +164,7 @@ function BurgerConstructor() {
             return (
               <li key={uuid()}>
                 <BurgerItem
-                  id = {item.id}
+                  uuid = {item.uuid}
                   image = {item.ingredient.image}
                   price = {item.ingredient.price} 
                   title = {item.ingredient.name} 
@@ -143,7 +179,7 @@ function BurgerConstructor() {
 
       {
         bun && <BurgerItem
-          id = {bun.id}
+          uuid = {bun.uuid}
           image = {bun.ingredient.image}
           price = {bun.ingredient.price} 
           title = {`${bun.ingredient.name} (низ)`} 

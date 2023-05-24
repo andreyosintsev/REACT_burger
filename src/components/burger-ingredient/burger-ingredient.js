@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useDrag } from "react-dnd";
 import PropTypes from 'prop-types';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,6 +9,11 @@ import BurgerIngredientStyles from './burger-ingredient.module.css';
 function BurgerIngredient({_id, image, price, title}) {
 
   const constructorList = useSelector(state => state.burgerConstructor.constructorList);
+
+  const [, dragRef] = useDrag({
+    type: "ingredient",
+    item: {_id}
+});
   
   let count = 0;
   constructorList.forEach(item => {
@@ -25,7 +31,7 @@ function BurgerIngredient({_id, image, price, title}) {
   };
 
   return (
-    <div className={`${BurgerIngredientStyles.card} mt-6 mb-8`}>
+    <div className={`${BurgerIngredientStyles.card} mt-6 mb-8`} ref={dragRef}>
       <div className={BurgerIngredientStyles.card_count} style={outCount().style}>
         <p className="text text_type_digits-default">{outCount().count}</p>
       </div>
