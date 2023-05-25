@@ -12,7 +12,7 @@ function AppScrollbar(props) {
 }
 
 AppScrollbar.propTypes = {
-  style: PropTypes.object.isRequired,
+  style: PropTypes.object,
   children: PropTypes.node.isRequired
 }
 

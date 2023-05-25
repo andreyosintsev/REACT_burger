@@ -158,7 +158,8 @@ function BurgerConstructor() {
       }
       {ingredients.length === 0 && !bun && <BurgerStub text={`Соберите свой бургер.
         Начните с булок и не забудьте о начинке и соусах!\nДавай, перетаскивайте сюда скорее всё самое вкусное!`} />}
-      {ingredients.length === 0 && bun && <BurgerStub text={`Булочки без начинки - это невкусно! Добавьте начинку и соусы!`} />}
+      {ingredients.length === 0 && bun && <BurgerStub text={`Булочки без начинки - это невкусно! Добавьте начинку и соусы,
+      чтобы было пожирней, попротивнее!`} />}
       </AppScrollbar>
 
       <div className={BurgerConstructorStyles.topbottom}>

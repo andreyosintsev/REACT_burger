@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { useDispatch } from 'react-redux';
+
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import { useDrag, useDrop } from "react-dnd";
 
 import BurgerItemStyles from './burger-item.module.css';
 
@@ -13,24 +17,37 @@ function BurgerItem(props) {
   const drag = () => !isLocked ? <div className={BurgerItemStyles.drag}><DragIcon /></div> :
         <div className={BurgerItemStyles.drag}></div>
 
-  // ref={isLocked ? null : (e) => { ref(e); dropTarget(e); }}
+  const dispatch = useDispatch();
 
-  // const [, dropTarget] = useDrop({
-  //   accept: 'ConstructorItem',
-  //   collect: monitor => ({
-  //     isHover: monitor.isOver()
-  //   }),
-  //   drop(item) {
-  //     dispatch ({
-  //       type: 'ITEMS_SWAP',
-  //       itemSource: itemIndex,
-  //       itemTarget: item.itemIndex
-  //     })
-  //   }
-  // });
+  const onSwapHandler = (sourceIngredientUuid, targetIngredientUuid) => {
+    dispatch({
+      type: 'CONSTRUCTOR_SWAP_INGREDIENTS',
+      sourceIngredientUuid,
+      targetIngredientUuid
+    })
+  }
+
+  const [, dragRef] = useDrag({
+    type: "constructorIngredient",
+    item: {uuid}
+  });
+
+  const [{isHover}, dropTarget] = useDrop({
+    accept: 'constructorIngredient',
+    collect: monitor => ({
+      isHover: monitor.isOver()
+    }),
+    drop(item) {
+      onSwapHandler(item.uuid, uuid);
+    }
+  });
+
+  const style = {};//isHover ? {paddingBottom: '104px'} : {paddingBottom: '0'};
 
   return (
-    <div className={`${BurgerItemStyles.content} ml-4 mr-4`}>
+    <div className={`${BurgerItemStyles.content} ml-4 mr-4`} 
+         style={style}
+         ref={isLocked ? null : (e) => { dragRef(e); dropTarget(e); }}>
       {drag()}
       <ConstructorElement 
         isLocked={isLocked} 

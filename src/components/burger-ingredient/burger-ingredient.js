@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useDrag } from "react-dnd";
 import PropTypes from 'prop-types';
@@ -8,26 +9,21 @@ import BurgerIngredientStyles from './burger-ingredient.module.css';
 
 function BurgerIngredient({_id, image, price, title}) {
 
-  const constructorList = useSelector(state => state.burgerConstructor.constructorList);
+  const counters = useSelector(state => state.burgerConstructor.constructorCounters);
 
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: {_id}
-});
-  
-  let count = 0;
-  constructorList.forEach(item => {
-    if (item.ingredient._id === _id) { 
-      if (item.ingredient.type === 'bun') {
-        count = count + 2;
-      } else {
-        count++;
-      }
-    }
   });
 
   const outCount = () => {
-    return count > 0 ? {count: count, style: {display: "block"}} : {count: 0, style: {display: "none"}};
+    if (!counters) {
+      return {count: 0, style: {display: "none"}};
+    }
+    const counter = counters.find(counter => counter._id === _id);
+    return counter && counter.count > 0 
+    ? {count: counter.count, style: {display: "block"}} 
+    : {count: 0, style: {display: "none"}};
   };
 
   return (

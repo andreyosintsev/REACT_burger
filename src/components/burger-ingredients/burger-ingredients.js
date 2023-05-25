@@ -31,7 +31,7 @@ function BurgerIngredients() {
   const sauces = data.filter(data => data.type === "sauce");
   const mains = data.filter(data => data.type === "main");
 
-  const getIngredientDataById = (data, id) => data.filter(data => data._id === id)[0];
+  const getIngredientDataById = (data, id) => data.find(data => data._id === id);
 
   const showIngredientDetails = (e) => {
     if (!modalShow) {
