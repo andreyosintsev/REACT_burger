@@ -17,11 +17,14 @@ import { BurgerTotalContext } from '../../utils/burger-api';
 import { getOrderNumber } from '../../services/reducers/burger-constructor';
 
 import BurgerConstructorStyles from './burger-constructor.module.css';
+
 import {
   CONSTRUCTOR_ADD_INGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
   CONSTRUCTOR_CLEAR_INGREDIENTS
 } from '../../services/actions/burger-constructor';
+
+import { stubText1, stubText2 } from '../../utils/locale';
 
 function BurgerConstructor() {
   let constructorList = useSelector(store => store.burgerConstructor.constructorList);
@@ -156,10 +159,8 @@ function BurgerConstructor() {
         }
       </ul>
       }
-      {ingredients.length === 0 && !bun && <BurgerStub text={`Соберите свой бургер.
-        Начните с булок и не забудьте о начинке и соусах!\nДавай, перетаскивайте сюда скорее всё самое вкусное!`} />}
-      {ingredients.length === 0 && bun && <BurgerStub text={`Булочки без начинки - это невкусно! Добавьте начинку и соусы,
-      чтобы было пожирней, попротивнее!`} />}
+      {ingredients.length === 0 && !bun && <BurgerStub text={stubText1} />}
+      {ingredients.length === 0 &&  bun && <BurgerStub text={stubText2} />}
       </AppScrollbar>
 
       <div className={BurgerConstructorStyles.topbottom}>

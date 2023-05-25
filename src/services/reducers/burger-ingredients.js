@@ -1,12 +1,11 @@
 import { getIngredientsFromApi } from '../../utils/burger-api';
 import { NORMA_API } from '../../components/app/app';
 
-import { INGREDIENTS_SELECT_INGREDIENT } from "../actions/burger-ingredients";
-import { INGREDIENTS_DESELECT_INGREDIENT } from "../actions/burger-ingredients";
-
-import { INGREDIENTS_GET_INGREDIENTS } from "../actions/burger-ingredients";
-import { INGREDIENTS_GET_INGREDIENTS_SUCCESS } from "../actions/burger-ingredients";
-import { INGREDIENTS_GET_INGREDIENTS_FAILED } from "../actions/burger-ingredients";
+import {  INGREDIENTS_SELECT_INGREDIENT,
+          INGREDIENTS_DESELECT_INGREDIENT,
+          INGREDIENTS_GET_INGREDIENTS,
+          INGREDIENTS_GET_INGREDIENTS_SUCCESS,
+          INGREDIENTS_GET_INGREDIENTS_FAILED } from "../actions/burger-ingredients";
 
 
 const initialState = {

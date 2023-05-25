@@ -15,7 +15,6 @@ import { getIngredients } from '../../services/reducers/burger-ingredients';
 
 export const NORMA_API = 'https://norma.nomoreparties.space/api';
 
-
 function App() {
   const {
           ingredientsList,

@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import ModalOverlayStyles from './modal-overlay.module.css';
@@ -12,7 +11,7 @@ function ModalOverlay({onclick, children}) {
 }
 
 ModalOverlay.propTypes = {
-  onclick: PropTypes.func.isRequired,
+  onclick:  PropTypes.func.isRequired,
   children: PropTypes.node
 }
 

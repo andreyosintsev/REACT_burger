@@ -46,16 +46,4 @@ export const postConstructorDataToApi = (api, payload) => {
   }
 };
 
-export const testData = (data, count) => {
-  let randomData = [];
-  for (let i = 0; i < count; i++) {
-      randomData.push(data[Math.trunc(Math.random()*data.length)]);
-  }
-
-  randomData.push(data[data.findIndex(el => el.name === 'Соус Spicy-X')]);
-  randomData.push(data.filter(item => item.type === 'bun')[0]);
-
-  return randomData;
-};
-
 export const BurgerTotalContext = React.createContext();

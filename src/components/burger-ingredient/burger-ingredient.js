@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useDrag } from "react-dnd";
 import PropTypes from 'prop-types';
@@ -45,6 +44,7 @@ function BurgerIngredient({_id, image, price, title}) {
 }
 
 BurgerIngredient.propTypes = {
+  _id:   PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired

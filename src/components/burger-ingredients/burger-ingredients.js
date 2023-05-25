@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react';
-
-import { 
-  useSelector,
-  useDispatch 
-} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -12,12 +8,12 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import BurgerSection from '../burger-section/burger-section';
 
+import BurgerIngredientsStyles from './burger-ingredients.module.css';
+
 import { 
   INGREDIENTS_SELECT_INGREDIENT,
   INGREDIENTS_DESELECT_INGREDIENT
 } from "../../services/actions/burger-ingredients";
-
-import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 function BurgerIngredients() {
 

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Ingredient from '../burger-ingredient/burger-ingredient';
 
 import BurgerSectionStyles from './burger-section.module.css';
@@ -24,6 +26,13 @@ function BurgerSection({id, title, ingredients, onShowDetails}) {
       </div>
     </>
   );
+}
+
+BurgerSection.propTypes = {
+  id:             PropTypes.string.isRequired,
+  title:          PropTypes.string.isRequired,
+  ingredients:    PropTypes.array.isRequired,
+  onShowDetails:  PropTypes.func.isRequired
 }
 
 export default BurgerSection
