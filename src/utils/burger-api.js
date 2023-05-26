@@ -21,7 +21,6 @@ export const getIngredientsFromApi = (api) => {
 };
 
 export const postConstructorDataToApi = (api, payload) => {
-  console.log(JSON.stringify(payload));
   try {  
     return fetch(
       `${api}/orders/`,
