@@ -6,9 +6,11 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import BurgerIngredientStyles from './burger-ingredient.module.css';
 
+import { burgerConstructorIngredients } from '../app/app';
+
 function BurgerIngredient({_id, image, price, title}) {
 
-  const counters = useSelector(state => state.burgerConstructor.constructorCounters);
+  const constructorList = useSelector(burgerConstructorIngredients).constructorList;
 
   const [, dragRef] = useDrag({
     type: "ingredient",
@@ -16,12 +18,14 @@ function BurgerIngredient({_id, image, price, title}) {
   });
 
   const outCount = () => {
-    if (!counters) {
-      return {count: 0, style: {display: "none"}};
-    }
-    const counter = counters.find(counter => counter._id === _id);
-    return counter && counter.count > 0 
-    ? {count: counter.count, style: {display: "block"}} 
+    const counter = constructorList.reduce((acc, curr) => {
+      if (curr.ingredient._id === _id) {
+        return curr.ingredient.type === 'bun' ? acc + 2 : acc + 1;
+      }
+      return acc; 
+    }, 0);
+    return counter && counter > 0 
+    ? {count: counter, style: {display: "block"}} 
     : {count: 0, style: {display: "none"}};
   };
 

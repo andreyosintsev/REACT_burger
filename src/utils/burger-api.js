@@ -1,5 +1,3 @@
-import React from 'react';
-
 const checkFetchResponse = (res) => {
   return res.ok 
     ? res.json()
@@ -45,5 +43,3 @@ export const postConstructorDataToApi = (api, payload) => {
     throw new Error(`Не удалось отправить данные конструктора в API: ${error.message}`);
   }
 };
-
-export const BurgerTotalContext = React.createContext();

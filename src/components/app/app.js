@@ -11,16 +11,20 @@ import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 
-import { getIngredients } from '../../services/reducers/burger-ingredients';
+import { getIngredients } from '../../services/actions/burger-ingredients-requests';
 
 export const NORMA_API = 'https://norma.nomoreparties.space/api';
 
+export const burgerIngredientRequests = state => state.burgerIngredientsRequests;
+export const burgerConstructorIngredients = store => store.burgerConstructorIngredients;
+
 function App() {
+
   const {
           ingredientsList,
           isLoading,
           hasError
-  } = useSelector(state => state.burgerIngredients);
+  } = useSelector(burgerIngredientRequests);
 
   const dispatch = useDispatch();
 

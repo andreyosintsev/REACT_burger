@@ -6,7 +6,9 @@ import OrderDetailsStyles from './order-details.module.css';
 
 function OrderDetails() {
 
-  const orderNum = useSelector(store => store.burgerConstructor.orderNum).toString();
+  const burgerConstructorOrders = store => store.burgerConstructorOrders;
+
+  const orderNum = useSelector(burgerConstructorOrders).orderNum.toString();
 
   return (
     <div className={OrderDetailsStyles.content}>

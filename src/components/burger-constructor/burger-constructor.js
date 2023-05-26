@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
 
@@ -13,29 +13,30 @@ import AppScrollbar from '../app-scrollbar/app-scrollbar';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
-import { BurgerTotalContext } from '../../utils/burger-api';
-import { getOrderNumber } from '../../services/reducers/burger-constructor';
-
-import BurgerConstructorStyles from './burger-constructor.module.css';
+import { getOrderNumber } from '../../services/actions/burger-constructor-orders';
 
 import {
   CONSTRUCTOR_ADD_INGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
   CONSTRUCTOR_CLEAR_INGREDIENTS
-} from '../../services/actions/burger-constructor';
+} from '../../services/actions/burger-constructor-ingredients';
+
+import BurgerConstructorStyles from './burger-constructor.module.css';
 
 import { stubText1, stubText2 } from '../../utils/locale';
 
+import { burgerIngredientRequests,
+         burgerConstructorIngredients } from '../app/app';
+
 function BurgerConstructor() {
-  let constructorList = useSelector(store => store.burgerConstructor.constructorList);
-  let ingredientsList = useSelector(store => store.burgerIngredients.ingredientsList);
+  const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
+  const constructorList = useSelector(burgerConstructorIngredients).constructorList;
 
   const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
-  const [sumState, sumDispatch] = React.useReducer(reducer, {sum: 0});
 
-  const [{isHover}, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
       onDropHandler(item._id);
@@ -66,32 +67,12 @@ function BurgerConstructor() {
     });
   };
 
-  function reducer(sumState, action) {
-    switch (action.type) {
-      case "add":
-        return { sum: sumState.sum + action.price };
-      case "reset":
-        return { sum: 0 };
-      default:
-        throw new Error(`Неверный action.type: ${action.type}`);
-    }
-  }
-
-  useEffect (()=> {
-    sumDispatch({ type: 'reset' });
-    if (bun) {
-      sumDispatch({ type: 'add', price: +bun.ingredient.price * 2 });
-    }
-    if (ingredients && ingredients.length > 0) {
-      ingredients.forEach(item => sumDispatch({ type: 'add', price: +item.ingredient.price }));
-    }
-  }, [constructorList]);
-
   const showOrderDetails = () => {
     if (!modalShow) {
+      if (!constructorList || !constructorList.find(ingredient => ingredient.ingredient.type === 'bun')) { return; }
       dispatch(getOrderNumber(constructorList));
       setModalShow(true);
-    }  else {
+    } else {
       setModalShow(false);
     }
 
@@ -178,9 +159,7 @@ function BurgerConstructor() {
 
       <div className={`${BurgerConstructorStyles.summary}`}>
         <div className={`mr-10`}>
-          <BurgerTotalContext.Provider value={sumState.sum}>
-            <BurgerTotal/>
-          </BurgerTotalContext.Provider>
+          <BurgerTotal/>
         </div>
         <Button 
           htmlType="button" 

@@ -1,9 +1,13 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import { burgerIngredients } from './burger-ingredients';
-import { burgerConstructor } from './burger-constructor';
+import { burgerConstructorIngredients } from './burger-constructor-ingredients';
+import { burgerConstructorOrders } from './burger-constructor-orders';
+import { burgerIngredientsDetails } from './burger-ingredients-details';
+import { burgerIngredientsRequests } from './burger-ingredients-requests';
 
 export const rootReducer = combineReducers({
-  burgerIngredients,
-  burgerConstructor
+  burgerConstructorIngredients,
+  burgerConstructorOrders,
+  burgerIngredientsDetails,
+  burgerIngredientsRequests
 });

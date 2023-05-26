@@ -13,11 +13,13 @@ import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import { 
   INGREDIENTS_SELECT_INGREDIENT,
   INGREDIENTS_DESELECT_INGREDIENT
-} from "../../services/actions/burger-ingredients";
+} from "../../services/actions/burger-ingredients-details";
+
+import { burgerIngredientRequests } from '../app/app';
 
 function BurgerIngredients() {
 
-  const data = useSelector(store => store.burgerIngredients.ingredientsList);
+  const data = useSelector(burgerIngredientRequests).ingredientsList;
   const dispatch = useDispatch();
 
   const [current, setCurrent] = React.useState('buns');
