@@ -6,13 +6,11 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { burgerConstructorIngredients } from '../app/app';
 
 function BurgerTotal() {
-  const sum = useSelector(burgerConstructorIngredients).constructorList
-              .reduce((acc, curr) => {
-                const price = curr.ingredient.type === 'bun'
-                ? curr.ingredient.price * 2 
-                : curr.ingredient.price;
-                return acc + price;
-              }, 0 );
+  const constructorIngredients = useSelector(burgerConstructorIngredients);
+  const constructorList = constructorIngredients.constructorList;
+  const bunPrice = constructorIngredients.bun ? constructorIngredients.bun.ingredient.price : 0;
+
+  const sum = constructorList.reduce((acc, curr) => acc + curr.ingredient.price, 0) + bunPrice * 2;
 
   return (
     <div>

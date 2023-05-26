@@ -31,6 +31,7 @@ import { burgerIngredientRequests,
 function BurgerConstructor() {
   const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
   const constructorList = useSelector(burgerConstructorIngredients).constructorList;
+  const bun = useSelector(burgerConstructorIngredients).bun;
 
   const dispatch = useDispatch();
 
@@ -52,11 +53,10 @@ function BurgerConstructor() {
   const onDropHandler = (itemId) => {
     const droppedIngredient = getIngredientById(itemId, ingredientsList);
     if (droppedIngredient.type === 'bun') {
-      const existedBun = constructorList.find(ingredient => ingredient.ingredient.type === 'bun');
-      if (existedBun) {
+      if (bun) {
         dispatch({
           type: CONSTRUCTOR_REMOVE_INGREDIENT,
-          uuid: existedBun.uuid
+          uuid: bun.uuid
         });
       }
     } 
@@ -69,8 +69,8 @@ function BurgerConstructor() {
 
   const showOrderDetails = () => {
     if (!modalShow) {
-      if (!constructorList || !constructorList.find(ingredient => ingredient.ingredient.type === 'bun')) { return; }
-      dispatch(getOrderNumber(constructorList));
+      if (!bun) { return; }
+      dispatch(getOrderNumber(constructorList, bun));
       setModalShow(true);
     } else {
       setModalShow(false);
@@ -95,10 +95,6 @@ function BurgerConstructor() {
       }
     );
   };
-
-  const bun = constructorList && constructorList.length > 0 
-  ? constructorList.filter(item => item.ingredient.type === "bun")[0] 
-  : null;
 
   const ingredients = constructorList && constructorList.length > 0 
   ? constructorList.filter(item => item.ingredient.type !== "bun")

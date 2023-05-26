@@ -4,24 +4,38 @@ import {  CONSTRUCTOR_ADD_INGREDIENT,
           CONSTRUCTOR_CLEAR_INGREDIENTS } from "../actions/burger-constructor-ingredients";
 
 const initialState = {
-  constructorList: []
+  constructorList: [],
+  bun: null
 };
 
 export const burgerConstructorIngredients = (state = initialState, action) => {
   switch (action.type) {
     case CONSTRUCTOR_ADD_INGREDIENT: {
-      return {
-        ...state,
-        constructorList: [...state.constructorList,
-          {
+      return action.ingredient.type === 'bun' 
+      ? {
+          ...state,
+          bun: {
             uuid: action.uuid,
             ingredient: action.ingredient
           }
-        ]
-      };
+      }
+      : {
+          ...state,
+          constructorList: [...state.constructorList,
+            {
+              uuid: action.uuid,
+              ingredient: action.ingredient
+            }
+          ]
+        };
     }
     case CONSTRUCTOR_REMOVE_INGREDIENT: {
-      return {
+      return state.bun.uuid === action.uuid
+      ? {
+          ...state,
+          bun: null
+      }
+      : {
         ...state,
         constructorList: state.constructorList.filter(ingredient => ingredient.uuid !== action.uuid)
       };
@@ -29,7 +43,8 @@ export const burgerConstructorIngredients = (state = initialState, action) => {
     case CONSTRUCTOR_CLEAR_INGREDIENTS:
       return {
         ...state,
-        constructorList: []
+        constructorList: [],
+        bun: null
       };
     case CONSTRUCTOR_SWAP_INGREDIENTS:
       const newList = JSON.parse(JSON.stringify(state.constructorList));

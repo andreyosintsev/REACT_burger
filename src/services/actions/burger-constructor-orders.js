@@ -7,15 +7,16 @@ export const CONSTRUCTOR_GET_ORDERNUM =         'CONSTRUCTOR_GET_ORDERNUM';
 export const CONSTRUCTOR_GET_ORDERNUM_SUCCESS = 'CONSTRUCTOR_GET_ORDERNUM_SUCCESS';
 export const CONSTRUCTOR_GET_ORDERNUM_FAILED =  'CONSTRUCTOR_GET_ORDERNUM_FAILED';
 
-export const getOrderNumber = (data) => {
+export const getOrderNumber = (ingredients, bun) => {
   return function (dispatch) {
     dispatch({
       type: CONSTRUCTOR_GET_ORDERNUM
     });
     try {
+      //
       postConstructorDataToApi(
           NORMA_API, {
-            'ingredients': data.map(item => item.ingredient._id)
+            'ingredients': ingredients.map(item => item.ingredient._id).concat(bun.ingredient._id)
           }
         )
         .then(data => {
