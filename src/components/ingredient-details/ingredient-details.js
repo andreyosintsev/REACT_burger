@@ -1,10 +1,12 @@
-import React from 'react';
-
-import BurgerIngredientsProps from '../burger-ingredients/burger-ingredients-props';
+import { useSelector } from 'react-redux';
 
 import IngredientDetailsStyles from './ingredient-details.module.css';
 
-function IngredientDetails({ingredientData}) {
+function IngredientDetails() {
+
+  const burgerIngredientsDetails = store => store.burgerIngredientsDetails;
+  const ingredientData = useSelector(burgerIngredientsDetails).ingredientSelected;
+
   return (
     <div className={IngredientDetailsStyles.content}>
       <div className={`${IngredientDetailsStyles.image} mb-4`}>
@@ -36,10 +38,6 @@ function IngredientDetails({ingredientData}) {
       </div>
     </div>
   );
-}
-
-IngredientDetails.propTypes = {
-  ingredientData: BurgerIngredientsProps
 }
 
 export default IngredientDetails

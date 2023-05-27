@@ -1,11 +1,16 @@
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
+
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { BurgerTotalContext } from '../../utils/burger-api';
+import { burgerConstructorIngredients } from '../app/app';
 
 function BurgerTotal() {
-  const sum = useContext(BurgerTotalContext);
+  const constructorIngredients = useSelector(burgerConstructorIngredients);
+  const constructorList = constructorIngredients.constructorList;
+  const bunPrice = constructorIngredients.bun ? constructorIngredients.bun.ingredient.price : 0;
+
+  const sum = constructorList.reduce((acc, curr) => acc + curr.ingredient.price, 0) + bunPrice * 2;
 
   return (
     <div>

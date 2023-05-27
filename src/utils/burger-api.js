@@ -1,5 +1,3 @@
-import React from 'react';
-
 const checkFetchResponse = (res) => {
   return res.ok 
     ? res.json()
@@ -25,7 +23,7 @@ export const getIngredientsFromApi = (api) => {
 export const postConstructorDataToApi = (api, payload) => {
   try {  
     return fetch(
-      `${api}/orders`,
+      `${api}/orders/`,
       {
         method: 'POST',
         headers: {
@@ -45,18 +43,3 @@ export const postConstructorDataToApi = (api, payload) => {
     throw new Error(`Не удалось отправить данные конструктора в API: ${error.message}`);
   }
 };
-
-export const testData = (data, count) => {
-  let randomData = [];
-  for (let i = 0; i < count; i++) {
-      randomData.push(data[Math.trunc(Math.random()*data.length)]);
-  }
-
-  randomData.push(data.filter(item => item.type === 'bun')[0]);
-
-  return randomData;
-};
-
-export const BurgerConstructorContext = React.createContext();
-export const BurgerIngredientsContext = React.createContext();
-export const BurgerTotalContext = React.createContext();

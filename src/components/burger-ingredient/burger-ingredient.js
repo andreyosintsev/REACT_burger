@@ -1,22 +1,36 @@
-import React, {useState}  from 'react';
+import { useSelector } from 'react-redux';
+import { useDrag } from "react-dnd";
 import PropTypes from 'prop-types';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import BurgerIngredientStyles from './burger-ingredient.module.css';
 
-function BurgerIngredient({image, price, title}) {
+import { burgerConstructorIngredients } from '../app/app';
 
-  //Состояние хранит количество ингредиента
-  //Временно, только для демонстрации цифры количества ингредиентов
-  const [count, setCount] = useState(Math.trunc(price/1000));
+function BurgerIngredient({_id, image, price, title}) {
+
+  const constructorList = useSelector(burgerConstructorIngredients).constructorList;
+
+  const [, dragRef] = useDrag({
+    type: "ingredient",
+    item: {_id}
+  });
 
   const outCount = () => {
-    return count > 0 ? {count: count, style: {display: "block"}} : {count: 0, style: {display: "none"}};
+    const counter = constructorList.reduce((acc, curr) => {
+      if (curr.ingredient._id === _id) {
+        return curr.ingredient.type === 'bun' ? acc + 2 : acc + 1;
+      }
+      return acc; 
+    }, 0);
+    return counter && counter > 0 
+    ? {count: counter, style: {display: "block"}} 
+    : {count: 0, style: {display: "none"}};
   };
 
   return (
-    <div className={`${BurgerIngredientStyles.card} mt-6 mb-8`}>
+    <div className={`${BurgerIngredientStyles.card} mt-6 mb-8`} ref={dragRef}>
       <div className={BurgerIngredientStyles.card_count} style={outCount().style}>
         <p className="text text_type_digits-default">{outCount().count}</p>
       </div>
@@ -34,6 +48,7 @@ function BurgerIngredient({image, price, title}) {
 }
 
 BurgerIngredient.propTypes = {
+  _id:   PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired

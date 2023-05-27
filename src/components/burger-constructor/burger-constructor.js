@@ -1,119 +1,161 @@
-import React, { useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from "react-dnd";
+
+import { v4 as uuid } from 'uuid';
 
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import BurgerItem from '../burger-item/burger-item';
+import BurgerStub from '../burger-stub/burger-stub';
 import BurgerTotal from '../burger-total/burger-total';
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
-import { BurgerConstructorContext } from '../../utils/burger-api';
-import { BurgerTotalContext } from '../../utils/burger-api';
-import { postConstructorDataToApi } from '../../utils/burger-api';
+import { getOrderNumber } from '../../services/actions/burger-constructor-orders';
+
+import {
+  CONSTRUCTOR_ADD_INGREDIENT,
+  CONSTRUCTOR_REMOVE_INGREDIENT,
+  CONSTRUCTOR_CLEAR_INGREDIENTS
+} from '../../services/actions/burger-constructor-ingredients';
 
 import BurgerConstructorStyles from './burger-constructor.module.css';
 
-const NORMA_API = 'https://norma.nomoreparties.space/api';
+import { stubText1, stubText2 } from '../../utils/locale';
+
+import { burgerIngredientRequests,
+         burgerConstructorIngredients } from '../app/app';
 
 function BurgerConstructor() {
-  const data = useContext(BurgerConstructorContext);
+  const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
+  const constructorList = useSelector(burgerConstructorIngredients).constructorList;
+  const bun = useSelector(burgerConstructorIngredients).bun;
+
+  const dispatch = useDispatch();
+
   const [modalShow, setModalShow] = useState(false);
-  const [orderNum, setOrderNum] = useState({num:'----', isLoading: false, hasError: false});
 
-  const [state, dispatch] = React.useReducer(reducer, {sum: 0});
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      onDropHandler(item._id);
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+    })
+  });
 
-  function reducer(state, action) {
-    switch (action.type) {
-      case "add":
-        return { sum: state.sum + action.price };
-      case "reset":
-        return { sum: 0 };
-      default:
-        throw new Error(`Неверный action.type: ${action.type}`);
-    }
-  }
+  const getIngredientById = (_id, ingredients) => 
+    ingredients.find(ingredient => ingredient._id === _id);
 
-  const getOrderNumber = () => {
-    try {
-      postConstructorDataToApi(
-        NORMA_API, 
-        {'ingredients': data.map(ingredient => ingredient._id)}
-      )
-      .then(data => setOrderNum({...orderNum, num: data.number, isLoading: false}))
-      .catch ((error) => {
-        console.error(error);
-        setOrderNum({...orderNum, num: 'ERROR!', hasError: true, isLoading: false});
-      });
-    } catch (error) {
-      console.error(error);
-      setOrderNum({...orderNum, num: 'ERROR!', hasError: true, isLoading: false});
-    }
+  const onDropHandler = (itemId) => {
+    const droppedIngredient = getIngredientById(itemId, ingredientsList);
+    if (droppedIngredient.type === 'bun') {
+      if (bun) {
+        dispatch({
+          type: CONSTRUCTOR_REMOVE_INGREDIENT,
+          uuid: bun.uuid
+        });
+      }
+    } 
+    dispatch({
+      type: CONSTRUCTOR_ADD_INGREDIENT,
+      uuid: uuid(),
+      ingredient: droppedIngredient
+    });
   };
-
-  React.useEffect (()=> {
-    dispatch({ type: 'reset' });
-    dispatch({ type: 'add', price: +bun.price * 2 });
-    ingredients.forEach(item => dispatch({ type: 'add', price: +item.price }));
-  }, [data]);
 
   const showOrderDetails = () => {
     if (!modalShow) {
-      getOrderNumber();
+      if (!bun) { return; }
+      dispatch(getOrderNumber(constructorList, bun));
       setModalShow(true);
-    }  else {
+    } else {
       setModalShow(false);
     }
 
     setModalShow(!modalShow);
   };
 
-  const bun = data.filter(item => item.type === "bun")[0];
-  const ingredients = data.filter(item => item.type !== "bun");
+  useEffect(() => {
+    dispatch(
+      {
+        type: CONSTRUCTOR_CLEAR_INGREDIENTS
+      }
+    );  
+  }, [ingredientsList]);
+
+  const removeHandler = (uuid) => {
+    dispatch(
+      {
+        type: CONSTRUCTOR_REMOVE_INGREDIENT,
+        uuid: uuid
+      }
+    );
+  };
+
+  const ingredients = constructorList && constructorList.length > 0 
+  ? constructorList.filter(item => item.ingredient.type !== "bun")
+  : [];
 
   return (
     <>
-    <section className={`${BurgerConstructorStyles.content} pt-25`}>
+    <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget}>
       
-      <BurgerItem
-        image = {bun.image}
-        price = {bun.price} 
-        title = {`${bun.name} (верх)`} 
-        isLocked={true}
-        type="top"
-      />
+      <div className={BurgerConstructorStyles.topbottom}>
+      {
+        bun && <BurgerItem
+          uuid = {bun.uuid}
+          image = {bun.ingredient.image}
+          price = {bun.ingredient.price} 
+          title = {`${bun.ingredient.name} (верх)`} 
+          isLocked={true}
+          type="top"
+        />
+      }
+      </div>
 
-      <AppScrollbar style={{maxHeight: 'calc(100vh - 500px)'}}>
-      <ul>
-        {ingredients.map((ingredient, index) => 
+      <AppScrollbar>
+      {ingredients.length > 0 && <ul className={`${BurgerConstructorStyles.collected}`}>
+        {ingredients.map(item => 
           {
             return (
-              <li key={index}>
+              <li key={uuid()}>
                 <BurgerItem
-                  image = {ingredient.image}
-                  price = {ingredient.price} 
-                  title = {ingredient.name} 
+                  uuid = {item.uuid}
+                  image = {item.ingredient.image}
+                  price = {item.ingredient.price} 
+                  title = {item.ingredient.name} 
                   isLocked={false}
+                  removeHandler={removeHandler}
                 />
               </li>);            
           })
         }
       </ul>
+      }
+      {ingredients.length === 0 && !bun && <BurgerStub text={stubText1} />}
+      {ingredients.length === 0 &&  bun && <BurgerStub text={stubText2} />}
       </AppScrollbar>
 
-      <BurgerItem
-        image = {bun.image}
-        price = {bun.price}
-        title = {`${bun.name} (низ)`}
-        isLocked={true}
-        type="bottom"
-      />
+      <div className={BurgerConstructorStyles.topbottom}>
+      {
+        bun && <BurgerItem
+          uuid = {bun.uuid}
+          image = {bun.ingredient.image}
+          price = {bun.ingredient.price} 
+          title = {`${bun.ingredient.name} (низ)`} 
+          isLocked={true}
+          type="bottom"
+        />
+      }
+      </div>
 
-      <div className={`${BurgerConstructorStyles.summary} mt-10`}>
-        <div className={`${BurgerConstructorStyles.total} mr-10`}>
-          <BurgerTotalContext.Provider value={state.sum}>
-            <BurgerTotal/>
-          </BurgerTotalContext.Provider>
+      <div className={`${BurgerConstructorStyles.summary}`}>
+        <div className={`mr-10`}>
+          <BurgerTotal/>
         </div>
         <Button 
           htmlType="button" 
@@ -127,7 +169,7 @@ function BurgerConstructor() {
     </section>
     {modalShow && 
       <Modal header={''} onclick={showOrderDetails}>
-        <OrderDetails orderNum={orderNum.num.toString()}/>
+        <OrderDetails />
       </Modal>
     }
     </>
