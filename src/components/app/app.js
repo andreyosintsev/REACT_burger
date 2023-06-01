@@ -1,54 +1,44 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import AppStyles from './app.module.css';
 
-import { InfoIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
 import AppHeader from '../app-header/app-header';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+
+import HomePage  from '../../pages/homepage/homepage';
+import SignIn  from '../../pages/registration/sign-in/sign-in';
+import Registration  from '../../pages/registration/registration/registration';
+import ForgotPassword  from '../../pages/registration/forgot-password/forgot-password';
+import ResetPassword  from '../../pages/registration/reset-password/reset-password';
 
 import { getIngredients } from '../../services/actions/burger-ingredients-requests';
 
 export const NORMA_API = 'https://norma.nomoreparties.space/api';
 
-export const burgerIngredientRequests = state => state.burgerIngredientsRequests;
-export const burgerConstructorIngredients = store => store.burgerConstructorIngredients;
-
 function App() {
-
-  const {
-          ingredientsList,
-          isLoading,
-          hasError
-  } = useSelector(burgerIngredientRequests);
 
   const dispatch = useDispatch();
 
-  React.useEffect( ()=> {
+  useEffect( ()=> {
     dispatch(getIngredients());
-  }, []);
+  }, [dispatch]);
 
   return (
    <>
     <div className={AppStyles.wrapper}>
-      <AppHeader />
-      <main className={AppStyles.content}>
-      {hasError && 
-         <p className="text text_type_main-medium">
-            <InfoIcon /> Ошибка связи сервером. Обновите страницу, нажав F5, или попробуйте позже.
-         </p>
-      }
-      {!isLoading && !hasError && ingredientsList.length > 0 &&
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      }
-      </main>
+
+      <Router>
+        <AppHeader />
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/login' element={<SignIn />} />
+          <Route path='/register' element={<Registration />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/ingredients:id' element={<ResetPassword />} />
+        </Routes>
+      </Router>
     </div>
     <div id="modals"></div>
     </>

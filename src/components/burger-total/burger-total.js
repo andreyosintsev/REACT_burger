@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { burgerConstructorIngredients } from '../app/app';
+import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';
 
 function BurgerTotal() {
   const constructorIngredients = useSelector(burgerConstructorIngredients);

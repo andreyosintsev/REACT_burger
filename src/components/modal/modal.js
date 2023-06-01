@@ -9,7 +9,7 @@ import ModalStyles from './modal.module.css';
 
 function Modal({onclick, header, children}) {
 
-  const modalRoot = document.getElementById("modals");
+  const modalRoot = document.querySelector("#modals");
 
   const onEscDown = (e) => {
     if (e.code === 'Escape') {

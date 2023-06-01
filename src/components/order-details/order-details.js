@@ -4,10 +4,9 @@ import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-component
 
 import OrderDetailsStyles from './order-details.module.css';
 
+import { burgerConstructorOrders } from '../../services/selectors/burger-constructor';
+
 function OrderDetails() {
-
-  const burgerConstructorOrders = store => store.burgerConstructorOrders;
-
   const orderNum = useSelector(burgerConstructorOrders).orderNum.toString();
 
   return (

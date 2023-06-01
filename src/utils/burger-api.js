@@ -43,3 +43,27 @@ export const postConstructorDataToApi = (api, payload) => {
     throw new Error(`Не удалось отправить данные конструктора в API: ${error.message}`);
   }
 };
+
+export const postForgotPasswordToApi = (api, payload) => {
+  try {  
+    return fetch(
+      `${api}/password-reset/`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(checkFetchResponse)
+      .then((data) => {
+          if (data.success) {
+              return data.order;
+          }
+          return Promise.reject(data);
+      });
+  } catch (error) {
+    console.error((`Не удалось отправить данные конструктора в API: ${error.message}`));
+    throw new Error(`Не удалось отправить данные конструктора в API: ${error.message}`);
+  }
+};

@@ -6,7 +6,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import BurgerIngredientStyles from './burger-ingredient.module.css';
 
-import { burgerConstructorIngredients } from '../app/app';
+import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';
 
 function BurgerIngredient({_id, image, price, title}) {
 

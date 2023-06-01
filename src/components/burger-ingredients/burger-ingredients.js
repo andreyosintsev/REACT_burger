@@ -15,7 +15,7 @@ import {
   INGREDIENTS_DESELECT_INGREDIENT
 } from "../../services/actions/burger-ingredients-details";
 
-import { burgerIngredientRequests } from '../app/app';
+import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
 
 function BurgerIngredients() {
 
