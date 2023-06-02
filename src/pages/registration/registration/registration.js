@@ -1,10 +1,55 @@
+import { useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import RegistrationStyles from './registration.module.css';
 
+import { userData } from '../../../services/selectors/user';
+
+import {
+  registerUser,
+  USER_DATA_UPDATE
+} from '../../../services/actions/user';
+
 function Registration() {
+  const emailRef = useRef(null);
+  const nameRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const [isPasswordShow, togglePasswordShow] = useState(false);
+  const {userEmail, userName, userPassword} = useSelector(userData);
+  
+  const dispatch = useDispatch();
+
+  const TogglePassword = () => {
+    console.log('Toggle password ', passwordRef.current.icon);
+    if (isPasswordShow) { 
+      passwordRef.current.type = 'text';
+      passwordRef.current.icon = 'ShowIcon';
+    } 
+    else { 
+      passwordRef.current.type = 'password';
+      passwordRef.current.icon = 'HideIcon';    
+    }
+    togglePasswordShow(!isPasswordShow);
+  };
+
+  const onInputChange = (e) => {
+    dispatch({
+      type: USER_DATA_UPDATE,
+      email: emailRef.current.value,
+      name: nameRef.current.value,
+      password: passwordRef.current.value
+    });
+  };
+
+  const onButtonClick = (e) => {
+    e.preventDefault();
+    dispatch(registerUser(userEmail, userPassword, userName));
+  };
+
   return (
     <main className={RegistrationStyles.content}>
       <div className={RegistrationStyles.form}>
@@ -14,9 +59,10 @@ function Registration() {
           placeholder="Имя"
           name="login"
           error={false}
-          ref={null}
+          ref={nameRef}
           size="default"
           extraClass="mb-6"
+          onChange={onInputChange}
           >
         </Input>
         <Input
@@ -24,20 +70,23 @@ function Registration() {
           placeholder="E-mail"
           name="e-mail"
           error={false}
-          ref={null}
+          ref={emailRef}
           size="default"
           extraClass="mb-6"
+          onChange={onInputChange}
           >
         </Input>
         <Input
           type="password"
           placeholder="Пароль"
           name="password"
-          icon="ShowIcon"
+          icon={"ShowIcon"}
           error={false}
-          ref={null}
+          ref={passwordRef}
           size="default"
           extraClass="mb-6"
+          onIconClick={() => TogglePassword()}
+          onChange={onInputChange}
           >
         </Input>
         <Button
@@ -45,6 +94,7 @@ function Registration() {
           type="primary"
           size="medium"
           extraClass="mb-20"
+          onClick={(e) => onButtonClick(e)}
         >Зарегистрироваться
         </Button>
         <p className="text text_type_main-default mb-4">

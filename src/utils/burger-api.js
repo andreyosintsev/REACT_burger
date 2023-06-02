@@ -44,10 +44,10 @@ export const postConstructorDataToApi = (api, payload) => {
   }
 };
 
-export const postForgotPasswordToApi = (api, payload) => {
+export const postUserRegisterToApi = (api, payload) => {
   try {  
     return fetch(
-      `${api}/password-reset/`,
+      `${api}/auth/register`,
       {
         method: 'POST',
         headers: {
@@ -58,12 +58,12 @@ export const postForgotPasswordToApi = (api, payload) => {
       .then(checkFetchResponse)
       .then((data) => {
           if (data.success) {
-              return data.order;
+              return data;
           }
           return Promise.reject(data);
       });
   } catch (error) {
-    console.error((`Не удалось отправить данные конструктора в API: ${error.message}`));
-    throw new Error(`Не удалось отправить данные конструктора в API: ${error.message}`);
+    console.error((`Не удалось отправить данные регистрации пользователя API: ${error.message}`));
+    throw new Error(`Не удалось отправить данные регистрации пользователя в API: ${error.message}`);
   }
 };
