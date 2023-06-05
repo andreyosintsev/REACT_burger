@@ -6,11 +6,12 @@ import AppStyles from './app.module.css';
 
 import AppHeader from '../app-header/app-header';
 
-import HomePage  from '../../pages/homepage/homepage';
-import SignIn  from '../../pages/registration/sign-in/sign-in';
-import Registration  from '../../pages/registration/registration/registration';
 import ForgotPassword  from '../../pages/registration/forgot-password/forgot-password';
+import HomePage  from '../../pages/homepage/homepage';
+import Profile  from '../../pages/account/profile/profile';
+import Registration  from '../../pages/registration/registration/registration';
 import ResetPassword  from '../../pages/registration/reset-password/reset-password';
+import SignIn  from '../../pages/registration/sign-in/sign-in';
 
 import { getIngredients } from '../../services/actions/burger-ingredients-requests';
 
@@ -27,7 +28,6 @@ function App() {
   return (
    <>
     <div className={AppStyles.wrapper}>
-
       <Router>
         <AppHeader />
         <Routes>
@@ -36,6 +36,7 @@ function App() {
           <Route path='/register' element={<Registration />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/profile' element={<Profile />} />
           <Route path='/ingredients:id' element={<ResetPassword />} />
         </Routes>
       </Router>
