@@ -1,8 +1,14 @@
+import setCookie from "../../utils/cookie";
+import saveToLocalStorage from "../../utils/local-storage";
+
 import {  
           USER_DATA_UPDATE,
           USER_REG,
           USER_REG_SUCCESS,
           USER_REG_FAILED,
+          USER_LOGOUT,
+          USER_LOGOUT_SUCCESS,
+          USER_LOGOUT_FAILED,
           USER_AUTH,
           USER_PASSWORD_RESET } from "../actions/user";
 
@@ -13,10 +19,7 @@ const initialState = {
 
   userEmail: '',
   userPassword: '',
-  userName: '',
-
-  userAccessToken: '',
-  userRefreshToken: ''
+  userName: ''
 };
 
 export const user = (state = initialState, action) => {
@@ -36,13 +39,13 @@ export const user = (state = initialState, action) => {
         userHasError: false
       };
     case USER_REG_SUCCESS:
+      setCookie('accessToken', action.accessToken);
+      saveToLocalStorage('refreshToken', action.refreshToken);
       return {
         ...state,
         userIsLogged: true,
         userIsLogging: false,
         userHasError: false,
-        userAccessToken: action.accessToken,
-        userRefreshToken: action.refreshToken
       };
     case USER_REG_FAILED:
       return {
