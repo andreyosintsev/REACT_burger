@@ -10,7 +10,9 @@ function BurgerTotal() {
   const constructorList = constructorIngredients.constructorList;
   const bunPrice = constructorIngredients.bun ? constructorIngredients.bun.ingredient.price : 0;
 
-  const sum = constructorList.reduce((acc, curr) => acc + curr.ingredient.price, 0) + bunPrice * 2;
+  const sum = constructorList
+  ? constructorList.reduce((acc, curr) => acc + curr.ingredient.price, 0) + bunPrice * 2 
+  : 0;
 
   return (
     <div>

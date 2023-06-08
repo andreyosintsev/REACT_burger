@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useDrop } from "react-dnd";
 
 import { v4 as uuid } from 'uuid';
@@ -18,7 +19,8 @@ import { getOrderNumber } from '../../services/actions/burger-constructor-orders
 import {
   CONSTRUCTOR_ADD_INGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
-  CONSTRUCTOR_CLEAR_INGREDIENTS
+  CONSTRUCTOR_CLEAR_INGREDIENTS,
+  CONSTRUCTOR_LOAD_INGREDIENTS
 } from '../../services/actions/burger-constructor-ingredients';
 
 import BurgerConstructorStyles from './burger-constructor.module.css';
@@ -27,13 +29,21 @@ import { stubText1, stubText2 } from '../../utils/locale';
 
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
 import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';
+import { userData } from '../../services/selectors/user';
+
+import {  saveBurgerToLocalStorage,
+          loadBurgerFromLocalStorage,
+          clearBurgerLocalStorage } from '../../utils/local-storage';
+import { redirect } from 'react-router-dom';
 
 function BurgerConstructor() {
   const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
   const constructorList = useSelector(burgerConstructorIngredients).constructorList;
   const bun = useSelector(burgerConstructorIngredients).bun;
 
+  const isUserLogged = useSelector(userData).isUserLogged;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -68,9 +78,13 @@ function BurgerConstructor() {
   };
 
   const showOrderDetails = () => {
-    if (!modalShow) {
+    if (!isUserLogged) {
+      navigate('/login', {replace: true});
+    }
+    if (!modalShow && isUserLogged) {
       if (!bun) { return; }
       dispatch(getOrderNumber(constructorList, bun));
+      clearBurgerLocalStorage();
       setModalShow(true);
     } else {
       setModalShow(false);
@@ -80,12 +94,19 @@ function BurgerConstructor() {
   };
 
   useEffect(() => {
-    dispatch(
-      {
-        type: CONSTRUCTOR_CLEAR_INGREDIENTS
-      }
-    );  
+    const {constructorList, bun} = loadBurgerFromLocalStorage();
+    dispatch({
+      type: CONSTRUCTOR_LOAD_INGREDIENTS,
+      constructorList: constructorList,
+      bun: bun
+    });
   }, [ingredientsList]);
+
+  useEffect(() => {
+    if (constructorList && bun) {
+      saveBurgerToLocalStorage(constructorList, bun);
+    }
+  }, [constructorList, bun]);
 
   const removeHandler = (uuid) => {
     dispatch(

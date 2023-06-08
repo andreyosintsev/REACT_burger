@@ -57,6 +57,32 @@ export const postUserRegisterToApi = (api, payload) => {
       })
       .then(checkFetchResponse)
       .then((data) => {
+          console.log(data);
+          if (data.success) {
+              return data;
+          }
+          return Promise.reject(data);
+      });
+  } catch (error) {
+    console.error((`Не удалось отправить данные регистрации пользователя API: ${error.message}`));
+    throw new Error(`Не удалось отправить данные регистрации пользователя в API: ${error.message}`);
+  }
+};
+
+export const postUserLoginToApi = (api, payload) => {
+  try {  
+    return fetch(
+      `${api}/auth/login`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(checkFetchResponse)
+      .then((data) => {
+          console.log(data);
           if (data.success) {
               return data;
           }

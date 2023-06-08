@@ -18,12 +18,15 @@ function BurgerIngredient({_id, image, price, title}) {
   });
 
   const outCount = () => {
-    const counter = constructorList.reduce((acc, curr) => {
-      if (curr.ingredient._id === _id) {
-        return curr.ingredient.type === 'bun' ? acc + 2 : acc + 1;
-      }
-      return acc; 
-    }, 0);
+    const counter = constructorList
+    ? constructorList.reduce((acc, curr) => {
+        if (curr.ingredient._id === _id) {
+          return curr.ingredient.type === 'bun' ? acc + 2 : acc + 1;
+        }
+        return acc; 
+      }, 0)
+    : 0;
+
     return counter && counter > 0 
     ? {count: counter, style: {display: "block"}} 
     : {count: 0, style: {display: "none"}};

@@ -1,7 +1,8 @@
 import {  CONSTRUCTOR_ADD_INGREDIENT,
           CONSTRUCTOR_REMOVE_INGREDIENT,
           CONSTRUCTOR_SWAP_INGREDIENTS,
-          CONSTRUCTOR_CLEAR_INGREDIENTS } from "../actions/burger-constructor-ingredients";
+          CONSTRUCTOR_CLEAR_INGREDIENTS,
+          CONSTRUCTOR_LOAD_INGREDIENTS } from "../actions/burger-constructor-ingredients";
 
 const initialState = {
   constructorList: [],
@@ -47,7 +48,7 @@ export const burgerConstructorIngredients = (state = initialState, action) => {
         bun: null
       };
     case CONSTRUCTOR_SWAP_INGREDIENTS:
-      const newList = JSON.parse(JSON.stringify(state.constructorList));
+      const newList = [...state.constructorList];
       const ingredientToMove = newList.find(ingredient => ingredient.uuid === action.sourceIngredientUuid);
       const fromIndex = newList.findIndex(ingredient => ingredient.uuid === action.sourceIngredientUuid);
       const toIndex = newList.findIndex(ingredient => ingredient.uuid === action.targetIngredientUuid);
@@ -56,6 +57,12 @@ export const burgerConstructorIngredients = (state = initialState, action) => {
       return {
         ...state,
         constructorList: newList
+      };
+    case CONSTRUCTOR_LOAD_INGREDIENTS:
+      return {
+        ...state,
+        constructorList: action.constructorList,
+        bun: action.bun
       };
     default:
       return state;

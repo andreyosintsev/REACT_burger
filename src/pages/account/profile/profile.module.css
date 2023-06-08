@@ -28,3 +28,25 @@
   flex-direction: column;
   justify-content: center;
 }
+a {
+  text-decoration: none;
+}
+.active p {
+  color: #FFFFFF;
+}
+.active svg {
+  fill: #FFFFFF;
+}
+.inactive p {
+  color: #8585AD;
+}
+.inactive svg {
+  fill: #8585AD;
+}
+.clickable {
+  color: #8585AD;
+  cursor: pointer;
+}
+.clickable:hover {
+  color: #FFFFFF;
+}

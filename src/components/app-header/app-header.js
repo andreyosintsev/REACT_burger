@@ -5,6 +5,8 @@ import {  Logo,
           ListIcon, 
           ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
+// import { setActiveStyle } from '../../utils/ui';
+
 import AppHeaderStyles from './app-header.module.css';
 
 function AppHeader() {

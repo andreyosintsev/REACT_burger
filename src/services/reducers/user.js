@@ -1,11 +1,11 @@
-import setCookie from "../../utils/cookie";
-import saveToLocalStorage from "../../utils/local-storage";
-
 import {  
           USER_DATA_UPDATE,
           USER_REG,
           USER_REG_SUCCESS,
           USER_REG_FAILED,
+          USER_LOGIN,
+          USER_LOGIN_SUCCESS,
+          USER_LOGIN_FAILED,
           USER_LOGOUT,
           USER_LOGOUT_SUCCESS,
           USER_LOGOUT_FAILED,
@@ -39,8 +39,6 @@ export const user = (state = initialState, action) => {
         userHasError: false
       };
     case USER_REG_SUCCESS:
-      setCookie('accessToken', action.accessToken);
-      saveToLocalStorage('refreshToken', action.refreshToken);
       return {
         ...state,
         userIsLogged: true,
@@ -51,6 +49,45 @@ export const user = (state = initialState, action) => {
       return {
         ...state,
         userIsLogged: false,
+        userIsLogging: false,
+        userHasError: true
+      };
+    case USER_LOGIN: 
+      return {
+        ...state,
+        userIsLogging: true,
+        userHasError: false
+      };
+    case USER_LOGIN_SUCCESS:
+      return {
+        ...state,
+        userIsLogged: true,
+        userIsLogging: false,
+        userHasError: false,
+      };
+    case USER_LOGIN_FAILED:
+      return {
+        ...state,
+        userIsLogged: false,
+        userIsLogging: false,
+        userHasError: true
+      };
+      case USER_LOGOUT: 
+      return {
+        ...state,
+        userIsLogging: true,
+        userHasError: false
+      };
+    case USER_LOGOUT_SUCCESS:
+      return {
+        ...state,
+        userIsLogged: false,
+        userIsLogging: false,
+        userHasError: false,
+      };
+    case USER_LOGOUT_FAILED:
+      return {
+        ...state,
         userIsLogging: false,
         userHasError: true
       };
