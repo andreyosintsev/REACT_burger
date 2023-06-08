@@ -1,10 +1,34 @@
+import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import {
+  resetPasswordUser
+} from '../../../services/actions/user';
+
 import ResetPasswordStyles from './reset-password.module.css';
 
 function ResetPassword() {
+  const passwordRef = useRef('');
+  const tokenRef = useRef('');
+
+  const [userPassword, setUserPassword] = useState('');
+  const [userToken, setUserToken] = useState('');
+
+  const dispatch = useDispatch();
+
+  const onInputChange = () => {
+    setUserPassword(passwordRef.current.value);
+    setUserToken(tokenRef.current.value);
+  };
+
+  const onButtonClick = (e) => {
+    e.preventDefault();
+    dispatch(resetPasswordUser(userPassword, userToken));
+  };
+
   return (
     <main className={ResetPasswordStyles.content}>
       <div className={ResetPasswordStyles.form}>
@@ -15,9 +39,10 @@ function ResetPassword() {
           name="password"
           icon="ShowIcon"
           error={false}
-          ref={null}
+          ref={passwordRef}
           size="default"
           extraClass="mb-6"
+          onChange={onInputChange}
           >
         </Input>
         <Input
@@ -25,9 +50,10 @@ function ResetPassword() {
           placeholder="Введите код из письма"
           name="code"
           error={false}
-          ref={null}
+          ref={tokenRef}
           size="default"
           extraClass="mb-6"
+          onChange={onInputChange}
           >
         </Input>
         <Button
@@ -35,6 +61,7 @@ function ResetPassword() {
           type="primary"
           size="medium"
           extraClass="mb-20"
+          onClick={(e) => onButtonClick(e)}
         >Сохранить
         </Button>
         <p className="text text_type_main-default mb-4">

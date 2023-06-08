@@ -14,6 +14,7 @@ import { clearBurgerLocalStorage } from '../../../utils/local-storage';
 // import { setActiveStyle } from '../../../utils/ui';
 
 import ProfileStyles from './profile.module.css';
+import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../../../services/actions/burger-constructor-ingredients';
 
 function Profile() {
   const refreshToken = getFromLocalStorage('refreshToken');
@@ -22,15 +23,17 @@ function Profile() {
 
   const {userIsLogged} = useSelector(userData);
 
-  const onLogoutHandler = () => { 
+  const onLogoutHandler = () => {
+    dispatch({
+      type: CONSTRUCTOR_CLEAR_INGREDIENTS
+    });
     dispatch(logoutUser(refreshToken));
-    clearBurgerLocalStorage();
   };
 
   useEffect(()=>{
     console.log('useEffect -> !userIsLogged: ', userIsLogged);
     if (!userIsLogged) {
-      navigate('/', {replace: true});
+      navigate('/login', {replace: true});
     }    
   }, [userIsLogged]);
 

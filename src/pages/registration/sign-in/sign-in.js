@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
@@ -11,24 +11,24 @@ import SignInStyles from './sign-in.module.css';
 import { userData } from '../../../services/selectors/user';
 
 import {
-  loginUser,
-  USER_DATA_UPDATE
+  loginUser
 } from '../../../services/actions/user';
 
 function SignIn() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const {userEmail, userPassword, userIsLogged} = useSelector(userData);
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+
+
+  const {userIsLogged} = useSelector(userData);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onInputChange = (e) => {
-    dispatch({
-      type: USER_DATA_UPDATE,
-      email: emailRef.current.value,
-      password: passwordRef.current.value
-    });
+    setUserEmail(emailRef.current.value);
+    setUserPassword(passwordRef.current.value);
   };
 
   const onButtonClick = (e) => {

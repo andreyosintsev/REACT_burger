@@ -1,5 +1,4 @@
 import {  
-          USER_DATA_UPDATE,
           USER_REG,
           USER_REG_SUCCESS,
           USER_REG_FAILED,
@@ -10,86 +9,119 @@ import {
           USER_LOGOUT_SUCCESS,
           USER_LOGOUT_FAILED,
           USER_AUTH,
-          USER_PASSWORD_RESET } from "../actions/user";
+          USER_PASSWORD_REQUEST,
+          USER_PASSWORD_REQUEST_SUCCESS,
+          USER_PASSWORD_REQUEST_FAILED,
+          USER_PASSWORD_RESET,
+          USER_PASSWORD_RESET_SUCCESS,
+          USER_PASSWORD_RESET_FAILED } from "../actions/user";
 
 const initialState = {
-  userIsLogged:  false,
-  userIsLogging: false,
-  userHasError:  false,
-
-  userEmail: '',
-  userPassword: '',
-  userName: ''
+  userIsLogged: false,
+  userPending:  false,
+  userHasError: false,
+  userPasswordResetting: false
 };
 
 export const user = (state = initialState, action) => {
   switch (action.type) {
-    case USER_DATA_UPDATE:
-      return {
-        ...state,
-        userEmail: action.email,
-        userPassword: action.password,
-        userName: action.name
-      };
     case USER_REG: 
       return {
         ...state,
         userIsLogged: false,
-        userIsLogging: true,
+        userPending: true,
         userHasError: false
       };
     case USER_REG_SUCCESS:
       return {
         ...state,
         userIsLogged: true,
-        userIsLogging: false,
+        userPending: false,
         userHasError: false,
       };
     case USER_REG_FAILED:
       return {
         ...state,
         userIsLogged: false,
-        userIsLogging: false,
+        userPending: false,
         userHasError: true
       };
     case USER_LOGIN: 
       return {
         ...state,
-        userIsLogging: true,
+        userPending: true,
         userHasError: false
       };
     case USER_LOGIN_SUCCESS:
       return {
         ...state,
         userIsLogged: true,
-        userIsLogging: false,
+        userPending: false,
         userHasError: false,
       };
     case USER_LOGIN_FAILED:
       return {
         ...state,
         userIsLogged: false,
-        userIsLogging: false,
+        userPending: false,
         userHasError: true
       };
-      case USER_LOGOUT: 
+    case USER_LOGOUT: 
       return {
         ...state,
-        userIsLogging: true,
+        userPending: true,
         userHasError: false
       };
     case USER_LOGOUT_SUCCESS:
       return {
         ...state,
         userIsLogged: false,
-        userIsLogging: false,
+        userPending: false,
         userHasError: false,
       };
     case USER_LOGOUT_FAILED:
       return {
         ...state,
-        userIsLogging: false,
+        userPending: false,
         userHasError: true
+      };
+    case USER_PASSWORD_REQUEST: 
+      return {
+        ...state,
+        userPending: true,
+        userHasError: false,
+        userPasswordResetting: false
+      };
+    case USER_PASSWORD_REQUEST_SUCCESS:
+      return {
+        ...state,
+        userHasError: false,
+        userPasswordResetting: true
+      };
+    case USER_PASSWORD_REQUEST_FAILED:
+      return {
+        ...state,
+        userHasError: true,
+        userPasswordResetting: false
+      };
+      case USER_PASSWORD_RESET: 
+      return {
+        ...state,
+        userPending: true,
+        userHasError: false,
+        userPasswordResetting: false
+      };
+    case USER_PASSWORD_RESET_SUCCESS:
+      return {
+        ...state,
+        userHasError: false,
+        userPasswordResetting: false
+      };
+    case USER_PASSWORD_RESET_FAILED:
+      return {
+        ...state,
+        userHasError: true,
+        userPasswordResetting: false
       };
     default: return state;
   }

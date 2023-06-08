@@ -34,14 +34,14 @@ import { userData } from '../../services/selectors/user';
 import {  saveBurgerToLocalStorage,
           loadBurgerFromLocalStorage,
           clearBurgerLocalStorage } from '../../utils/local-storage';
-import { redirect } from 'react-router-dom';
 
 function BurgerConstructor() {
   const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
   const constructorList = useSelector(burgerConstructorIngredients).constructorList;
   const bun = useSelector(burgerConstructorIngredients).bun;
 
-  const isUserLogged = useSelector(userData).isUserLogged;
+  const userIsLogged = useSelector(userData).userIsLogged;
+  console.log('userIsLogged in Constructor', userIsLogged);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -78,10 +78,11 @@ function BurgerConstructor() {
   };
 
   const showOrderDetails = () => {
-    if (!isUserLogged) {
+    console.log('isUserLogged', userIsLogged);
+    if (!userIsLogged) {
       navigate('/login', {replace: true});
     }
-    if (!modalShow && isUserLogged) {
+    if (!modalShow && userIsLogged) {
       if (!bun) { return; }
       dispatch(getOrderNumber(constructorList, bun));
       clearBurgerLocalStorage();

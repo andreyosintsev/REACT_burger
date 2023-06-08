@@ -1,12 +1,15 @@
 import {  postUserRegisterToApi,
           postUserLoginToApi,
-          postUserLogoutToApi } from '../../utils/burger-api';
+          postUserLogoutToApi,
+          postUserRequestPasswordToApi,
+          postUserResetPasswordToApi } from '../../utils/burger-api';
 
 import {  setCookie,
           deleteCookie  } from "../../utils/cookie";
 
 import {  saveToLocalStorage,
-          deleteFromLocalStorage } from "../../utils/local-storage";
+          deleteFromLocalStorage,
+          clearBurgerLocalStorage } from "../../utils/local-storage";
 
 import { NORMA_API } from '../../components/app/app';
 
@@ -25,7 +28,14 @@ export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS';
 export const USER_LOGOUT_FAILED  = 'USER_LOGOUT_FAILED';
 
 export const USER_AUTH =           'USER_AUTH';
+
+export const USER_PASSWORD_REQUEST = 'USER_PASSWORD_REQUEST';
+export const USER_PASSWORD_REQUEST_SUCCESS = 'USER_PASSWORD_REQUEST_SUCCESS';
+export const USER_PASSWORD_REQUEST_FAILED = 'USER_PASSWORD_REQUEST_FAILED';
+
 export const USER_PASSWORD_RESET = 'USER_PASSWORD_RESET';
+export const USER_PASSWORD_RESET_SUCCESS = 'USER_PASSWORD_RESET_SUCCESS';
+export const USER_PASSWORD_RESET_FAILED = 'USER_PASSWORD_RESET_FAILED';
 
 export const registerUser = (userEmail, userPassword, userName) => {
   return function (dispatch) {
@@ -103,7 +113,6 @@ export const loginUser = (userEmail, userPassword) => {
 };
 
 export const logoutUser = (refreshToken) => {
-  console.log(refreshToken);
   return function (dispatch) {
     dispatch({
       type: USER_LOGOUT
@@ -119,6 +128,7 @@ export const logoutUser = (refreshToken) => {
           console.log(data);
           deleteCookie('accessToken');
           deleteFromLocalStorage('refreshToken');
+          clearBurgerLocalStorage();
           dispatch({
             type: USER_LOGOUT_SUCCESS
           });
@@ -133,6 +143,73 @@ export const logoutUser = (refreshToken) => {
       console.error(error);
       dispatch({
         type: USER_LOGOUT_FAILED,
+      });
+    }
+  };
+};
+
+export const requestPasswordUser = (email) => {
+  return function (dispatch) {
+    dispatch({
+      type: USER_PASSWORD_REQUEST
+    });
+    try {
+      //
+      postUserRequestPasswordToApi(
+          NORMA_API, {
+            "email": email
+          }
+        )
+        .then(data => {
+          console.log(data);
+          dispatch({
+            type: USER_PASSWORD_REQUEST_SUCCESS
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          dispatch({
+            type: USER_PASSWORD_REQUEST_FAILED,
+          });
+        });
+    } catch (error) {
+      console.error(error);
+      dispatch({
+        type: USER_PASSWORD_REQUEST_FAILED,
+      });
+    }
+  };
+};
+
+export const resetPasswordUser = (password, token) => {
+  return function (dispatch) {
+    dispatch({
+      type: USER_PASSWORD_RESET
+    });
+    try {
+      //
+      postUserResetPasswordToApi(
+          NORMA_API, {
+            "password": password,
+            "token" : token
+          } 
+        )
+        .then(data => {
+          console.log(data);
+          dispatch({
+            type: USER_PASSWORD_RESET_SUCCESS
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          dispatch({
+            type: USER_PASSWORD_RESET_FAILED,
+          });
+        });
+    } catch (error) {
+      console.error(error);
+      dispatch({
+        type: USER_PASSWORD_REQUEST_FAILED,
       });
     }
   };

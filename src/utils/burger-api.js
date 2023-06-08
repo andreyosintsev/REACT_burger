@@ -15,8 +15,8 @@ export const getIngredientsFromApi = (api) => {
           return Promise.reject(data);
       });
   } catch (error) {
-    console.error((`Не удалось получить ингредиенты от API: ${error.message}`));
-    throw new Error(`Не удалось получить ингредиенты от API: ${error.message}`);
+    console.error((`Не удалось получить от API ингредиенты: ${error.message}`));
+    throw new Error(`Не удалось получить от API ингредиенты: ${error.message}`);
   }
 };
 
@@ -39,8 +39,8 @@ export const postConstructorDataToApi = (api, payload) => {
           return Promise.reject(data);
       });
   } catch (error) {
-    console.error((`Не удалось отправить данные конструктора в API: ${error.message}`));
-    throw new Error(`Не удалось отправить данные конструктора в API: ${error.message}`);
+    console.error((`Не удалось отправить в API данные конструктора: ${error.message}`));
+    throw new Error(`Не удалось отправить в API данные конструктора: ${error.message}`);
   }
 };
 
@@ -64,8 +64,8 @@ export const postUserRegisterToApi = (api, payload) => {
           return Promise.reject(data);
       });
   } catch (error) {
-    console.error((`Не удалось отправить данные регистрации пользователя API: ${error.message}`));
-    throw new Error(`Не удалось отправить данные регистрации пользователя в API: ${error.message}`);
+    console.error((`Не удалось отправить в API данные для регистрации пользователя: ${error.message}`));
+    throw new Error(`Не удалось отправить в API данные для регистрации пользователя: ${error.message}`);
   }
 };
 
@@ -89,8 +89,8 @@ export const postUserLoginToApi = (api, payload) => {
           return Promise.reject(data);
       });
   } catch (error) {
-    console.error((`Не удалось отправить данные регистрации пользователя API: ${error.message}`));
-    throw new Error(`Не удалось отправить данные регистрации пользователя в API: ${error.message}`);
+    console.error((`Не удалось отправить в API данные для входа пользователя: ${error.message}`));
+    throw new Error(`Не удалось отправить в API данные для входа пользователя: ${error.message}`);
   }
 };
 
@@ -113,7 +113,55 @@ export const postUserLogoutToApi = (api, payload) => {
           return Promise.reject(data);
       });
   } catch (error) {
-    console.error((`Не удалось отправить данные регистрации пользователя API: ${error.message}`));
-    throw new Error(`Не удалось отправить данные регистрации пользователя в API: ${error.message}`);
+    console.error((`Не удалось отправить данные в API для выхода пользователя: ${error.message}`));
+    throw new Error(`Не удалось отправить данные в API для выхода пользователя: ${error.message}`);
+  }
+};
+
+export const postUserRequestPasswordToApi = (api, payload) => {
+  try {  
+    return fetch(
+      `${api}/password-reset`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(checkFetchResponse)
+      .then((data) => {
+          if (data.success) {
+              return data;
+          }
+          return Promise.reject(data);
+      });
+  } catch (error) {
+    console.error((`Не удалось отправить данные в API для запроса сброса пароля: ${error.message}`));
+    throw new Error(`Не удалось отправить данные в API для запроса сброса пароля: ${error.message}`);
+  }
+};
+
+export const postUserResetPasswordToApi = (api, payload) => {
+  try {  
+    return fetch(
+      `${api}/password-reset/reset`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(checkFetchResponse)
+      .then((data) => {
+          if (data.success) {
+              return data;
+          }
+          return Promise.reject(data);
+      });
+  } catch (error) {
+    console.error((`Не удалось отправить данные в API для запроса сброса пароля: ${error.message}`));
+    throw new Error(`Не удалось отправить данные в API для запроса сброса пароля: ${error.message}`);
   }
 };

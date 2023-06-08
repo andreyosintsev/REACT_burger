@@ -15,8 +15,9 @@ function saveBurgerToLocalStorage(constructorList, bun) {
 }
 
 function clearBurgerLocalStorage() {
+  console.log('In clearBurgerLocalStorage');
   localStorage.removeItem('constructorList');
-  localStorage.removeItem('bun'); 
+  localStorage.removeItem('bun');
 }
 
 function loadBurgerFromLocalStorage() {

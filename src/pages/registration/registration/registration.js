@@ -1,16 +1,13 @@
 import { useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import RegistrationStyles from './registration.module.css';
 
-import { userData } from '../../../services/selectors/user';
-
 import {
-  registerUser,
-  USER_DATA_UPDATE
+  registerUser
 } from '../../../services/actions/user';
 
 function Registration() {
@@ -19,7 +16,9 @@ function Registration() {
   const passwordRef = useRef(null);
 
   const [isPasswordShow, togglePasswordShow] = useState(false);
-  const {userEmail, userName, userPassword} = useSelector(userData);
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   
   const dispatch = useDispatch();
 
@@ -36,13 +35,10 @@ function Registration() {
     togglePasswordShow(!isPasswordShow);
   };
 
-  const onInputChange = (e) => {
-    dispatch({
-      type: USER_DATA_UPDATE,
-      email: emailRef.current.value,
-      name: nameRef.current.value,
-      password: passwordRef.current.value
-    });
+  const onInputChange = () => {
+    setUserEmail(emailRef.current.value);
+    setUserName(nameRef.current.value);
+    setUserPassword(passwordRef.current.value);
   };
 
   const onButtonClick = (e) => {
