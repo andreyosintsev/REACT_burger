@@ -4,13 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import ForgotPasswordStyles from './forgot-password.module.css';
-
-import {
-  requestPasswordUser
-} from '../../../services/actions/user';
-
+import { requestPasswordUser } from '../../../services/actions/user';
 import { userData } from '../../../services/selectors/user';
+
+import ForgotPasswordStyles from './forgot-password.module.css';
 
 function ForgotPassword() {
   const emailRef = useRef(null);
@@ -21,7 +18,7 @@ function ForgotPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onInputChange = (e) => {
+  const onInputChange = () => {
     setUserEmail(emailRef.current.value);
   };
 
@@ -45,6 +42,7 @@ function ForgotPassword() {
           type="email"
           placeholder="Укажите e-mail"
           name="e-mail"
+          value={userEmail}
           error={false}
           ref={emailRef}
           size="default"

@@ -23,10 +23,6 @@ import {
   CONSTRUCTOR_LOAD_INGREDIENTS
 } from '../../services/actions/burger-constructor-ingredients';
 
-import BurgerConstructorStyles from './burger-constructor.module.css';
-
-import { stubText1, stubText2 } from '../../utils/locale';
-
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
 import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';
 import { userData } from '../../services/selectors/user';
@@ -34,6 +30,10 @@ import { userData } from '../../services/selectors/user';
 import {  saveBurgerToLocalStorage,
           loadBurgerFromLocalStorage,
           clearBurgerLocalStorage } from '../../utils/local-storage';
+
+import { stubText1, stubText2 } from '../../utils/locale';
+
+import BurgerConstructorStyles from './burger-constructor.module.css';
 
 function BurgerConstructor() {
   const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;

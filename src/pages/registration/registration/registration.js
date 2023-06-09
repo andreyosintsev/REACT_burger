@@ -4,11 +4,9 @@ import { Link } from "react-router-dom";
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import RegistrationStyles from './registration.module.css';
+import { registerUser } from '../../../services/actions/user';
 
-import {
-  registerUser
-} from '../../../services/actions/user';
+import RegistrationStyles from './registration.module.css';
 
 function Registration() {
   const emailRef = useRef(null);
@@ -54,6 +52,7 @@ function Registration() {
           type="text"
           placeholder="Имя"
           name="login"
+          value={userName}
           error={false}
           ref={nameRef}
           size="default"
@@ -65,6 +64,7 @@ function Registration() {
           type="email"
           placeholder="E-mail"
           name="e-mail"
+          value={userEmail}
           error={false}
           ref={emailRef}
           size="default"
@@ -76,6 +76,7 @@ function Registration() {
           type="password"
           placeholder="Пароль"
           name="password"
+          value={userPassword}
           icon={"ShowIcon"}
           error={false}
           ref={passwordRef}

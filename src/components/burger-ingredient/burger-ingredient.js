@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import BurgerIngredientStyles from './burger-ingredient.module.css';
-
 import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';
+
+import BurgerIngredientStyles from './burger-ingredient.module.css';
 
 function BurgerIngredient({_id, image, price, title}) {
 

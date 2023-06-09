@@ -1,4 +1,11 @@
-function setCookie(key, value, props) {
+export function getCookie(key) {
+  const matches = document.cookie.match(
+    new RegExp('(?:^|; )' + key.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+export function setCookie(key, value, props) {
     props = props || {};
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
@@ -21,8 +28,6 @@ function setCookie(key, value, props) {
     document.cookie = updatedCookie;
   } 
 
-function deleteCookie(name) {
+export function deleteCookie(name) {
   setCookie(name, null, { expires: -1 });
 }
-
-export {setCookie, deleteCookie}

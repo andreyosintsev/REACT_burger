@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import ModalOverlay from '../modal-overlay/modal-overlay';
+
 import ModalStyles from './modal.module.css';
 
 function Modal({onclick, header, children}) {

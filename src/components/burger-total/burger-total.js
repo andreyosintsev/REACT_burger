@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 
-
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';

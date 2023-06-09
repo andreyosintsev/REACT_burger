@@ -2,14 +2,14 @@ import { useSelector } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
+import { InfoIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 
-import { InfoIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
 
 import HomePageStyles from './homepage.module.css';
-
-import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
 
 function HomePage () {
 

@@ -1,5 +1,6 @@
-import { getIngredientsFromApi } from '../../utils/burger-api';
 import { NORMA_API } from '../../components/app/app';
+
+import { getIngredientsFromApi } from '../../utils/burger-api';
 
 export const INGREDIENTS_GET_INGREDIENTS =          'INGREDIENTS_GET_INGREDIENTS';
 export const INGREDIENTS_GET_INGREDIENTS_SUCCESS =  'INGREDIENTS_GET_INGREDIENTS_SUCCESS';

@@ -8,14 +8,14 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import BurgerSection from '../burger-section/burger-section';
 
-import BurgerIngredientsStyles from './burger-ingredients.module.css';
-
 import { 
   INGREDIENTS_SELECT_INGREDIENT,
   INGREDIENTS_DESELECT_INGREDIENT
 } from "../../services/actions/burger-ingredients-details";
 
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
+
+import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 function BurgerIngredients() {
 

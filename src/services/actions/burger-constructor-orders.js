@@ -1,5 +1,5 @@
-import { postConstructorDataToApi } from '../../utils/burger-api';
 import { NORMA_API } from '../../components/app/app';
+import { postConstructorDataToApi } from '../../utils/burger-api';
 
 import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../actions/burger-constructor-ingredients';
 

@@ -8,19 +8,32 @@ import {
           USER_LOGOUT,
           USER_LOGOUT_SUCCESS,
           USER_LOGOUT_FAILED,
-          USER_AUTH,
+          USER_DATA_UPDATE,
+          USER_ROLLBACK_UPDATE,
           USER_PASSWORD_REQUEST,
           USER_PASSWORD_REQUEST_SUCCESS,
           USER_PASSWORD_REQUEST_FAILED,
           USER_PASSWORD_RESET,
           USER_PASSWORD_RESET_SUCCESS,
-          USER_PASSWORD_RESET_FAILED } from "../actions/user";
+          USER_PASSWORD_RESET_FAILED,
+          USER_GET_USER_DATA,
+          USER_GET_USER_DATA_SUCCESS,
+          USER_GET_USER_DATA_FAILED,
+          USER_UPDATE_USER_DATA,
+          USER_UPDATE_USER_DATA_SUCCESS,
+          USER_UPDATE_USER_DATA_FAILED
+        } from "../actions/user";
 
 const initialState = {
   userIsLogged: false,
   userPending:  false,
   userHasError: false,
-  userPasswordResetting: false
+  userPasswordResetting: false,
+
+  userName: '',
+  userEmail: '',
+  userRollbackName: '',
+  userRollbackEmail: ''
 };
 
 export const user = (state = initialState, action) => {
@@ -104,7 +117,7 @@ export const user = (state = initialState, action) => {
         userHasError: true,
         userPasswordResetting: false
       };
-      case USER_PASSWORD_RESET: 
+    case USER_PASSWORD_RESET: 
       return {
         ...state,
         userPending: true,
@@ -122,6 +135,60 @@ export const user = (state = initialState, action) => {
         ...state,
         userHasError: true,
         userPasswordResetting: false
+      };
+    case USER_GET_USER_DATA: 
+      return {
+        ...state,
+        userPending: true,
+        userHasError: false
+      };
+    case USER_GET_USER_DATA_SUCCESS:
+      return {
+        ...state,
+        userPending: false,
+        userHasError: false,
+        userName: action.userName,
+        userEmail: action.userEmail
+      };
+    case USER_GET_USER_DATA_FAILED:
+      return {
+        ...state,
+        userPending: false,
+        userHasError: true
+      };
+    case USER_DATA_UPDATE:
+        return {
+          ...state,
+          userName: action.userName,
+          userEmail: action.userEmail
+        };
+    case USER_ROLLBACK_UPDATE:
+        return {
+          ...state,
+          userRollbackName: action.userRollbackName,
+          userRollbackEmail: action.userRollbackEmail
+        };
+    case USER_UPDATE_USER_DATA: 
+      return {
+        ...state,
+        userPending: true,
+        userHasError: false
+      };
+    case USER_UPDATE_USER_DATA_SUCCESS:
+      return {
+        ...state,
+        userPending: false,
+        userHasError: false,
+        userName: action.userName,
+        userEmail: action.userEmail
+      };
+    case USER_UPDATE_USER_DATA_FAILED:
+      return {
+        ...state,
+        userPending: false,
+        userHasError: true,
+        userName: state.userRollbackName,
+        userEmail: state.userRollbackEmail
       };
     default: return state;
   }

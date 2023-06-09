@@ -2,9 +2,9 @@ import { useSelector } from 'react-redux';
 
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import OrderDetailsStyles from './order-details.module.css';
-
 import { burgerConstructorOrders } from '../../services/selectors/burger-constructor';
+
+import OrderDetailsStyles from './order-details.module.css';
 
 function OrderDetails() {
   const orderNum = useSelector(burgerConstructorOrders).orderNum.toString();

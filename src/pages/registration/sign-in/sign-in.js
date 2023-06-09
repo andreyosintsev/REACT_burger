@@ -1,18 +1,13 @@
 import { useRef, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import SignInStyles from './sign-in.module.css';
-
+import { loginUser } from '../../../services/actions/user';
 import { userData } from '../../../services/selectors/user';
 
-import {
-  loginUser
-} from '../../../services/actions/user';
+import SignInStyles from './sign-in.module.css';
 
 function SignIn() {
   const emailRef = useRef(null);
@@ -20,7 +15,6 @@ function SignIn() {
 
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
-
 
   const {userIsLogged} = useSelector(userData);
   const dispatch = useDispatch();
@@ -51,6 +45,7 @@ function SignIn() {
           type="email"
           placeholder="E-mail"
           name="e-mail"
+          value={userEmail}
           error={false}
           ref={emailRef}
           size="default"
@@ -62,6 +57,7 @@ function SignIn() {
           type="password"
           placeholder="Пароль"
           name="password"
+          value={userPassword}
           icon="ShowIcon"
           error={false}
           ref={passwordRef}
