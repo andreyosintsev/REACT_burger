@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -16,9 +16,16 @@ function SignIn() {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
 
-  const {userIsLogged} = useSelector(userData);
+  const {userIsLogged} = useSelector(userData); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    console.log('useEffect -> userIsLogged: ', userIsLogged);
+    if (userIsLogged) {
+      navigate('/', {replace: true});
+    }    
+  }, [userIsLogged]);
 
   const onInputChange = (e) => {
     setUserEmail(emailRef.current.value);
@@ -29,13 +36,6 @@ function SignIn() {
     e.preventDefault();
     dispatch(loginUser(userEmail, userPassword));
   };
-
-  useEffect(()=>{
-    console.log('useEffect -> userIsLogged: ', userIsLogged);
-    if (userIsLogged) {
-      navigate('/', {replace: true});
-    }    
-  }, [userIsLogged]);
 
   return (
     <main className={SignInStyles.content}>

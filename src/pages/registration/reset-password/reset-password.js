@@ -14,6 +14,7 @@ function ResetPassword() {
   const tokenRef = useRef('');
 
   const userPasswordResetting = useSelector(userData).userPasswordResetting;
+  const {userIsLogged} = useSelector(userData);
 
   const [userPassword, setUserPassword] = useState('');
   const [userToken, setUserToken] = useState('');

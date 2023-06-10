@@ -6,12 +6,14 @@ import {  postUserRegisterToApi,
           postUserRequestPasswordToApi,
           postUserResetPasswordToApi,
           getUserDataFromApi,
-          patchUserDataToApi } from '../../utils/burger-api';
+          patchUserDataToApi,
+          postRefreshTokenToApi } from '../../utils/burger-api';
 
 import {  setCookie,
           deleteCookie  } from "../../utils/cookie";
 
-import {  saveToLocalStorage,
+import {  getFromLocalStorage,
+          saveToLocalStorage,
           deleteFromLocalStorage,
           clearBurgerLocalStorage } from "../../utils/local-storage";
 
@@ -101,16 +103,23 @@ export const loginUser = (userEmail, userPassword) => {
           setCookie('accessToken', data.accessToken);
           saveToLocalStorage('refreshToken', data.refreshToken);
           dispatch({
-            type: USER_LOGIN_SUCCESS,
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken 
+            type: USER_LOGIN_SUCCESS
           });
         })
         .catch((error) => {
           console.error(error);
-          dispatch({
-            type: USER_LOGIN_FAILED,
-          });
+          if (error.message === 'jwt expired') {
+            dispatch(
+                refreshToken(
+                  loginUser(userEmail, userPassword), 
+                  getFromLocalStorage('refreshToken')
+                )
+            );
+          } else {
+            dispatch({
+              type: USER_LOGIN_FAILED,
+            });
+          }
         });
     } catch (error) {
       console.error(error);
@@ -119,6 +128,19 @@ export const loginUser = (userEmail, userPassword) => {
       });
     }
   };
+};
+
+const refreshToken = (afterRefresh, refreshToken) => (dispatch) => {
+  postRefreshTokenToApi(          
+    NORMA_API, {
+    "token": refreshToken
+  })
+  .then((data) => {
+    console.log('accessToken is refreshed');
+    setCookie('accessToken', data.accessToken);
+    saveToLocalStorage('refreshToken', data.refreshToken);
+    dispatch(afterRefresh);
+  });
 };
 
 export const logoutUser = (refreshToken) => {
@@ -246,9 +268,18 @@ export const requestDataUser = (accessToken) => {
         })
         .catch((error) => {
           console.error(error);
-          dispatch({
-            type: USER_GET_USER_DATA_FAILED,
-          });
+          if (error.message === 'jwt expired') {
+            dispatch(
+                refreshToken(
+                  requestDataUser(accessToken), 
+                  getFromLocalStorage('refreshToken')
+                )
+            );
+          } else {
+            dispatch({
+              type: USER_LOGIN_FAILED,
+            });
+          }
         });
     } catch (error) {
       console.error(error);

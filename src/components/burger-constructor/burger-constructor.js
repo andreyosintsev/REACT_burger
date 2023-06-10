@@ -41,7 +41,6 @@ function BurgerConstructor() {
   const bun = useSelector(burgerConstructorIngredients).bun;
 
   const userIsLogged = useSelector(userData).userIsLogged;
-  console.log('userIsLogged in Constructor', userIsLogged);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -78,7 +77,6 @@ function BurgerConstructor() {
   };
 
   const showOrderDetails = () => {
-    console.log('isUserLogged', userIsLogged);
     if (!userIsLogged) {
       navigate('/login', {replace: true});
     }

@@ -87,10 +87,7 @@ export const user = (state = initialState, action) => {
       };
     case USER_LOGOUT_SUCCESS:
       return {
-        ...state,
-        userIsLogged: false,
-        userPending: false,
-        userHasError: false,
+        ...initialState
       };
     case USER_LOGOUT_FAILED:
       return {
@@ -147,6 +144,7 @@ export const user = (state = initialState, action) => {
         ...state,
         userPending: false,
         userHasError: false,
+        userIsLogged: true,
         userName: action.userName,
         userEmail: action.userEmail
       };

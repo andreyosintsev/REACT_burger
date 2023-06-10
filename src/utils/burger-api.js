@@ -263,3 +263,26 @@ export const patchUserDataToApi = (api, payload, accessToken) => {
     throw new Error(`Не удалось отправить данные в API для обновления данных пользователя: ${error.message}`);
   }
 };
+
+export const postRefreshTokenToApi = (api, payload) => {
+  try {
+  return fetch(`${api}/auth/token`, {
+   method: 'POST',
+   headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+   },
+   body: JSON.stringify(payload)
+  })
+   .then(checkFetchResponse)
+   .then((data) => {
+      console.log('data: ', data);
+      if (data.success) {
+        return data;
+      }
+      return Promise.reject(data);
+   });
+  } catch (error) {
+    console.error((`Не удалось отправить данные в API для обновления токена: ${error.message}`));
+    throw new Error(`Не удалось отправить данные в API для обновления токена: ${error.message}`);
+  }
+ };

@@ -3,12 +3,14 @@ import { Navigate } from 'react-router-dom';
 
 import { userData } from '../../services/selectors/user';
 
-function ProtectedRouteElement ({element, redirectTo}) {
+function ProtectedRouteElement ({ifLogged, ifNotLogged}) {
   const {userIsLogged} = useSelector(userData);
-
-  console.log('userLogged? '+userIsLogged);
-
-  return userIsLogged ? element : <Navigate to={redirectTo} replace/>;
+  
+  if (userIsLogged) {
+    return ifLogged;
+  } else {
+    return <Navigate to={ifNotLogged} replace={true}/>
+  }
 }
 
 export default ProtectedRouteElement

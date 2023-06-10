@@ -26,7 +26,7 @@ function AppHeader() {
             </NavLink>  
           </div>
           <div className={`${AppHeaderStyles.header_item} pt-4 pl-5 pr-5 pb-4`}>
-            <NavLink className={ setActiveStyle } to="/">
+            <NavLink className={ setActiveStyle } to="/orders">
               <ListIcon type="primary" />
               <p className="text text_type_main-default">
                 Лента заказов
