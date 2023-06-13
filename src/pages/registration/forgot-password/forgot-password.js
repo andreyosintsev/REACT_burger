@@ -13,7 +13,7 @@ function ForgotPassword() {
   const emailRef = useRef(null);
   const [userEmail, setUserEmail] = useState('');
 
-  const userPasswordResetting = useSelector(userData).userPasswordResetting;
+  const { userPasswordResetting } = useSelector(userData);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,11 +28,10 @@ function ForgotPassword() {
   };
 
   useEffect(()=>{
-    console.log('useEffect -> userPasswordResetting: ', userPasswordResetting);
     if (userPasswordResetting) {
       navigate('/reset-password', {replace: true});
     }    
-  }, [userPasswordResetting]);
+  }, [navigate, userPasswordResetting]);
 
   return (
     <main className={ForgotPasswordStyles.content}>

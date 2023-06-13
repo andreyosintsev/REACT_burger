@@ -2,11 +2,12 @@ import { useDispatch } from 'react-redux';
 
 import { NavLink } from 'react-router-dom';
 
-import {  CONSTRUCTOR_CLEAR_INGREDIENTS } from '../../services/actions/burger-constructor-ingredients';
+import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../../services/actions/burger-constructor-ingredients';
 
-import {  logoutUser  } from '../../services/actions/user';
+import { logoutUser  } from '../../services/actions/user';
 
 import { getFromLocalStorage } from '../../utils/local-storage';
+
 import ProfileMenuStyles from './profile-menu.module.css';
 
 export function ProfileMenu () {

@@ -32,14 +32,15 @@ import {  saveBurgerToLocalStorage,
 
 import { stubText1, stubText2 } from '../../utils/locale';
 
+import { getIngredientDataById } from '../../utils/utils';
+
 import BurgerConstructorStyles from './burger-constructor.module.css';
 
 function BurgerConstructor() {
-  const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
-  const constructorList = useSelector(burgerConstructorIngredients).constructorList;
-  const bun = useSelector(burgerConstructorIngredients).bun;
+  const { ingredientsList } = useSelector(burgerIngredientRequests);
+  const { constructorList, bun } = useSelector(burgerConstructorIngredients);
+  const { userIsLogged } = useSelector(userData);
 
-  const userIsLogged = useSelector(userData).userIsLogged;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -55,18 +56,13 @@ function BurgerConstructor() {
     })
   });
 
-  const getIngredientById = (_id, ingredients) => 
-    ingredients.find(ingredient => ingredient._id === _id);
-
   const onDropHandler = (itemId) => {
-    const droppedIngredient = getIngredientById(itemId, ingredientsList);
-    if (droppedIngredient.type === 'bun') {
-      if (bun) {
-        dispatch({
-          type: CONSTRUCTOR_REMOVE_INGREDIENT,
-          uuid: bun.uuid
-        });
-      }
+    const droppedIngredient = getIngredientDataById(ingredientsList, itemId);
+    if (droppedIngredient.type === 'bun' && bun) {
+      dispatch({
+        type: CONSTRUCTOR_REMOVE_INGREDIENT,
+        uuid: bun.uuid
+      });
     } 
     dispatch({
       type: CONSTRUCTOR_ADD_INGREDIENT,
@@ -98,7 +94,7 @@ function BurgerConstructor() {
       constructorList: constructorList,
       bun: bun
     });
-  }, [ingredientsList]);
+  }, [dispatch, ingredientsList]);
 
   useEffect(() => {
     if (constructorList && bun) {

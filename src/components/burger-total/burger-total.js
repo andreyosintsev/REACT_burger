@@ -5,9 +5,8 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';
 
 function BurgerTotal() {
-  const constructorIngredients = useSelector(burgerConstructorIngredients);
-  const constructorList = constructorIngredients.constructorList;
-  const bunPrice = constructorIngredients.bun ? constructorIngredients.bun.ingredient.price : 0;
+  const { constructorList, bun } = useSelector(burgerConstructorIngredients);
+  const bunPrice = bun ? bun.ingredient.price : 0;
 
   const sum = constructorList
   ? constructorList.reduce((acc, curr) => acc + curr.ingredient.price, 0) + bunPrice * 2 

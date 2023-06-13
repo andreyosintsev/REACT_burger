@@ -72,7 +72,7 @@ function ModalSwitch() {
         <Routes>
           <Route path='/ingredients/:ingredientId'
                   element={
-                    <Modal header={'Детали ингредиента'} onclick={handleModalClose}>
+                    <Modal onclick={handleModalClose}>
                       <IngredientDetails />
                     </Modal>
                   }

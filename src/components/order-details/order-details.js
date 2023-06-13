@@ -7,7 +7,7 @@ import { burgerConstructorOrders } from '../../services/selectors/burger-constru
 import OrderDetailsStyles from './order-details.module.css';
 
 function OrderDetails() {
-  const orderNum = useSelector(burgerConstructorOrders).orderNum.toString();
+  const { orderNum } = useSelector(burgerConstructorOrders);
 
   return (
     <div className={OrderDetailsStyles.content}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -18,19 +18,19 @@ import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 function BurgerIngredients() {
 
-  const data = useSelector(burgerIngredientRequests).ingredientsList;
+  const { ingredientsList } = useSelector(burgerIngredientRequests);
   const dispatch = useDispatch();
 
-  const [current, setCurrent] = React.useState('buns');
+  const [current, setCurrent] = useState('buns');
 
-  const buns = data.filter(data => data.type === "bun");
-  const sauces = data.filter(data => data.type === "sauce");
-  const mains = data.filter(data => data.type === "main");
+  const buns =   ingredientsList.filter(ingredientsList => ingredientsList.type === "bun");
+  const sauces = ingredientsList.filter(ingredientsList => ingredientsList.type === "sauce");
+  const mains =  ingredientsList.filter(ingredientsList => ingredientsList.type === "main");
 
   const showIngredientDetails = (e) => {
     dispatch({
       type: INGREDIENTS_SELECT_INGREDIENT,
-      ingredientSelected: getIngredientDataById(data, e.currentTarget.dataset.id)
+      ingredientSelected: getIngredientDataById(ingredientsList, e.currentTarget.dataset.id)
     });
   };
 

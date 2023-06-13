@@ -8,7 +8,7 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 
 import ModalStyles from './modal.module.css';
 
-function Modal({onclick, header, children}) {
+function Modal({onclick, children}) {
 
   const modalRoot = document.querySelector("#modals");
 
@@ -45,7 +45,6 @@ function Modal({onclick, header, children}) {
 
 Modal.propTypes = {
   onclick:   PropTypes.func.isRequired,
-  header:    PropTypes.string,
   children:  PropTypes.node
 }
 

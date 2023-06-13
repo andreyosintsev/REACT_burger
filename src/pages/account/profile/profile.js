@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { ProfileMenu } from '../../../components/profile-menu/profile-menu';
-import { ProfileOrders } from './profile-orders/profile-orders';
 
 import {  USER_DATA_UPDATE,
           USER_ROLLBACK_UPDATE,
@@ -15,7 +14,6 @@ import {  USER_DATA_UPDATE,
 import { userData } from '../../../services/selectors/user';
 
 import { getCookie } from '../../../utils/cookie';
-import { getFromLocalStorage } from '../../../utils/local-storage';
 
 import ProfileStyles from './profile.module.css';
 
@@ -24,17 +22,14 @@ function Profile() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-
   const accessToken = getCookie('accessToken');
   const dispatch = useDispatch();
 
-  const { userName, userEmail } = useSelector(userData);
+  const { userName, userEmail, userHasError } = useSelector(userData);
 
   useEffect(()=>{
-    console.log('Profile: requestDataUser')
     dispatch(requestDataUser(accessToken));
-  }, []);
-
+  }, [dispatch, accessToken]);
   
   const onInputChange = () => {
     dispatch({
@@ -45,7 +40,7 @@ function Profile() {
   };
 
   const onInputFocus = () => {
-    console.log('onFocus: Rollback Update');
+    console.log('InputFocus');
     dispatch({
       type: USER_ROLLBACK_UPDATE,
       userRollbackName: userName,
@@ -54,9 +49,18 @@ function Profile() {
   };
 
   const onInputBlur = () => {
-    console.log('onBlur: Data Update');
+    console.log('InputBlur');
     dispatch(updateUserData(userName, userEmail, accessToken));
   };
+
+  const onPasswordFocus = () => {
+    passwordRef.current.type = 'text';
+  };
+
+  const onPasswordBlur = () => {
+    passwordRef.current.type = 'password';
+  };
+
 
   return (
     <div className={ProfileStyles.wrapper}>
@@ -98,11 +102,14 @@ function Profile() {
             placeholder="Пароль"
             name="password"
             value="Бутафория"
+            readOnly={true}
             icon="EditIcon"
             error={false}
             ref={passwordRef}
             size="default"
             extraClass="mb-6"
+            onFocus={onPasswordFocus}
+            onBlur={onPasswordBlur}
             >
           </Input>
         </div>

@@ -141,7 +141,7 @@ const refreshToken = (afterRefresh, refreshToken) => (dispatch) => {
     console.log('!!accessToken: '+data.accessToken);
     console.log('!!refreshToken: '+data.refreshToken);
     setCookie('accessToken', data.accessToken);
-    saveToLocalStorage('refreshToken', data.refreshToken);
+    //saveToLocalStorage('refreshToken', data.refreshToken);
     dispatch(afterRefresh);
   });
 };

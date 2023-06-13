@@ -20,8 +20,7 @@ function IngredientDetails() {
   }
 
   return (
-    !ingredientsIsLoading &&
-    <>
+    !ingredientsIsLoading && data &&
       <div className={IngredientDetailsStyles.wrapper}>
         <div className={IngredientDetailsStyles.content}>
           <p className={`${IngredientDetailsStyles.title} text text_type_main-large`}>{title}</p>
@@ -54,7 +53,6 @@ function IngredientDetails() {
           </div>
         </div>
       </div>
-    </>
   );
 }
 

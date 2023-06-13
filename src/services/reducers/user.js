@@ -181,6 +181,7 @@ export const user = (state = initialState, action) => {
         userEmail: action.userEmail
       };
     case USER_UPDATE_USER_DATA_FAILED:
+      console.log(USER_UPDATE_USER_DATA_FAILED);
       return {
         ...state,
         userPending: false,

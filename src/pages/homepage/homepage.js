@@ -12,7 +12,6 @@ import { burgerIngredientRequests } from '../../services/selectors/burger-ingred
 import HomePageStyles from './homepage.module.css';
 
 function HomePage () {
-
   const {
     ingredientsList,
     isLoading,
