@@ -9,6 +9,7 @@ export const getIngredientsFromApi = (api) => {
     return fetch(`${api}/ingredients`)
       .then(checkFetchResponse)
       .then((data) => {
+        console.log(data.message);
           if (data.success) {
               return data.data;
           }

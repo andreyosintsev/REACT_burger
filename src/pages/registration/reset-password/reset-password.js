@@ -13,7 +13,7 @@ function ResetPassword() {
   const passwordRef = useRef('');
   const tokenRef = useRef('');
 
-  const userPasswordResetting = useSelector(userData).userPasswordResetting;
+  const {userPasswordResetting} = useSelector(userData);
   const {userIsLogged} = useSelector(userData);
 
   const [userPassword, setUserPassword] = useState('');
@@ -35,7 +35,7 @@ function ResetPassword() {
   useEffect(()=>{
     console.log('useEffect -> userPasswordResetting: ', userPasswordResetting);
     if (!userPasswordResetting) {
-      navigate('/login', {replace: true});
+      navigate('/forgot-password', {replace: true});
     }    
   }, [userPasswordResetting]);
 

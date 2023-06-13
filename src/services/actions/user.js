@@ -131,12 +131,15 @@ export const loginUser = (userEmail, userPassword) => {
 };
 
 const refreshToken = (afterRefresh, refreshToken) => (dispatch) => {
+  console.log('In refreshToken: '+ refreshToken);
   postRefreshTokenToApi(          
     NORMA_API, {
     "token": refreshToken
   })
   .then((data) => {
-    console.log('accessToken is refreshed');
+    console.log('!!accessToken is refreshed!!');
+    console.log('!!accessToken: '+data.accessToken);
+    console.log('!!refreshToken: '+data.refreshToken);
     setCookie('accessToken', data.accessToken);
     saveToLocalStorage('refreshToken', data.refreshToken);
     dispatch(afterRefresh);
@@ -247,6 +250,7 @@ export const resetPasswordUser = (password, token) => {
 };
 
 export const requestDataUser = (accessToken) => {
+  console.log('In requestDataUser: '+accessToken);
   return function (dispatch) {
     dispatch({
       type: USER_GET_USER_DATA
@@ -259,7 +263,7 @@ export const requestDataUser = (accessToken) => {
           } 
         )
         .then(data => {
-          console.log(data);
+          console.log('In requestDataUser: User Request Success');
           dispatch({
             type: USER_GET_USER_DATA_SUCCESS,
             userName: data.user.name,
@@ -267,7 +271,7 @@ export const requestDataUser = (accessToken) => {
           });
         })
         .catch((error) => {
-          console.error(error);
+          console.log('In requestDataUser: User Login Failed: JWT EXPIRED');
           if (error.message === 'jwt expired') {
             dispatch(
                 refreshToken(
@@ -276,6 +280,7 @@ export const requestDataUser = (accessToken) => {
                 )
             );
           } else {
+            console.log('In requestDataUser: User Request Failed');
             dispatch({
               type: USER_LOGIN_FAILED,
             });

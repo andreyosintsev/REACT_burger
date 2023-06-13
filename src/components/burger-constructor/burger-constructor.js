@@ -19,7 +19,6 @@ import { getOrderNumber } from '../../services/actions/burger-constructor-orders
 import {
   CONSTRUCTOR_ADD_INGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
-  CONSTRUCTOR_CLEAR_INGREDIENTS,
   CONSTRUCTOR_LOAD_INGREDIENTS
 } from '../../services/actions/burger-constructor-ingredients';
 
