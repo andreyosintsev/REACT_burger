@@ -1,4 +1,3 @@
-import { NORMA_API } from '../../components/app/app';
 import { postConstructorDataToApi } from '../../utils/burger-api';
 
 import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../actions/burger-constructor-ingredients';
@@ -12,33 +11,23 @@ export const getOrderNumber = (ingredients, bun) => {
     dispatch({
       type: CONSTRUCTOR_GET_ORDERNUM
     });
-    try {
-      //
-      postConstructorDataToApi(
-          NORMA_API, {
-            'ingredients': ingredients.map(item => item.ingredient._id).concat(bun.ingredient._id)
-          }
-        )
-        .then(data => {
-          dispatch({
-            type: CONSTRUCTOR_GET_ORDERNUM_SUCCESS,
-            orderNum: data.number
-          });
-          dispatch({
-            type: CONSTRUCTOR_CLEAR_INGREDIENTS
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          dispatch({
-            type: CONSTRUCTOR_GET_ORDERNUM_FAILED,
-          });
-        });
-    } catch (error) {
+    postConstructorDataToApi(
+      { 'ingredients': ingredients.map(item => item.ingredient._id).concat(bun.ingredient._id) }
+    )
+    .then(data => {
+      dispatch({
+        type: CONSTRUCTOR_GET_ORDERNUM_SUCCESS,
+        orderNum: data.order.number
+      });
+      dispatch({
+        type: CONSTRUCTOR_CLEAR_INGREDIENTS
+      });
+    })
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: CONSTRUCTOR_GET_ORDERNUM_FAILED,
       });
-    }
+    });
   };
 };

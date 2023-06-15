@@ -2,6 +2,9 @@
   width: 600px;
   overflow: auto;
 }
+.tabs {
+  display: flex;
+}
 .ingredients {
   height: auto;
 }

@@ -63,10 +63,9 @@ function BurgerIngredients() {
   }, []);
 
   return (
-    <>
     <section className={BurgerIngredientsStyles.content}>
       <h2 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h2>
-      <div style={{ display: 'flex' }} className="mb-8">
+      <div className={`${BurgerIngredientsStyles.tabs} mb-8`}>
         <Tab value="buns" active={current === 'buns'} onClick={() => setTabAndScroll('buns')}>
           Булки
         </Tab>
@@ -83,7 +82,6 @@ function BurgerIngredients() {
         <BurgerSection id="mains" title="Начинки" ingredients={mains} onShowDetails={showIngredientDetails}/>
       </AppScrollbar>
     </section>
-    </>
   );
 }
 

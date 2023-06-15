@@ -9,6 +9,7 @@ import {
           USER_LOGOUT_SUCCESS,
           USER_LOGOUT_FAILED,
           USER_DATA_UPDATE,
+          USER_ROLLBACK,
           USER_ROLLBACK_UPDATE,
           USER_PASSWORD_REQUEST,
           USER_PASSWORD_REQUEST_SUCCESS,
@@ -37,6 +38,7 @@ const initialState = {
 };
 
 export const user = (state = initialState, action) => {
+  console.log(action.type);
   switch (action.type) {
     case USER_REG: 
       return {
@@ -160,6 +162,12 @@ export const user = (state = initialState, action) => {
           userName: action.userName,
           userEmail: action.userEmail
         };
+  case USER_ROLLBACK:
+    return {
+      ...state,
+      userName: state.userRollbackName,
+      userEmail: state.userRollbackEmail
+    };
     case USER_ROLLBACK_UPDATE:
         return {
           ...state,
@@ -181,7 +189,6 @@ export const user = (state = initialState, action) => {
         userEmail: action.userEmail
       };
     case USER_UPDATE_USER_DATA_FAILED:
-      console.log(USER_UPDATE_USER_DATA_FAILED);
       return {
         ...state,
         userPending: false,

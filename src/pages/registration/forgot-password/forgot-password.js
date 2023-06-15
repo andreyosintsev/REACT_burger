@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 
+import { useForm } from '../../../hooks/useForm';
+
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { requestPasswordUser } from '../../../services/actions/user';
@@ -10,21 +12,14 @@ import { userData } from '../../../services/selectors/user';
 import ForgotPasswordStyles from './forgot-password.module.css';
 
 function ForgotPassword() {
-  const emailRef = useRef(null);
-  const [userEmail, setUserEmail] = useState('');
-
+  const { values, handleChange } = useForm({});
   const { userPasswordResetting } = useSelector(userData);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onInputChange = () => {
-    setUserEmail(emailRef.current.value);
-  };
-
-  const onButtonClick = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(requestPasswordUser(userEmail));
+    dispatch(requestPasswordUser(values.email));
   };
 
   useEffect(()=>{
@@ -35,33 +30,31 @@ function ForgotPassword() {
 
   return (
     <main className={ForgotPasswordStyles.content}>
-      <div className={ForgotPasswordStyles.form}>
+      <form className={ForgotPasswordStyles.form} action="" onSubmit={onSubmit}>
         <h2 className="text text_type_main-medium mb-6">Восстановление пароля</h2>
         <Input
           type="email"
           placeholder="Укажите e-mail"
-          name="e-mail"
-          value={userEmail}
+          name="email"
+          value={values.email ?? ''}
           error={false}
-          ref={emailRef}
           size="default"
           extraClass="mb-6"
-          onChange={onInputChange}
+          onChange={handleChange}
           >
         </Input>
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass="mb-20"
-          onClick={onButtonClick}
         >Восстановить
         </Button>
         <p className="text text_type_main-default mb-4">
           Вспомнили пароль?&nbsp;
           <Link to="/login">Войти</Link>
         </p>
-      </div>
+      </form>
     </main>
   );
 }

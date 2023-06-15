@@ -1,43 +1,39 @@
+export const NORMA_API = 'https://norma.nomoreparties.space/api';
+
 const checkFetchResponse = (res) => {
   return res.ok 
     ? res.json()
-    : res.json().then((err) => Promise.reject(err));
+    : Promise.reject(`Ошибка Fetch: ${res.status}`);
 };
 
-export const getIngredientsFromApi = (api) => {
+const checkSuccess = (data) => {
+  return data && data.success 
+  ? data
+  : Promise.reject(`Ошибка Fetch не success: ${data}`);
+};
+
+const request = (endpoint, options) => {
+  return fetch(`${NORMA_API}${endpoint}`, options)
+    .then(checkFetchResponse)
+    .then(checkSuccess);
+};
+
+export const getIngredientsFromApi = () => {
   try {  
-    return fetch(`${api}/ingredients`)
-      .then(checkFetchResponse)
-      .then((data) => {
-        console.log(data.message);
-          if (data.success) {
-              return data.data;
-          }
-          return Promise.reject(data);
-      });
+    return request('/ingredients');
   } catch (error) {
     console.error((`Не удалось получить от API ингредиенты: ${error.message}`));
     throw new Error(`Не удалось получить от API ингредиенты: ${error.message}`);
   }
 };
 
-export const postConstructorDataToApi = (api, payload) => {
+export const postConstructorDataToApi = (payload) => {
   try {  
-    return fetch(
-      `${api}/orders/`,
+    return request('/orders',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(payload)
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          if (data.success) {
-              return data.order;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
     console.error((`Не удалось отправить в API данные конструктора: ${error.message}`));
@@ -45,24 +41,13 @@ export const postConstructorDataToApi = (api, payload) => {
   }
 };
 
-export const postUserRegisterToApi = (api, payload) => {
+export const postUserRegisterToApi = (payload) => {
   try {  
-    return fetch(
-      `${api}/auth/register`,
+    return request('/auth/register',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(payload)
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          console.log(data);
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
     console.error((`Не удалось отправить в API данные для регистрации пользователя: ${error.message}`));
@@ -70,24 +55,13 @@ export const postUserRegisterToApi = (api, payload) => {
   }
 };
 
-export const postUserLoginToApi = (api, payload) => {
+export const postUserLoginToApi = ( payload) => {
   try {  
-    return fetch(
-      `${api}/auth/login`,
+    return request('/auth/login',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(payload)
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          console.log(data);
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
     console.error((`Не удалось отправить в API данные для входа пользователя: ${error.message}`));
@@ -95,23 +69,13 @@ export const postUserLoginToApi = (api, payload) => {
   }
 };
 
-export const postUserLogoutToApi = (api, payload) => {
+export const postUserLogoutToApi = (payload) => {
   try {  
-    return fetch(
-      `${api}/auth/logout`,
+    return request('/auth/logout',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(payload)
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
     console.error((`Не удалось отправить данные в API для выхода пользователя: ${error.message}`));
@@ -119,23 +83,13 @@ export const postUserLogoutToApi = (api, payload) => {
   }
 };
 
-export const postUserRequestPasswordToApi = (api, payload) => {
+export const postUserRequestPasswordToApi = (payload) => {
   try {  
-    return fetch(
-      `${api}/password-reset`,
+    return request('/password-reset',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(payload)
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
     console.error((`Не удалось отправить данные в API для запроса сброса пароля: ${error.message}`));
@@ -143,47 +97,27 @@ export const postUserRequestPasswordToApi = (api, payload) => {
   }
 };
 
-export const postUserResetPasswordToApi = (api, payload) => {
+export const postUserResetPasswordToApi = (payload) => {
   try {  
-    return fetch(
-      `${api}/password-reset/reset`,
+    return request('/password-reset/reset',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(payload)
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
-    console.error((`Не удалось отправить данные в API для запроса сброса пароля: ${error.message}`));
-    throw new Error(`Не удалось отправить данные в API для запроса сброса пароля: ${error.message}`);
+    console.error((`Не удалось отправить данные в API для выполнения сброса пароля: ${error.message}`));
+    throw new Error(`Не удалось отправить данные в API для выполнения сброса пароля: ${error.message}`);
   }
 };
 
-export const postUserRefreshTokenToApi = (api, payload) => {
+export const postUserRefreshTokenToApi = (payload) => {
   try {  
-    return fetch(
-      `${api}/auth/token`,
+    return request('/auth/token',
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
         body: JSON.stringify(payload)
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
     console.error((`Не удалось отправить данные в API для обновление Access Token: ${error.message}`));
@@ -191,23 +125,15 @@ export const postUserRefreshTokenToApi = (api, payload) => {
   }
 };
 
-export const getUserGetDataFromApi = (api, payload) => {
+export const getUserDataFromApi = (payload) => {
   try {  
-    return fetch(
-      `${api}/auth/user`,
+    return request('/auth/user',
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json;charset=utf-8',
           'authorization': payload.accessToken
         }
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
     console.error((`Не удалось отправить данные в API для получения данных пользователя: ${error.message}`));
@@ -215,34 +141,9 @@ export const getUserGetDataFromApi = (api, payload) => {
   }
 };
 
-export const getUserDataFromApi = (api, payload) => {
+export const patchUserDataToApi = (payload, accessToken) => {
   try {  
-    return fetch(
-      `${api}/auth/user`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          'authorization': payload.accessToken
-        }
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
-      });
-  } catch (error) {
-    console.error((`Не удалось отправить данные в API для получения данных пользователя: ${error.message}`));
-    throw new Error(`Не удалось отправить данные в API для получения данных пользователя: ${error.message}`);
-  }
-};
-
-export const patchUserDataToApi = (api, payload, accessToken) => {
-  try {  
-    return fetch(
-      `${api}/auth/user`,
+    return request('/auth/user',
       {
         method: 'PATCH',
         headers: {
@@ -250,14 +151,6 @@ export const patchUserDataToApi = (api, payload, accessToken) => {
           'authorization': accessToken
         },
         body: JSON.stringify(payload)
-      })
-      .then(checkFetchResponse)
-      .then((data) => {
-          console.log('data: ', data);
-          if (data.success) {
-              return data;
-          }
-          return Promise.reject(data);
       });
   } catch (error) {
     console.error((`Не удалось отправить данные в API для обновления данных пользователя: ${error.message}`));
@@ -265,23 +158,14 @@ export const patchUserDataToApi = (api, payload, accessToken) => {
   }
 };
 
-export const postRefreshTokenToApi = (api, payload) => {
+export const postRefreshTokenToApi = (payload) => {
   try {
-  return fetch(`${api}/auth/token`, {
-   method: 'POST',
-   headers: {
-    'Content-Type': 'application/json;charset=utf-8'
-   },
-   body: JSON.stringify(payload)
-  })
-   .then(checkFetchResponse)
-   .then((data) => {
-      console.log('data: ', data);
-      if (data.success) {
-        return data;
-      }
-      return Promise.reject(data);
-   });
+    return request('/auth/token', 
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
   } catch (error) {
     console.error((`Не удалось отправить данные в API для обновления токена: ${error.message}`));
     throw new Error(`Не удалось отправить данные в API для обновления токена: ${error.message}`);

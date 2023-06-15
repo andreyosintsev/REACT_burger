@@ -1,11 +1,14 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useForm } from '../../../hooks/useForm';
+
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { ProfileMenu } from '../../../components/profile-menu/profile-menu';
 
 import {  USER_DATA_UPDATE,
+          USER_ROLLBACK,
           USER_ROLLBACK_UPDATE,
           requestDataUser,
           updateUserData, 
@@ -21,17 +24,30 @@ function Profile() {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const buttonsRef = useRef(null);
+
+  const [isButtonsShow, setButtonsShow] = useState(false);
 
   const accessToken = getCookie('accessToken');
   const dispatch = useDispatch();
 
-  const { userName, userEmail, userHasError } = useSelector(userData);
+  const { userName, 
+          userEmail,
+          userRollbackName,
+          userRollbackEmail,
+          userHasError } = useSelector(userData);
 
   useEffect(()=>{
     dispatch(requestDataUser(accessToken));
   }, [dispatch, accessToken]);
   
   const onInputChange = () => {
+    if (!(nameRef.current.value === userName && emailRef.current.value === userEmail)) {
+      setButtonsShow(true);
+    } else {
+      setButtonsShow(false);
+    }
+
     dispatch({
       type: USER_DATA_UPDATE,
       userName: nameRef.current.value,
@@ -39,18 +55,41 @@ function Profile() {
     });
   };
 
-  const onInputFocus = () => {
-    console.log('InputFocus');
+  const onInputFocus = (e) => {
+    if (e.target.name==='userName') {
+      dispatch({
+        type: USER_ROLLBACK_UPDATE,
+        userRollbackName: userName,
+        userRollbackEmail: userRollbackEmail
+      });
+    }
+    if (e.target.name==='userEmail') {
+      dispatch({
+        type: USER_ROLLBACK_UPDATE,
+        userRollbackName: userRollbackName,
+        userRollbackEmail: userEmail
+      });
+    }
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateUserData(userName, userEmail, accessToken));
     dispatch({
       type: USER_ROLLBACK_UPDATE,
       userRollbackName: userName,
       userRollbackEmail: userEmail
     });
+    setButtonsShow(false);
   };
 
-  const onInputBlur = () => {
-    console.log('InputBlur');
-    dispatch(updateUserData(userName, userEmail, accessToken));
+  const formReset = () => {
+    dispatch({
+      type: USER_ROLLBACK,
+      userRollbackName,
+      userRollbackEmail
+    });
+    setButtonsShow(false);
   };
 
   const onPasswordFocus = () => {
@@ -66,12 +105,16 @@ function Profile() {
     <div className={ProfileStyles.wrapper}>
       <main className={ProfileStyles.content}>
         <ProfileMenu />
-        <div className={ProfileStyles.form}>
+        <form className={ProfileStyles.form} 
+              action=""
+              onSubmit={onSubmit} 
+              onReset={formReset}
+              >
           <Input
             type="text"
             placeholder="Имя"
             value={userName}
-            name="name"
+            name="userName"
             icon="EditIcon"
             error={false}
             ref={nameRef}
@@ -79,14 +122,13 @@ function Profile() {
             extraClass="mb-6"
             onChange={onInputChange}
             onFocus={onInputFocus}
-            onBlur={onInputBlur}
             >
           </Input>
           <Input
             type="email"
             placeholder="Логин"
             value={userEmail}
-            name="login"
+            name="userEmail"
             icon="EditIcon"
             error={false}
             ref={emailRef}
@@ -94,13 +136,12 @@ function Profile() {
             extraClass="mb-6"
             onChange={onInputChange}
             onFocus={onInputFocus}
-            onBlur={onInputBlur}
             >
           </Input>
           <Input
             type="password"
             placeholder="Пароль"
-            name="password"
+            name="userPassword"
             value="Бутафория"
             readOnly={true}
             icon="EditIcon"
@@ -112,7 +153,23 @@ function Profile() {
             onBlur={onPasswordBlur}
             >
           </Input>
-        </div>
+          {isButtonsShow && 
+            <div className={ProfileStyles.buttons} ref={buttonsRef}>
+              <Button
+                htmlType="submit" 
+                type="primary" 
+                size="large">
+                  Сохранить
+              </Button>
+              <Button
+                htmlType="reset" 
+                type="primary" 
+                size="large">
+                  Отменить
+              </Button>
+            </div>
+          }
+        </form>
       </main>
     </div>
   );

@@ -1,5 +1,3 @@
-import { NORMA_API } from '../../components/app/app';
-
 import {  postUserRegisterToApi,
           postUserLoginToApi,
           postUserLogoutToApi,
@@ -10,6 +8,7 @@ import {  postUserRegisterToApi,
           postRefreshTokenToApi } from '../../utils/burger-api';
 
 import {  setCookie,
+          getCookie,
           deleteCookie  } from "../../utils/cookie";
 
 import {  getFromLocalStorage,
@@ -18,6 +17,7 @@ import {  getFromLocalStorage,
           clearBurgerLocalStorage } from "../../utils/local-storage";
 
 export const USER_DATA_UPDATE =     'USER_DATA_UPDATE';
+export const USER_ROLLBACK =        'USER_ROLLBACK';
 export const USER_ROLLBACK_UPDATE = 'USER_ROLLBACK_UPDATE';
 
 export const USER_REG =           'USER_REG';
@@ -32,56 +32,47 @@ export const USER_LOGOUT =         'USER_LOGOUT';
 export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS';
 export const USER_LOGOUT_FAILED  = 'USER_LOGOUT_FAILED';
 
-export const USER_PASSWORD_REQUEST = 'USER_PASSWORD_REQUEST';
-export const USER_PASSWORD_REQUEST_SUCCESS = 'USER_PASSWORD_REQUEST_SUCCESS';
-export const USER_PASSWORD_REQUEST_FAILED = 'USER_PASSWORD_REQUEST_FAILED';
+export const USER_PASSWORD_REQUEST =          'USER_PASSWORD_REQUEST';
+export const USER_PASSWORD_REQUEST_SUCCESS =  'USER_PASSWORD_REQUEST_SUCCESS';
+export const USER_PASSWORD_REQUEST_FAILED =   'USER_PASSWORD_REQUEST_FAILED';
 
-export const USER_PASSWORD_RESET = 'USER_PASSWORD_RESET';
-export const USER_PASSWORD_RESET_SUCCESS = 'USER_PASSWORD_RESET_SUCCESS';
-export const USER_PASSWORD_RESET_FAILED = 'USER_PASSWORD_RESET_FAILED';
+export const USER_PASSWORD_RESET =            'USER_PASSWORD_RESET';
+export const USER_PASSWORD_RESET_SUCCESS =    'USER_PASSWORD_RESET_SUCCESS';
+export const USER_PASSWORD_RESET_FAILED =     'USER_PASSWORD_RESET_FAILED';
 
-export const USER_GET_USER_DATA = 'USER_GET_USER_DATA';
-export const USER_GET_USER_DATA_SUCCESS = 'USER_GET_USER_DATA_SUCCESS';
-export const USER_GET_USER_DATA_FAILED = 'USER_GET_USER_DATA_FAILED';
+export const USER_GET_USER_DATA =             'USER_GET_USER_DATA';
+export const USER_GET_USER_DATA_SUCCESS =     'USER_GET_USER_DATA_SUCCESS';
+export const USER_GET_USER_DATA_FAILED =      'USER_GET_USER_DATA_FAILED';
 
-export const USER_UPDATE_USER_DATA = 'USER_UPDATE_USER_DATA';
-export const USER_UPDATE_USER_DATA_SUCCESS = 'USER_UPDATE_USER_DATA_SUCCESS';
-export const USER_UPDATE_USER_DATA_FAILED = 'USER_UPDATE_USER_DATA_FAILED';
+export const USER_UPDATE_USER_DATA =          'USER_UPDATE_USER_DATA';
+export const USER_UPDATE_USER_DATA_SUCCESS =  'USER_UPDATE_USER_DATA_SUCCESS';
+export const USER_UPDATE_USER_DATA_FAILED =   'USER_UPDATE_USER_DATA_FAILED';
 
 export const registerUser = (userEmail, userPassword, userName) => {
   return function (dispatch) {
     dispatch({
       type: USER_REG
     });
-    try {
-      postUserRegisterToApi(
-          NORMA_API, {
-            "email": userEmail, 
-            "password": userPassword,
-            "name": userName
-          }
-        )
-        .then(data => {
-          setCookie('accessToken', data.accessToken);
-          saveToLocalStorage('refreshToken', data.refreshToken);
-          dispatch({
-            type: USER_REG_SUCCESS,
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken 
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          dispatch({
-            type: USER_REG_FAILED,
-          });
-        });
-    } catch (error) {
+    postUserRegisterToApi(
+      {
+        "email": userEmail, 
+        "password": userPassword,
+        "name": userName
+      }
+    )
+    .then(data => {
+      setCookie('accessToken', data.accessToken);
+      saveToLocalStorage('refreshToken', data.refreshToken);
+      dispatch({
+        type: USER_REG_SUCCESS
+      });
+    })
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: USER_REG_FAILED,
       });
-    }
+    });
   };
 };
 
@@ -90,60 +81,27 @@ export const loginUser = (userEmail, userPassword) => {
     dispatch({
       type: USER_LOGIN
     });
-    try {
-      //
-      postUserLoginToApi(
-          NORMA_API, {
-            "email": userEmail, 
-            "password": userPassword,
-          }
-        )
-        .then(data => {
-          console.log(data);
-          setCookie('accessToken', data.accessToken);
-          saveToLocalStorage('refreshToken', data.refreshToken);
-          dispatch({
-            type: USER_LOGIN_SUCCESS
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          if (error.message === 'jwt expired') {
-            dispatch(
-                refreshToken(
-                  loginUser(userEmail, userPassword), 
-                  getFromLocalStorage('refreshToken')
-                )
-            );
-          } else {
-            dispatch({
-              type: USER_LOGIN_FAILED,
-            });
-          }
-        });
-    } catch (error) {
+    postUserLoginToApi(
+      {
+        "email": userEmail, 
+        "password": userPassword,
+      }
+    )
+    .then(data => {
+      console.log(data);
+      setCookie('accessToken', data.accessToken);
+      saveToLocalStorage('refreshToken', data.refreshToken);
+      dispatch({
+        type: USER_LOGIN_SUCCESS
+      });
+    })
+    .catch((error) => {
       console.error(error);
       dispatch({
-        type: USER_LOGIN_FAILED,
+        type: USER_LOGIN_FAILED
       });
-    }
+    });
   };
-};
-
-const refreshToken = (afterRefresh, refreshToken) => (dispatch) => {
-  console.log('In refreshToken: '+ refreshToken);
-  postRefreshTokenToApi(          
-    NORMA_API, {
-    "token": refreshToken
-  })
-  .then((data) => {
-    console.log('!!accessToken is refreshed!!');
-    console.log('!!accessToken: '+data.accessToken);
-    console.log('!!refreshToken: '+data.refreshToken);
-    setCookie('accessToken', data.accessToken);
-    //saveToLocalStorage('refreshToken', data.refreshToken);
-    dispatch(afterRefresh);
-  });
 };
 
 export const logoutUser = (refreshToken) => {
@@ -151,34 +109,26 @@ export const logoutUser = (refreshToken) => {
     dispatch({
       type: USER_LOGOUT
     });
-    try {
-      //
-      postUserLogoutToApi(
-          NORMA_API, {
-            "token": refreshToken
-          }
-        )
-        .then(data => {
-          console.log(data);
-          deleteCookie('accessToken');
-          deleteFromLocalStorage('refreshToken');
-          clearBurgerLocalStorage();
-          dispatch({
-            type: USER_LOGOUT_SUCCESS
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          dispatch({
-            type: USER_LOGOUT_FAILED,
-          });
-        });
-    } catch (error) {
+    postUserLogoutToApi(
+      {
+        "token": refreshToken
+      }
+    )
+    .then(data => {
+      console.log(data);
+      deleteCookie('accessToken');
+      deleteFromLocalStorage('refreshToken');
+      clearBurgerLocalStorage();
+      dispatch({
+        type: USER_LOGOUT_SUCCESS
+      });
+    })
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: USER_LOGOUT_FAILED,
       });
-    }
+    });
   };
 };
 
@@ -187,31 +137,23 @@ export const requestPasswordUser = (email) => {
     dispatch({
       type: USER_PASSWORD_REQUEST
     });
-    try {
-      //
-      postUserRequestPasswordToApi(
-          NORMA_API, {
-            "email": email
-          }
-        )
-        .then(data => {
-          console.log(data);
-          dispatch({
-            type: USER_PASSWORD_REQUEST_SUCCESS
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          dispatch({
-            type: USER_PASSWORD_REQUEST_FAILED,
-          });
-        });
-    } catch (error) {
+    postUserRequestPasswordToApi(
+      {
+        "email": email
+      }
+    )
+    .then(data => {
+      console.log(data);
+      dispatch({
+        type: USER_PASSWORD_REQUEST_SUCCESS
+      });
+    })
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: USER_PASSWORD_REQUEST_FAILED,
       });
-    }
+    });
   };
 };
 
@@ -220,32 +162,24 @@ export const resetPasswordUser = (password, token) => {
     dispatch({
       type: USER_PASSWORD_RESET
     });
-    try {
-      //
-      postUserResetPasswordToApi(
-          NORMA_API, {
-            "password": password,
-            "token" : token
-          } 
-        )
-        .then(data => {
-          console.log(data);
-          dispatch({
-            type: USER_PASSWORD_RESET_SUCCESS
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          dispatch({
-            type: USER_PASSWORD_RESET_FAILED,
-          });
-        });
-    } catch (error) {
+    postUserResetPasswordToApi(
+      {
+        "password": password,
+        "token" : token
+      } 
+    )
+    .then(data => {
+      console.log(data);
+      dispatch({
+        type: USER_PASSWORD_RESET_SUCCESS
+      });
+    })
+    .catch((error) => {
       console.error(error);
       dispatch({
-        type: USER_PASSWORD_REQUEST_FAILED,
+        type: USER_PASSWORD_RESET_FAILED,
       });
-    }
+    });
   };
 };
 
@@ -255,44 +189,53 @@ export const requestDataUser = (accessToken) => {
     dispatch({
       type: USER_GET_USER_DATA
     });
-    try {
-      //
-      getUserDataFromApi(
-          NORMA_API, {
-            "accessToken": accessToken
-          } 
-        )
-        .then(data => {
-          console.log('In requestDataUser: User Request Success');
-          dispatch({
-            type: USER_GET_USER_DATA_SUCCESS,
-            userName: data.user.name,
-            userEmail: data.user.email
-          });
-        })
-        .catch((error) => {
-          console.log('In requestDataUser: User Login Failed: JWT EXPIRED');
-          if (error.message === 'jwt expired') {
-            dispatch(
-                refreshToken(
-                  requestDataUser(accessToken), 
-                  getFromLocalStorage('refreshToken')
-                )
-            );
-          } else {
-            console.log('In requestDataUser: User Request Failed');
-            dispatch({
-              type: USER_LOGIN_FAILED,
-            });
-          }
-        });
-    } catch (error) {
-      console.error(error);
+    getUserDataFromApi(
+      {
+        "accessToken": accessToken
+      } 
+    )
+    .then(data => {
       dispatch({
-        type: USER_GET_USER_DATA_FAILED,
+        type: USER_GET_USER_DATA_SUCCESS,
+        userName: data.user.name,
+        userEmail: data.user.email
       });
-    }
+    })
+    .catch((error) => {
+      if (error.message === 'jwt expired') {
+        console.log('User request Failed: JWT EXPIRED');
+        dispatch(
+          refreshToken(
+            requestDataUser(getCookie('accessToken'))
+          )
+        );
+      } else {
+        console.log('In requestDataUser: User Request Failed');
+        dispatch({
+          type: USER_LOGIN_FAILED,
+        });
+      }
+    });
   };
+};
+
+const refreshToken = (afterRefresh) => (dispatch) => {
+  console.log('In refreshToken');
+  postRefreshTokenToApi(          
+    {
+    "token": getFromLocalStorage('refreshToken')
+  })
+  .then((data) => {
+    console.log('!!accessToken is refreshed!!');
+    console.log('!!accessToken: '+data.accessToken);
+    console.log('!!refreshToken: '+data.refreshToken);
+    setCookie('accessToken', data.accessToken);
+    saveToLocalStorage('refreshToken', data.refreshToken);
+    dispatch(afterRefresh);
+  })
+  .catch((error) => {
+    console.error('Token Refresh Failed: '+error.message);
+  });
 };
 
 export const updateUserData = (userName, userEmail, accessToken) => {
@@ -300,33 +243,34 @@ export const updateUserData = (userName, userEmail, accessToken) => {
     dispatch({
       type: USER_UPDATE_USER_DATA
     });
-    try {
-      //
-      patchUserDataToApi(
-          NORMA_API, {
-            "name": userName,
-            "email": userEmail
-          },
-          accessToken
-        )
-        .then(data => {
-          dispatch({
-            type: USER_UPDATE_USER_DATA_SUCCESS,
-            userName: data.user.name,
-            userEmail: data.user.email
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-          dispatch({
-            type: USER_UPDATE_USER_DATA_FAILED,
-          });
-        });
-    } catch (error) {
-      console.error(error);
+    patchUserDataToApi(
+      {
+        "name": userName,
+        "email": userEmail
+      },
+      accessToken
+    )
+    .then(data => {
       dispatch({
-        type: USER_UPDATE_USER_DATA_FAILED,
+        type: USER_UPDATE_USER_DATA_SUCCESS,
+        userName: data.user.name,
+        userEmail: data.user.email
       });
-    }
+    })
+    .catch((error) => {
+      if (error.message === 'jwt expired') {
+        console.log('User request Failed: JWT EXPIRED');
+        dispatch(
+          refreshToken(
+            updateUserData(userName, userEmail, getCookie(accessToken))
+          )
+        );
+      } else {
+        console.log('In requestDataUser: User Request Failed');
+        dispatch({
+          type: USER_LOGIN_FAILED,
+        });
+      }
+    });
   };
 };

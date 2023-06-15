@@ -8,14 +8,13 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 
 import ModalStyles from './modal.module.css';
 
-function Modal({onclick, children}) {
+function Modal({onClick, children}) {
 
   const modalRoot = document.querySelector("#modals");
 
   const onEscDown = (e) => {
     if (e.code === 'Escape') {
-      let event = new Event('click', {bubbles:true});
-      document.querySelector('#overlay').dispatchEvent(event);
+      onclick();
     }
   };
 
@@ -30,13 +29,13 @@ function Modal({onclick, children}) {
   return ReactDOM.createPortal(
     (
       <>
-      <ModalOverlay onclick={onclick} />
-      <div className={`${ModalStyles.modal} pr-10 pb-15`} onClick={e => e.stopPropagation()}>
-        <div className={ModalStyles.modal_close}>
-          <CloseIcon type="primary" onClick={onclick} id="closeIcon"/>
+        <ModalOverlay onClick={onClick} />
+        <div className={`${ModalStyles.modal} pr-10 pb-15`} onClick={e => e.stopPropagation()}>
+          <div className={ModalStyles.modal_close}>
+            <CloseIcon type="primary" onClick={onClick} id="closeIcon"/>
+          </div>
+          {children}
         </div>
-        {children}
-      </div>
       </>
     ), 
     modalRoot
@@ -44,7 +43,7 @@ function Modal({onclick, children}) {
 }
 
 Modal.propTypes = {
-  onclick:   PropTypes.func.isRequired,
+  onClick:   PropTypes.func.isRequired,
   children:  PropTypes.node
 }
 

@@ -1,5 +1,3 @@
-import { NORMA_API } from '../../components/app/app';
-
 import { getIngredientsFromApi } from '../../utils/burger-api';
 
 export const INGREDIENTS_GET_INGREDIENTS =          'INGREDIENTS_GET_INGREDIENTS';
@@ -12,28 +10,19 @@ export function getIngredients() {
     dispatch({
       type: INGREDIENTS_GET_INGREDIENTS
     });
-
-    try {
-      getIngredientsFromApi(NORMA_API)
-      .then(data=> {
-          console.log('In getIngredients PROMISE: then');
-          dispatch({
-            type: INGREDIENTS_GET_INGREDIENTS_SUCCESS,
-            ingredientsList: data
-          });
-        }
-      )
-      .catch ((error) => {
-        console.log ('In getIngredients PROMISE: catch: '+error.message);
+    getIngredientsFromApi()
+    .then(data=> {
         dispatch({
-          type: INGREDIENTS_GET_INGREDIENTS_FAILED
+          type: INGREDIENTS_GET_INGREDIENTS_SUCCESS,
+          ingredientsList: data.data
         });
-      });
-    } catch (error) {
-      console.log ('In getIngredients: catch: '+error.message);
+      }
+    )
+    .catch ((error) => {
+      console.error ('In getIngredients PROMISE: catch: '+error.message);
       dispatch({
         type: INGREDIENTS_GET_INGREDIENTS_FAILED
       });
-    }
+    });
   };
 }

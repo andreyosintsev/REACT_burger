@@ -1,6 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
+
+import { useForm } from '../../../hooks/useForm';
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -10,26 +12,17 @@ import { userData } from '../../../services/selectors/user';
 import ResetPasswordStyles from './reset-password.module.css';
 
 function ResetPassword() {
-  const passwordRef = useRef('');
-  const tokenRef = useRef('');
+  const { values, handleChange } = useForm({});
 
   const {userPasswordResetting} = useSelector(userData);
-  const {userIsLogged} = useSelector(userData);
-
-  const [userPassword, setUserPassword] = useState('');
-  const [userToken, setUserToken] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onInputChange = () => {
-    setUserPassword(passwordRef.current.value);
-    setUserToken(tokenRef.current.value);
-  };
-
-  const onButtonClick = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(resetPasswordUser(userPassword, userToken));
+    dispatch(resetPasswordUser(values.userPassword, values.userToken));
+    navigate('/', {replace: true});
   };
 
   useEffect(()=>{
@@ -41,46 +34,43 @@ function ResetPassword() {
 
   return (
     <main className={ResetPasswordStyles.content}>
-      <div className={ResetPasswordStyles.form}>
+      <form className={ResetPasswordStyles.form} action="" onSubmit={onSubmit}>
         <h2 className="text text_type_main-medium mb-6">Восстановление пароля</h2>
         <Input
           type="password"
           placeholder="Введите новый пароль"
-          name="password"
-          value={userPassword}
+          name="userPassword"
+          value={values.userPassword ?? ''}
           icon="ShowIcon"
           error={false}
-          ref={passwordRef}
           size="default"
           extraClass="mb-6"
-          onChange={onInputChange}
+          onChange={handleChange}
           >
         </Input>
         <Input
           type="text"
           placeholder="Введите код из письма"
-          name="code"
-          value={userToken}
+          name="userToken"
+          value={values.userToken ?? ''}
           error={false}
-          ref={tokenRef}
           size="default"
           extraClass="mb-6"
-          onChange={onInputChange}
+          onChange={handleChange}
           >
         </Input>
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass="mb-20"
-          onClick={(e) => onButtonClick(e)}
         >Сохранить
         </Button>
         <p className="text text_type_main-default mb-4">
           Вспомнили пароль?&nbsp;
           <Link to="/login">Войти</Link>
         </p>
-      </div>
+      </form>
     </main>
   );
 }

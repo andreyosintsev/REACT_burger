@@ -10,8 +10,6 @@ import { getCookie } from '../../utils/cookie';
 
 import AppStyles from './app.module.css';
 
-export const NORMA_API = 'https://norma.nomoreparties.space/api';
-
 function App() {
   const dispatch = useDispatch();
   const accessToken = getCookie('accessToken');
@@ -20,13 +18,11 @@ function App() {
   dispatch(requestDataUser(accessToken));
 
   return (
-   <>
     <div className={AppStyles.wrapper}>
       <Router>
         <ModalSwitch /> 
       </Router>
     </div>
-    </>
   );
 }
 

@@ -20,7 +20,7 @@ function Registration() {
   
   const dispatch = useDispatch();
 
-  const TogglePassword = () => {
+  const togglePassword = () => {
     console.log('Toggle password ', passwordRef.current.icon);
     if (isPasswordShow) { 
       passwordRef.current.type = 'text';
@@ -39,14 +39,14 @@ function Registration() {
     setUserPassword(passwordRef.current.value);
   };
 
-  const onButtonClick = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     dispatch(registerUser(userEmail, userPassword, userName));
   };
 
   return (
     <main className={RegistrationStyles.content}>
-      <div className={RegistrationStyles.form}>
+      <form className={RegistrationStyles.form} action="" onSubmit={onSubmit}>
         <h2 className="text text_type_main-medium mb-6">Регистрация</h2>
         <Input
           type="text"
@@ -77,28 +77,27 @@ function Registration() {
           placeholder="Пароль"
           name="password"
           value={userPassword}
-          icon={"ShowIcon"}
+          icon="ShowIcon"
           error={false}
           ref={passwordRef}
           size="default"
           extraClass="mb-6"
-          onIconClick={() => TogglePassword()}
+          onIconClick={() => togglePassword()}
           onChange={onInputChange}
           >
         </Input>
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass="mb-20"
-          onClick={(e) => onButtonClick(e)}
         >Зарегистрироваться
         </Button>
         <p className="text text_type_main-default mb-4">
           Уже зарегистрированы?&nbsp;
           <Link to="/login">Войти</Link>
         </p>
-      </div>
+      </form>
     </main>
   );
 }

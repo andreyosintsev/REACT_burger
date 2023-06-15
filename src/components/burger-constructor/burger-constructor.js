@@ -94,10 +94,11 @@ function BurgerConstructor() {
       constructorList: constructorList,
       bun: bun
     });
-  }, [dispatch, ingredientsList]);
+  }, []);
 
   useEffect(() => {
     if (constructorList && bun) {
+      console.log('CONSTRUCTOR_SAVE_INGREDIENTS');
       saveBurgerToLocalStorage(constructorList, bun);
     }
   }, [constructorList, bun]);
@@ -117,76 +118,75 @@ function BurgerConstructor() {
 
   return (
     <>
-    <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget}>
-      
-      <div className={BurgerConstructorStyles.topbottom}>
-      {
-        bun && <BurgerItem
-          uuid = {bun.uuid}
-          image = {bun.ingredient.image}
-          price = {bun.ingredient.price} 
-          title = {`${bun.ingredient.name} (верх)`} 
-          isLocked={true}
-          type="top"
-        />
-      }
-      </div>
-
-      <AppScrollbar>
-      {ingredients.length > 0 && <ul className={`${BurgerConstructorStyles.collected}`}>
-        {ingredients.map(item => 
-          {
-            return (
-              <li key={uuid()}>
-                <BurgerItem
-                  uuid = {item.uuid}
-                  image = {item.ingredient.image}
-                  price = {item.ingredient.price} 
-                  title = {item.ingredient.name} 
-                  isLocked={false}
-                  removeHandler={removeHandler}
-                />
-              </li>);            
-          })
+      <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget}>
+        
+        <div className={BurgerConstructorStyles.topbottom}>
+        {
+          bun && <BurgerItem
+            uuid = {bun.uuid}
+            image = {bun.ingredient.image}
+            price = {bun.ingredient.price} 
+            title = {`${bun.ingredient.name} (верх)`} 
+            isLocked={true}
+            type="top"
+          />
         }
-      </ul>
-      }
-      {ingredients.length === 0 && !bun && <BurgerStub text={stubText1} />}
-      {ingredients.length === 0 &&  bun && <BurgerStub text={stubText2} />}
-      </AppScrollbar>
-
-      <div className={BurgerConstructorStyles.topbottom}>
-      {
-        bun && <BurgerItem
-          uuid = {bun.uuid}
-          image = {bun.ingredient.image}
-          price = {bun.ingredient.price} 
-          title = {`${bun.ingredient.name} (низ)`} 
-          isLocked={true}
-          type="bottom"
-        />
-      }
-      </div>
-
-      <div className={`${BurgerConstructorStyles.summary}`}>
-        <div className={`mr-10`}>
-          <BurgerTotal/>
         </div>
-        <Button 
-          htmlType="button" 
-          type="primary" 
-          size="large" 
-          onClick={showOrderDetails}>
-            Оформить заказ
-        </Button>
-        <div style={{width: '16px'}}></div>
-      </div>
-    </section>
-    {modalShow && 
-      <Modal header={''} onclick={showOrderDetails}>
-        <OrderDetails />
-      </Modal>
-    }
+
+        <AppScrollbar>
+        {ingredients.length > 0 && <ul className={`${BurgerConstructorStyles.collected}`}>
+          {ingredients.map(item => 
+            {
+              return (
+                <li key={item.uuid}>
+                  <BurgerItem
+                    uuid = {item.uuid}
+                    image = {item.ingredient.image}
+                    price = {item.ingredient.price} 
+                    title = {item.ingredient.name} 
+                    isLocked={false}
+                    removeHandler={removeHandler}
+                  />
+                </li>);            
+            })
+          }
+        </ul>
+        }
+        {ingredients.length === 0 && !bun && <BurgerStub text={stubText1} />}
+        {ingredients.length === 0 &&  bun && <BurgerStub text={stubText2} />}
+        </AppScrollbar>
+
+        <div className={BurgerConstructorStyles.topbottom}>
+        {
+          bun && <BurgerItem
+            uuid = {bun.uuid}
+            image = {bun.ingredient.image}
+            price = {bun.ingredient.price} 
+            title = {`${bun.ingredient.name} (низ)`} 
+            isLocked={true}
+            type="bottom"
+          />
+        }
+        </div>
+
+        <div className={`${BurgerConstructorStyles.summary} pr-4`}>
+          <div className="mr-10">
+            <BurgerTotal/>
+          </div>
+          <Button
+            htmlType="button" 
+            type="primary" 
+            size="large" 
+            onClick={showOrderDetails}>
+              Оформить заказ
+          </Button>
+        </div>
+      </section>
+      {modalShow && 
+        <Modal onClick={showOrderDetails}>
+          <OrderDetails />
+        </Modal>
+      }
     </>
   );
 }

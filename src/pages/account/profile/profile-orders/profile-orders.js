@@ -8,7 +8,7 @@ function ProfileOrders() {
       <main className={ProfileOrdersStyles.content}>
         <ProfileMenu />
         <div className={ProfileOrdersStyles.list}>
-            <p className="text text_type_main-medium" style={{top: '50px', height: '380px'}}>Здесь будет лента заказов</p>
+          <p className="text text_type_main-medium">Здесь будет лента заказов</p>
         </div>
       </main>
     </div> 
