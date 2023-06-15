@@ -35,33 +35,27 @@ function ModalSwitch() {
       <Routes location={background || location}>
         <Route path='/login' element={<ProtectedRouteElement 
                 element={<SignIn />}
-                redirect='/'
-                ifLogged={true} /> /* Редирект при условии, что пользователь УЖЕ залогинен*/
+                anonymous={true} /> /* Редирект при условии, что пользователь УЖЕ залогинен*/
               } />
         <Route path='/register' element={<ProtectedRouteElement 
                 element={<Registration />}
-                redirect='/' 
-                ifLogged={true}/>
+                anonymous={true}/>
               } />
         <Route path='/forgot-password' element={<ProtectedRouteElement 
                 element={<ForgotPassword />}
-                redirect='/' 
-                ifLogged={true}/>
+                anonymous={true}/>
               } />
         <Route path='/reset-password' element={<ProtectedRouteElement 
                 element={<ResetPassword />}
-                redirect='/' 
-                ifLogged={true}/>
+                anonymous={true}/>
               } />
         <Route path='/profile' element={<ProtectedRouteElement 
                 element={<Profile />}
-                redirect='/login' 
-                ifLogged={false}/> /* Редирект при условии, что пользователь ЕЩЁ НЕ залогинен*/
+                anonymous={false}/> /* Редирект при условии, что пользователь ЕЩЁ НЕ залогинен*/
               } />
         <Route path='/orders' element={<ProtectedRouteElement 
                 element={<ProfileOrders />}
-                redirect='/login' 
-                ifLogged={false}/>
+                anonymous={false}/>
               } />
         <Route path='/' element={<HomePage />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />         

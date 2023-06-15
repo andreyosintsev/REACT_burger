@@ -1,8 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { useForm } from '../../../hooks/useForm';
-
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { ProfileMenu } from '../../../components/profile-menu/profile-menu';
@@ -34,8 +32,7 @@ function Profile() {
   const { userName, 
           userEmail,
           userRollbackName,
-          userRollbackEmail,
-          userHasError } = useSelector(userData);
+          userRollbackEmail} = useSelector(userData);
 
   useEffect(()=>{
     dispatch(requestDataUser(accessToken));
