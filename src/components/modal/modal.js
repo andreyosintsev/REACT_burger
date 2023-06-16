@@ -14,7 +14,7 @@ function Modal({onClick, children}) {
 
   const onEscDown = (e) => {
     if (e.code === 'Escape') {
-      onclick();
+      onClick();
     }
   };
 
