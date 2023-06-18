@@ -4,6 +4,7 @@
   left:50%;
 
   width: 720px;
+  height: 480px;
   overflow: hidden;
 
   border-radius: 40px;
@@ -12,12 +13,10 @@
   
   transform:translate(-50%, -50%);
 }
-.modal_header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 .modal_close {
+  position: absolute;
+  right: 40px;
+  top: 50px;
   z-index: 1000;
   cursor: pointer;
 }

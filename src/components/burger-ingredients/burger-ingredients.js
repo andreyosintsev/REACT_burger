@@ -1,49 +1,37 @@
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import BurgerSection from '../burger-section/burger-section';
+
+import { 
+  INGREDIENTS_SELECT_INGREDIENT
+} from "../../services/actions/burger-ingredients-details";
+
+import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
+
+import { getIngredientDataById } from '../../utils/utils';
 
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
-import { 
-  INGREDIENTS_SELECT_INGREDIENT,
-  INGREDIENTS_DESELECT_INGREDIENT
-} from "../../services/actions/burger-ingredients-details";
-
-import { burgerIngredientRequests } from '../app/app';
-
 function BurgerIngredients() {
 
-  const data = useSelector(burgerIngredientRequests).ingredientsList;
+  const { ingredientsList } = useSelector(burgerIngredientRequests);
   const dispatch = useDispatch();
 
-  const [current, setCurrent] = React.useState('buns');
-  const [modalShow, setModalShow] = React.useState(false);
+  const [current, setCurrent] = useState('buns');
 
-  const buns = data.filter(data => data.type === "bun");
-  const sauces = data.filter(data => data.type === "sauce");
-  const mains = data.filter(data => data.type === "main");
-
-  const getIngredientDataById = (data, id) => data.find(data => data._id === id);
+  const buns =   ingredientsList.filter(ingredientsList => ingredientsList.type === "bun");
+  const sauces = ingredientsList.filter(ingredientsList => ingredientsList.type === "sauce");
+  const mains =  ingredientsList.filter(ingredientsList => ingredientsList.type === "main");
 
   const showIngredientDetails = (e) => {
-    if (!modalShow) {
-      dispatch({
-        type: INGREDIENTS_SELECT_INGREDIENT,
-        ingredientSelected: getIngredientDataById(data, e.currentTarget.dataset.id)
-      });
-      setModalShow(true);
-    }  else {
-      dispatch({
-        type: INGREDIENTS_DESELECT_INGREDIENT
-      });
-      setModalShow(false);
-    }
+    dispatch({
+      type: INGREDIENTS_SELECT_INGREDIENT,
+      ingredientSelected: getIngredientDataById(ingredientsList, e.currentTarget.dataset.id)
+    });
   };
 
   const setTabAndScroll = (tab) => {
@@ -75,10 +63,9 @@ function BurgerIngredients() {
   }, []);
 
   return (
-    <>
     <section className={BurgerIngredientsStyles.content}>
       <h2 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h2>
-      <div style={{ display: 'flex' }} className="mb-8">
+      <div className={`${BurgerIngredientsStyles.tabs} mb-8`}>
         <Tab value="buns" active={current === 'buns'} onClick={() => setTabAndScroll('buns')}>
           Булки
         </Tab>
@@ -95,11 +82,6 @@ function BurgerIngredients() {
         <BurgerSection id="mains" title="Начинки" ingredients={mains} onShowDetails={showIngredientDetails}/>
       </AppScrollbar>
     </section>
-    {modalShow && 
-      <Modal header={'Детали ингредиента'} onclick={showIngredientDetails}>
-        <IngredientDetails />
-      </Modal>}
-    </>
   );
 }
 

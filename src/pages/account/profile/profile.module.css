@@ -1,0 +1,21 @@
+.wrapper {
+  width: 1240px;
+  margin: 0 auto;
+}
+.content {
+  display: flex;
+  width: 1240px;
+  margin-top: 300px;
+  justify-content: left;
+  align-items: center;
+  gap: 60px;
+}
+.form {
+  width: 480px;
+  height: 302px;
+  text-align: center;
+}
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+}

@@ -9,10 +9,17 @@ import BurgerItemStyles from './burger-item.module.css';
 
 function BurgerItem(props) {
 
-  const {uuid, image, price, title, isLocked, type, removeHandler} = props;
+  const { uuid, 
+          image, 
+          price, 
+          title, 
+          isLocked, 
+          type, 
+          removeHandler} = props;
 
-  const drag = () => !isLocked ? <div className={BurgerItemStyles.drag}><DragIcon /></div> :
-        <div className={BurgerItemStyles.drag}></div>
+  const drag = () => !isLocked
+  ? <div className={BurgerItemStyles.drag}><DragIcon /></div>
+  : <div className={BurgerItemStyles.drag}></div>
 
   const dispatch = useDispatch();
 
@@ -29,7 +36,7 @@ function BurgerItem(props) {
     item: {uuid}
   });
 
-  const [{isHover}, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop({
     accept: 'constructorIngredient',
     collect: monitor => ({
       isHover: monitor.isOver()
@@ -39,11 +46,8 @@ function BurgerItem(props) {
     }
   });
 
-  const style = {};//isHover ? {paddingBottom: '104px'} : {paddingBottom: '0'};
-
   return (
     <div className={`${BurgerItemStyles.content} ml-4 mr-4`} 
-         style={style}
          ref={isLocked ? null : (e) => { dragRef(e); dropTarget(e); }}>
       {drag()}
       <ConstructorElement 

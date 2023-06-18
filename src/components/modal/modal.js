@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import ModalOverlay from '../modal-overlay/modal-overlay';
+
 import ModalStyles from './modal.module.css';
 
-function Modal({onclick, header, children}) {
+function Modal({onClick, children}) {
 
-  const modalRoot = document.getElementById("modals");
+  const modalRoot = document.querySelector("#modals");
 
   const onEscDown = (e) => {
     if (e.code === 'Escape') {
-      let event = new Event('click', {bubbles:true});
-      document.querySelector('#overlay').dispatchEvent(event);
+      onClick();
     }
   };
 
@@ -29,16 +29,13 @@ function Modal({onclick, header, children}) {
   return ReactDOM.createPortal(
     (
       <>
-      <ModalOverlay onclick={onclick} />
-      <div className={`${ModalStyles.modal} pt-10 pr-10 pb-15 pl-10`} onClick={e => e.stopPropagation()}>
-        <div className={`${ModalStyles.modal_header} mt-5`}>
-          <p className="text text_type_main-large">{header}</p>
+        <ModalOverlay onClick={onClick} />
+        <div className={`${ModalStyles.modal} pr-10 pb-15`} onClick={e => e.stopPropagation()}>
           <div className={ModalStyles.modal_close}>
-            <CloseIcon type="primary" onClick={onclick} id="closeIcon"/>
+            <CloseIcon type="primary" onClick={onClick} id="closeIcon"/>
           </div>
+          {children}
         </div>
-        {children}
-      </div>
       </>
     ), 
     modalRoot
@@ -46,8 +43,7 @@ function Modal({onclick, header, children}) {
 }
 
 Modal.propTypes = {
-  onclick:   PropTypes.func.isRequired,
-  header:    PropTypes.string,
+  onClick:   PropTypes.func.isRequired,
   children:  PropTypes.node
 }
 

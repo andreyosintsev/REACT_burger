@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useDrop } from "react-dnd";
 
 import { v4 as uuid } from 'uuid';
@@ -18,22 +19,30 @@ import { getOrderNumber } from '../../services/actions/burger-constructor-orders
 import {
   CONSTRUCTOR_ADD_INGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
-  CONSTRUCTOR_CLEAR_INGREDIENTS
+  CONSTRUCTOR_LOAD_INGREDIENTS
 } from '../../services/actions/burger-constructor-ingredients';
 
-import BurgerConstructorStyles from './burger-constructor.module.css';
+import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
+import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';
+import { userData } from '../../services/selectors/user';
+
+import {  saveBurgerToLocalStorage,
+          loadBurgerFromLocalStorage,
+          clearBurgerLocalStorage } from '../../utils/local-storage';
 
 import { stubText1, stubText2 } from '../../utils/locale';
 
-import { burgerIngredientRequests,
-         burgerConstructorIngredients } from '../app/app';
+import { getIngredientDataById } from '../../utils/utils';
+
+import BurgerConstructorStyles from './burger-constructor.module.css';
 
 function BurgerConstructor() {
-  const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
-  const constructorList = useSelector(burgerConstructorIngredients).constructorList;
-  const bun = useSelector(burgerConstructorIngredients).bun;
+  const { ingredientsList } = useSelector(burgerIngredientRequests);
+  const { constructorList, bun } = useSelector(burgerConstructorIngredients);
+  const { userIsLogged } = useSelector(userData);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -47,18 +56,13 @@ function BurgerConstructor() {
     })
   });
 
-  const getIngredientById = (_id, ingredients) => 
-    ingredients.find(ingredient => ingredient._id === _id);
-
   const onDropHandler = (itemId) => {
-    const droppedIngredient = getIngredientById(itemId, ingredientsList);
-    if (droppedIngredient.type === 'bun') {
-      if (bun) {
-        dispatch({
-          type: CONSTRUCTOR_REMOVE_INGREDIENT,
-          uuid: bun.uuid
-        });
-      }
+    const droppedIngredient = getIngredientDataById(ingredientsList, itemId);
+    if (droppedIngredient.type === 'bun' && bun) {
+      dispatch({
+        type: CONSTRUCTOR_REMOVE_INGREDIENT,
+        uuid: bun.uuid
+      });
     } 
     dispatch({
       type: CONSTRUCTOR_ADD_INGREDIENT,
@@ -68,9 +72,13 @@ function BurgerConstructor() {
   };
 
   const showOrderDetails = () => {
-    if (!modalShow) {
+    if (!userIsLogged) {
+      navigate('/login', {replace: true});
+    }
+    if (!modalShow && userIsLogged) {
       if (!bun) { return; }
       dispatch(getOrderNumber(constructorList, bun));
+      clearBurgerLocalStorage();
       setModalShow(true);
     } else {
       setModalShow(false);
@@ -80,12 +88,20 @@ function BurgerConstructor() {
   };
 
   useEffect(() => {
-    dispatch(
-      {
-        type: CONSTRUCTOR_CLEAR_INGREDIENTS
-      }
-    );  
-  }, [ingredientsList]);
+    const {constructorList, bun} = loadBurgerFromLocalStorage();
+    dispatch({
+      type: CONSTRUCTOR_LOAD_INGREDIENTS,
+      constructorList: constructorList,
+      bun: bun
+    });
+  }, []);
+
+  useEffect(() => {
+    if (constructorList && bun) {
+      console.log('CONSTRUCTOR_SAVE_INGREDIENTS');
+      saveBurgerToLocalStorage(constructorList, bun);
+    }
+  }, [constructorList, bun]);
 
   const removeHandler = (uuid) => {
     dispatch(
@@ -102,76 +118,75 @@ function BurgerConstructor() {
 
   return (
     <>
-    <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget}>
-      
-      <div className={BurgerConstructorStyles.topbottom}>
-      {
-        bun && <BurgerItem
-          uuid = {bun.uuid}
-          image = {bun.ingredient.image}
-          price = {bun.ingredient.price} 
-          title = {`${bun.ingredient.name} (верх)`} 
-          isLocked={true}
-          type="top"
-        />
-      }
-      </div>
-
-      <AppScrollbar>
-      {ingredients.length > 0 && <ul className={`${BurgerConstructorStyles.collected}`}>
-        {ingredients.map(item => 
-          {
-            return (
-              <li key={uuid()}>
-                <BurgerItem
-                  uuid = {item.uuid}
-                  image = {item.ingredient.image}
-                  price = {item.ingredient.price} 
-                  title = {item.ingredient.name} 
-                  isLocked={false}
-                  removeHandler={removeHandler}
-                />
-              </li>);            
-          })
+      <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget}>
+        
+        <div className={BurgerConstructorStyles.topbottom}>
+        {
+          bun && <BurgerItem
+            uuid = {bun.uuid}
+            image = {bun.ingredient.image}
+            price = {bun.ingredient.price} 
+            title = {`${bun.ingredient.name} (верх)`} 
+            isLocked={true}
+            type="top"
+          />
         }
-      </ul>
-      }
-      {ingredients.length === 0 && !bun && <BurgerStub text={stubText1} />}
-      {ingredients.length === 0 &&  bun && <BurgerStub text={stubText2} />}
-      </AppScrollbar>
-
-      <div className={BurgerConstructorStyles.topbottom}>
-      {
-        bun && <BurgerItem
-          uuid = {bun.uuid}
-          image = {bun.ingredient.image}
-          price = {bun.ingredient.price} 
-          title = {`${bun.ingredient.name} (низ)`} 
-          isLocked={true}
-          type="bottom"
-        />
-      }
-      </div>
-
-      <div className={`${BurgerConstructorStyles.summary}`}>
-        <div className={`mr-10`}>
-          <BurgerTotal/>
         </div>
-        <Button 
-          htmlType="button" 
-          type="primary" 
-          size="large" 
-          onClick={showOrderDetails}>
-            Оформить заказ
-        </Button>
-        <div style={{width: '16px'}}></div>
-      </div>
-    </section>
-    {modalShow && 
-      <Modal header={''} onclick={showOrderDetails}>
-        <OrderDetails />
-      </Modal>
-    }
+
+        <AppScrollbar>
+        {ingredients.length > 0 && <ul className={`${BurgerConstructorStyles.collected}`}>
+          {ingredients.map(item => 
+            {
+              return (
+                <li key={item.uuid}>
+                  <BurgerItem
+                    uuid = {item.uuid}
+                    image = {item.ingredient.image}
+                    price = {item.ingredient.price} 
+                    title = {item.ingredient.name} 
+                    isLocked={false}
+                    removeHandler={removeHandler}
+                  />
+                </li>);            
+            })
+          }
+        </ul>
+        }
+        {ingredients.length === 0 && !bun && <BurgerStub text={stubText1} />}
+        {ingredients.length === 0 &&  bun && <BurgerStub text={stubText2} />}
+        </AppScrollbar>
+
+        <div className={BurgerConstructorStyles.topbottom}>
+        {
+          bun && <BurgerItem
+            uuid = {bun.uuid}
+            image = {bun.ingredient.image}
+            price = {bun.ingredient.price} 
+            title = {`${bun.ingredient.name} (низ)`} 
+            isLocked={true}
+            type="bottom"
+          />
+        }
+        </div>
+
+        <div className={`${BurgerConstructorStyles.summary} pr-4`}>
+          <div className="mr-10">
+            <BurgerTotal/>
+          </div>
+          <Button
+            htmlType="button" 
+            type="primary" 
+            size="large" 
+            onClick={showOrderDetails}>
+              Оформить заказ
+          </Button>
+        </div>
+      </section>
+      {modalShow && 
+        <Modal onClick={showOrderDetails}>
+          <OrderDetails />
+        </Modal>
+      }
     </>
   );
 }

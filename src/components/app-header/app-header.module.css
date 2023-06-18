@@ -34,6 +34,20 @@ nav {
   justify-content: flex-end;
   align-items: center;
 
-  color: #FFFFFF;
   text-decoration: none;
+}
+.header_account p {
+  margin-left: 3px;
+}
+.active p {
+  color: #FFFFFF;
+}
+.active svg {
+  fill: #FFFFFF;
+}
+.inactive p {
+  color: #8585AD;
+}
+.inactive svg {
+  fill: #8585AD;
 }
