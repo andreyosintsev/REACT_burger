@@ -1,1 +1,0 @@
-export const userData = store => store.user;
