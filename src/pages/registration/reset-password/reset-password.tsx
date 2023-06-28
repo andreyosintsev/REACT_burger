@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 
 import { useForm } from '../../../hooks/useForm';
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "redux-thunk";
+import { TDispatch } from '../../../utils/store';
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -13,15 +12,12 @@ import { userData } from '../../../services/selectors/user';
 
 import ResetPasswordStyles from './reset-password.module.css';
 
-type TState = { a: string };
-type TAppDispatch = ThunkDispatch<TState, any, AnyAction>; 
-
 const ResetPassword: FC = () => {
   const { values, handleChange } = useForm({});
 
-  const {userPasswordResetting} = useSelector(userData);
+  const { userPasswordResetting } = useSelector(userData);
 
-  const dispatch: TAppDispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {

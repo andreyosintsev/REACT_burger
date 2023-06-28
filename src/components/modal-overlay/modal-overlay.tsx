@@ -1,4 +1,4 @@
-import { FC, ReactNode, MouseEventHandler } from 'react';
+import { FC } from 'react';
 
 import ModalOverlayStyles from './modal-overlay.module.css';
 

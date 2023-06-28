@@ -1,9 +1,8 @@
 import { FC, FormEvent } from 'react';
-import { useRef, useState, useEffect } from 'react';
-import { AnyAction } from "redux";
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ThunkDispatch } from "redux-thunk";
 import { Link, useNavigate } from "react-router-dom";
+import { TDispatch } from '../../../utils/store';
 
 import { useForm } from '../../../hooks/useForm';
 
@@ -14,13 +13,10 @@ import { userData } from '../../../services/selectors/user';
 
 import ForgotPasswordStyles from './forgot-password.module.css';
 
-type TState = { a: string };
-type TAppDispatch = ThunkDispatch<TState, any, AnyAction>;
-
 const ForgotPassword: FC = () => {
   const { values, handleChange } = useForm({});
   const { userPasswordResetting } = useSelector(userData);
-  const dispatch: TAppDispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {

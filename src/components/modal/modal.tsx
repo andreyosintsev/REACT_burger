@@ -28,7 +28,7 @@ const Modal: FC<TModal> = ({onClick, children}) => {
     return ()=> {
       document.removeEventListener('keydown', onEscDown);
     };
-  }, []);
+  }, []); // eslint-disable-line
 
   const modalRoot: HTMLElement | null = document.querySelector("#modals");
 

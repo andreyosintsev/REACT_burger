@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from "react-dnd";
+import { TDispatch } from '../../utils/store'
 
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -22,7 +23,7 @@ const BurgerItem: FC<TBurgerItem> = (props) => {
   ? <div className={BurgerItemStyles.drag}><DragIcon type="primary"/></div>
   : <div className={BurgerItemStyles.drag}></div>
 
-  const dispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
 
   const onSwapHandler = (sourceIngredientUuid: string, targetIngredientUuid: string) => {
     dispatch({

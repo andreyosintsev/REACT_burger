@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from "react-dnd";
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "redux-thunk";
+import { TDispatch } from '../../utils/store'
 
 import { v4 as uuid } from 'uuid';
 
@@ -33,7 +32,7 @@ import {  saveBurgerToLocalStorage,
           loadBurgerFromLocalStorage,
           clearBurgerLocalStorage } from '../../utils/local-storage';
 
-import { stubText1, stubText2 } from '../../utils/locale';
+import { STUB_TEXT_1, STUB_TEXT_2 } from '../../utils/locale';
 
 import { getIngredientDataById } from '../../utils/utils';
 
@@ -41,15 +40,12 @@ import { TIngredient, TConstructorIngredient } from '../../declarations/types';
 
 import BurgerConstructorStyles from './burger-constructor.module.css';
 
-type TState = { a: string };
-type TAppDispatch = ThunkDispatch<TState, any, AnyAction>; 
-
 const BurgerConstructor: FC = () => {
   const { ingredientsList } = useSelector(burgerIngredientRequests);
   const { constructorList, bun } = useSelector(burgerConstructorIngredients);
   const { userIsLogged } = useSelector(userData);
 
-  const dispatch: TAppDispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
   const navigate = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);
@@ -103,7 +99,7 @@ const BurgerConstructor: FC = () => {
       constructorList: constructorList,
       bun: bun
     });
-  }, []);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if (constructorList && bun) {
@@ -164,8 +160,8 @@ const BurgerConstructor: FC = () => {
           }
         </ul>
         }
-        {ingredients.length === 0 && !bun && <BurgerStub text={stubText1} />}
-        {ingredients.length === 0 &&  bun && <BurgerStub text={stubText2} />}
+        {ingredients.length === 0 && !bun && <BurgerStub text={STUB_TEXT_1} />}
+        {ingredients.length === 0 &&  bun && <BurgerStub text={STUB_TEXT_2} />}
         </AppScrollbar>
 
         <div className={BurgerConstructorStyles.topbottom}>

@@ -1,8 +1,18 @@
-import { TRequestOptions, TRequestStringPayload, TRequestArrayPayload } from '../declarations/types';
+import {  TRequestOptions,
+          TRequestStringPayload, 
+          TRequestArrayPayload, 
+          
+          TApiIngredients,
+          TApiMessage,
+          TApiUserData,
+          TApiTokens,
+          TApiUserRegister,
+          TOrderData} from '../declarations/burger-api-types';
+
 
 export const NORMA_API = 'https://norma.nomoreparties.space/api';
 
-const checkFetchResponse = (res: any): Promise<any> => {
+const checkFetchResponse = <T>(res: Response): Promise<T> => {
   return res.ok 
     ? res.json()
     : Promise.reject(`Ошибка Fetch: ${res.status}`);
@@ -14,13 +24,13 @@ const checkSuccess = (data: any): Promise<any> => {
   : Promise.reject(`Ошибка Fetch не success: ${data}`);
 };
 
-const request = (endpoint: string, options?: TRequestOptions): Promise<any> => {
+const request = <T>(endpoint: string, options?: TRequestOptions): Promise<T> => {
   return fetch(`${NORMA_API}${endpoint}`, options)
     .then(checkFetchResponse)
     .then(checkSuccess);
 };
 
-export const getIngredientsFromApi = (): (Promise<any> | void) => {
+export const getIngredientsFromApi = (): Promise<TApiIngredients> => {
   try {  
     return request('/ingredients');
   } catch (error: any) {
@@ -29,7 +39,7 @@ export const getIngredientsFromApi = (): (Promise<any> | void) => {
   }
 };
 
-export const postConstructorDataToApi = (payload: TRequestArrayPayload): (Promise<any> | void) => {
+export const postConstructorDataToApi = (payload: TRequestArrayPayload): Promise<TOrderData>=> {
   try {  
     return request('/orders',
       {
@@ -38,14 +48,12 @@ export const postConstructorDataToApi = (payload: TRequestArrayPayload): (Promis
         body: JSON.stringify(payload)
       });
   } catch (error: any) {
-    if (error.message) {
-      console.error(`Не удалось отправить в API данные конструктора: ${error.message || 'неизвестная ошибка'}`);
-      throw new Error(`Не удалось отправить в API данные конструктора: ${error.message || 'неизвестная ошибка'}`);
-    }
+    console.error(`Не удалось отправить в API данные конструктора: ${error.message || 'неизвестная ошибка'}`);
+    throw new Error(`Не удалось отправить в API данные конструктора: ${error.message || 'неизвестная ошибка'}`);
   }
 };
 
-export const postUserRegisterToApi = (payload: TRequestStringPayload): Promise<any> => {
+export const postUserRegisterToApi = (payload: TRequestStringPayload): Promise<TApiUserRegister> => {
   try {  
     return request('/auth/register',
       {
@@ -59,7 +67,7 @@ export const postUserRegisterToApi = (payload: TRequestStringPayload): Promise<a
   }
 };
 
-export const postUserLoginToApi = (payload: TRequestStringPayload): Promise<any> => {
+export const postUserLoginToApi = (payload: TRequestStringPayload): Promise<TApiUserRegister> => {
   try {  
     return request('/auth/login',
       {
@@ -73,7 +81,7 @@ export const postUserLoginToApi = (payload: TRequestStringPayload): Promise<any>
   }
 };
 
-export const postUserLogoutToApi = (payload: TRequestStringPayload): Promise<any> => {
+export const postUserLogoutToApi = (payload: TRequestStringPayload): Promise<TApiMessage> => {
   try {  
     return request('/auth/logout',
       {
@@ -87,7 +95,7 @@ export const postUserLogoutToApi = (payload: TRequestStringPayload): Promise<any
   }
 };
 
-export const postUserRequestPasswordToApi = (payload: TRequestStringPayload): Promise<any> => {
+export const postUserRequestPasswordToApi = (payload: TRequestStringPayload): Promise<TApiMessage> => {
   try {  
     return request('/password-reset',
       {
@@ -101,7 +109,7 @@ export const postUserRequestPasswordToApi = (payload: TRequestStringPayload): Pr
   }
 };
 
-export const postUserResetPasswordToApi = (payload: TRequestStringPayload): Promise<any> => {
+export const postUserResetPasswordToApi = (payload: TRequestStringPayload): Promise<TApiMessage> => {
   try {  
     return request('/password-reset/reset',
       {
@@ -115,21 +123,21 @@ export const postUserResetPasswordToApi = (payload: TRequestStringPayload): Prom
   }
 };
 
-export const postUserRefreshTokenToApi = (payload: TRequestStringPayload): Promise<any> => {
-  try {  
-    return request('/auth/token',
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json;charset=utf-8' },
-        body: JSON.stringify(payload)
-      });
+export const postRefreshTokenToApi = (payload: TRequestStringPayload): Promise<TApiTokens> => {
+  try {
+    return request('/auth/token', 
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
   } catch (error: any) {
-    console.error(`Не удалось отправить данные в API для обновление Access Token: ${error.message || 'неизвестная ошибка'}`);
-    throw new Error(`Не удалось отправить данные в API для запроса Access Token: ${error.message || 'неизвестная ошибка'}`);
+    console.error(`Не удалось отправить данные в API для обновления токена: ${error.message || 'неизвестная ошибка'}`);
+    throw new Error(`Не удалось отправить данные в API для обновления токена: ${error.message || 'неизвестная ошибка'}`);
   }
 };
 
-export const getUserDataFromApi = (payload: TRequestStringPayload): Promise<any> => {
+export const getUserDataFromApi = (payload: TRequestStringPayload): Promise<TApiUserRegister> => {
   try {  
     return request('/auth/user',
       {
@@ -145,7 +153,7 @@ export const getUserDataFromApi = (payload: TRequestStringPayload): Promise<any>
   }
 };
 
-export const patchUserDataToApi = (payload: TRequestStringPayload, accessToken: string): Promise<any> => {
+export const patchUserDataToApi = (payload: TRequestStringPayload, accessToken: string): Promise<TApiUserData> => {
   try {  
     return request('/auth/user',
       {
@@ -159,19 +167,5 @@ export const patchUserDataToApi = (payload: TRequestStringPayload, accessToken: 
   } catch (error: any) {
     console.error(`Не удалось отправить данные в API для обновления данных пользователя: ${error.message || 'неизвестная ошибка'}`);
     throw new Error(`Не удалось отправить данные в API для обновления данных пользователя: ${error.message || 'неизвестная ошибка'}`);
-  }
-};
-
-export const postRefreshTokenToApi = (payload: TRequestStringPayload): Promise<any> => {
-  try {
-    return request('/auth/token', 
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify(payload)
-    });
-  } catch (error: any) {
-    console.error(`Не удалось отправить данные в API для обновления токена: ${error.message || 'неизвестная ошибка'}`);
-    throw new Error(`Не удалось отправить данные в API для обновления токена: ${error.message || 'неизвестная ошибка'}`);
   }
 };

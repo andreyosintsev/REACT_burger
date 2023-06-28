@@ -1,5 +1,6 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, MouseEvent, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { TDispatch } from '../../utils/store'
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -21,7 +22,7 @@ import BurgerIngredientsStyles from './burger-ingredients.module.css';
 const BurgerIngredients: FC = () => {
 
   const ingredientsList: TIngredients = useSelector(burgerIngredientRequests).ingredientsList;
-  const dispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
 
   const [current, setCurrent] = useState('buns');
 
@@ -29,10 +30,10 @@ const BurgerIngredients: FC = () => {
   const sauces: TIngredients = ingredientsList.filter(ingredientsList => ingredientsList.type === "sauce");
   const mains:  TIngredients = ingredientsList.filter(ingredientsList => ingredientsList.type === "main");
 
-  const showIngredientDetails = (e: any) => {
+  const showIngredientDetails = (e: MouseEvent<HTMLLIElement> ) => {
     dispatch({
       type: INGREDIENTS_SELECT_INGREDIENT,
-      ingredientSelected: getIngredientDataById(ingredientsList, e.currentTarget.dataset.id)
+      ingredientSelected: getIngredientDataById(ingredientsList, e.currentTarget.getAttribute('data-id')!)
     });
   };
 

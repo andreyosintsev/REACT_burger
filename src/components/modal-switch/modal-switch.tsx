@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { TDispatch } from '../../utils/store'
 
 import AppHeader from '../app-header/app-header';
 import ForgotPassword  from '../../pages/registration/forgot-password/forgot-password';
@@ -18,7 +19,7 @@ import Modal from '../modal/modal';
 import { INGREDIENTS_DESELECT_INGREDIENT } from '../../services/actions/burger-ingredients-details';
 
 const ModalSwitch: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state && location.state.background;

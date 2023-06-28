@@ -1,7 +1,6 @@
 import { FC } from 'react';
-import { AnyAction } from "redux";
 import { useDispatch } from 'react-redux';
-import { ThunkDispatch } from "redux-thunk";
+import { TDispatch } from '../../utils/store'
 
 import { NavLink } from 'react-router-dom';
 
@@ -13,11 +12,8 @@ import { getFromLocalStorage } from '../../utils/local-storage';
 
 import ProfileMenuStyles from './profile-menu.module.css';
 
-type TState = { a: string };
-type TAppDispatch = ThunkDispatch<TState, any, AnyAction>; 
-
 const ProfileMenu: FC = () => {
-  const dispatch: TAppDispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
   const refreshToken = getFromLocalStorage('refreshToken');
 
   const onLogoutHandler = () => {

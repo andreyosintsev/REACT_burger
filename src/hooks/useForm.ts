@@ -1,13 +1,17 @@
 import { useState, ChangeEvent } from 'react';
 
-type TUseForm = {
-  values: any;
-  handleChange: any;
-  setValues: any;
+type TUseFormInput = {
+  [key: string]: string
 }
 
-export function useForm(inputValues={}): TUseForm {
-    const [values, setValues] = useState(inputValues);
+type TUseForm = {
+  values: TUseFormInput;
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  setValues: (values: TUseFormInput) => void;
+}
+
+export function useForm(inputValues: TUseFormInput = {}): TUseForm {
+    const [values, setValues] = useState<TUseFormInput>(inputValues);
   
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
       const {value, name} = event.target;

@@ -1,8 +1,7 @@
 import { FC, useEffect, FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from 'react-router-dom';
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "redux-thunk";
+import { TDispatch } from '../../../utils/store';
 
 import { useForm } from '../../../hooks/useForm';
 
@@ -13,20 +12,17 @@ import { userData } from '../../../services/selectors/user';
 
 import SignInStyles from './sign-in.module.css';
 
-type TState = { a: string };
-type TAppDispatch = ThunkDispatch<TState, any, AnyAction>; 
-
 const SignIn: FC = () => {
   const { values, handleChange } = useForm({});
   const {userIsLogged} = useSelector(userData); 
-  const dispatch: TAppDispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(()=>{
     if (userIsLogged) {
       navigate('/', {replace: true});
     }    
-  }, [userIsLogged]);
+  }, [userIsLogged]); //eslint-disable-line
 
   const onSubmit = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();

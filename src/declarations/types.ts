@@ -35,18 +35,3 @@ export type TBurgerItem = {
   type?: "top" | "bottom" | undefined;
   removeHandler: (type: 'top' | 'bottom' | undefined, uuid: string) => void;
 }
-
-export type TRequestOptions = {
-  method: "GET" | "POST" | "PATCH";
-  headers: {};
-  body?: string;
-};
-
-export type TRequestStringPayload = {
-  [key: string]: string;
-};
-
-export type TRequestArrayPayload = {
-  ingredients: string[];
-};
-

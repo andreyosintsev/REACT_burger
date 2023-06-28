@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 
 import Ingredient from '../burger-ingredient/burger-ingredient';
 
@@ -9,7 +9,7 @@ type TBurgerSection = {
   id: string;
   title: string;
   ingredients: TIngredients;
-  onShowDetails: (args: any) => void;
+  onShowDetails: (e: MouseEvent<HTMLLIElement> ) => void;
 }
 
 const BurgerSection: FC<TBurgerSection> = ({id, title, ingredients, onShowDetails}) => {

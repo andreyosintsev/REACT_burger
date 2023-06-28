@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState, FC, FocusEvent, FormEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "redux-thunk";
+import { TDispatch } from '../../../utils/store';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -20,9 +19,6 @@ import { getCookie } from '../../../utils/cookie';
 
 import ProfileStyles from './profile.module.css';
 
-type TState = { a: string };
-type TAppDispatch = ThunkDispatch<TState, any, AnyAction>; 
-
 const Profile: FC = () => {
   const nameRef = useRef<HTMLInputElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -32,7 +28,7 @@ const Profile: FC = () => {
   const [isButtonsShow, setButtonsShow] = useState(false);
 
   const accessToken = getCookie('accessToken');
-  const dispatch: TAppDispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
 
   const { userName, 
           userEmail,

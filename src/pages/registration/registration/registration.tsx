@@ -1,17 +1,13 @@
 import { FC, useState, useRef, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "redux-thunk";
+import { TDispatch } from '../../../utils/store';
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { registerUser } from '../../../services/actions/user';
 
 import RegistrationStyles from './registration.module.css';
-
-type TState = { a: string };
-type TAppDispatch = ThunkDispatch<TState, any, AnyAction>; 
 
 const Registration: FC = () => {
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -23,7 +19,7 @@ const Registration: FC = () => {
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
   
-  const dispatch: TAppDispatch = useDispatch();
+  const dispatch: TDispatch = useDispatch();
 
   const togglePassword = () => {
     if (isPasswordShow) { 

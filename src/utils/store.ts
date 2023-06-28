@@ -10,4 +10,6 @@ const composeEnhancers =
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
+export type TDispatch = typeof store.dispatch
+
 export default store;
