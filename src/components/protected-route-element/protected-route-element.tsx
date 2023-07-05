@@ -19,7 +19,7 @@ const ProtectedRouteElement: FC<TProtectedRouteElement> = ({element, anonymous =
   }
 
   if (!anonymous && !userIsLogged) {
-    return <Navigate to="/login" state={{ from: location}}/>;
+    return <Navigate to="/login" state={{ from: location }}/>;
   }
 
   return element;
