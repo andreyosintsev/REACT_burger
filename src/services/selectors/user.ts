@@ -1,0 +1,1 @@
+export const userData = (store: any) => store.user;
