@@ -1,21 +1,32 @@
-import {  INGREDIENTS_SELECT_INGREDIENT,
-          INGREDIENTS_DESELECT_INGREDIENT } from "../actions/burger-ingredients-details";
+import {
+  TIngredient
+} from "../../declarations/types";
 
-const initialState = {
-  ingredientSelected: {}
+import {
+  TIngredientsDetailsActions
+} from "../actions/burger-ingredients-details";
+
+export type TBurgerIngredientsDetailState = {
+  ingredientSelected: TIngredient | null;
+}
+
+const initialState: TBurgerIngredientsDetailState = {
+  //ingredientSelected: []
+  ingredientSelected: null
 };
 
-export const burgerIngredientsDetails = (state = initialState, action: any) => {
+export const burgerIngredientsDetails = (state = initialState, action: TIngredientsDetailsActions) => {
   switch (action.type) {
-    case INGREDIENTS_SELECT_INGREDIENT:
+    case 'INGREDIENTS_SELECT_INGREDIENT':
       return {
         ...state,
         ingredientSelected: action.ingredientSelected
       };
-    case INGREDIENTS_DESELECT_INGREDIENT:
+    case 'INGREDIENTS_DESELECT_INGREDIENT':
       return {
         ...state,
-        ingredientSelected: {}
+        //ingredientSelected: []
+        ingredientSelected: null
       };
     default: return state;
   }

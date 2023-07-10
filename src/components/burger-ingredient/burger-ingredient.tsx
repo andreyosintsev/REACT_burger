@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../declarations/hooks';
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
 

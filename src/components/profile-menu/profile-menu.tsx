@@ -1,10 +1,9 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
-import { TDispatch } from '../../utils/store'
+import { useDispatch } from '../../declarations/hooks';
 
 import { NavLink } from 'react-router-dom';
 
-import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../../services/actions/burger-constructor-ingredients';
+import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../../services/constants/burger-constructor-ingredients';
 
 import { logoutUser  } from '../../services/actions/user';
 
@@ -13,7 +12,7 @@ import { getFromLocalStorage } from '../../utils/local-storage';
 import ProfileMenuStyles from './profile-menu.module.css';
 
 const ProfileMenu: FC = () => {
-  const dispatch: TDispatch = useDispatch();
+  const dispatch = useDispatch();
   const refreshToken = getFromLocalStorage('refreshToken');
 
   const onLogoutHandler = () => {

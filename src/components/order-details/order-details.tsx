@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../declarations/hooks';
 
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -8,7 +8,7 @@ import { burgerConstructorOrders } from '../../services/selectors/burger-constru
 import OrderDetailsStyles from './order-details.module.css';
 
 const OrderDetails: FC = () => {
-  const { orderNum } : { orderNum: number} = useSelector(burgerConstructorOrders);
+  const { orderNum } = useSelector(burgerConstructorOrders);
 
   return (
     <div className={OrderDetailsStyles.content}>

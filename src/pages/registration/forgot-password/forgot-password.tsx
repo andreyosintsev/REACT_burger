@@ -1,8 +1,6 @@
-import { FC, FormEvent } from 'react';
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { FC, FormEvent, useEffect } from 'react';
+import { useSelector, useDispatch } from '../../../declarations/hooks';
 import { Link, useNavigate } from "react-router-dom";
-import { TDispatch } from '../../../utils/store';
 
 import { useForm } from '../../../hooks/useForm';
 
@@ -16,7 +14,7 @@ import ForgotPasswordStyles from './forgot-password.module.css';
 const ForgotPassword: FC = () => {
   const { values, handleChange } = useForm({});
   const { userPasswordResetting } = useSelector(userData);
-  const dispatch: TDispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -28,8 +26,8 @@ const ForgotPassword: FC = () => {
     if (userPasswordResetting) {
       navigate('/reset-password', {replace: true});
     }    
-  }, [navigate, userPasswordResetting]);
-
+  }, [navigate, userPasswordResetting]); //eslint-disable-line
+  
   return (
     <main className={ForgotPasswordStyles.content}>
       <form className={ForgotPasswordStyles.form} action="" onSubmit={onSubmit}>

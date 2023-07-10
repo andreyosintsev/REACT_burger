@@ -1,25 +1,21 @@
-import {  CONSTRUCTOR_ADD_INGREDIENT,
-          CONSTRUCTOR_REMOVE_INGREDIENT,
-          CONSTRUCTOR_SWAP_INGREDIENTS,
-          CONSTRUCTOR_CLEAR_INGREDIENTS,
-          CONSTRUCTOR_LOAD_INGREDIENTS } from "../actions/burger-constructor-ingredients";
-
 import { TConstructorIngredient, TConstructorIngredients } from '../../declarations/types';
 
-type TInitialState = {
+import { TConstructorIngredientsActions } from '../actions/burger-constructor-ingredients';
+
+export type TConstructorIngredientsState = {
   constructorList: TConstructorIngredients;
   bun: TConstructorIngredient | null;
 }
 
-const initialState: TInitialState = {
+export const initialState: TConstructorIngredientsState = {
   constructorList: [],
   bun: null
 };
 
-export const burgerConstructorIngredients = (state = initialState, action: any) => {
+export const burgerConstructorIngredients = (state = initialState, action: TConstructorIngredientsActions) => {
   switch (action.type) {
-    case CONSTRUCTOR_ADD_INGREDIENT: {
-      return action.ingredient.type === 'bun' 
+    case 'CONSTRUCTOR_ADD_INGREDIENT': {
+      return action.ingredient?.type === 'bun' 
       ? {
           ...state,
           bun: {
@@ -37,7 +33,7 @@ export const burgerConstructorIngredients = (state = initialState, action: any) 
           ]
         };
     }
-    case CONSTRUCTOR_REMOVE_INGREDIENT: {
+    case 'CONSTRUCTOR_REMOVE_INGREDIENT': {
       return (state.bun && state.bun.uuid) === action.uuid
       ? {
           ...state,
@@ -48,13 +44,13 @@ export const burgerConstructorIngredients = (state = initialState, action: any) 
         constructorList: state.constructorList.filter(ingredient => ingredient.uuid !== action.uuid)
       };
     }
-    case CONSTRUCTOR_CLEAR_INGREDIENTS:
+    case 'CONSTRUCTOR_CLEAR_INGREDIENTS':
       return {
         ...state,
         constructorList: [],
         bun: null
       };
-    case CONSTRUCTOR_SWAP_INGREDIENTS:
+    case 'CONSTRUCTOR_SWAP_INGREDIENTS':
       const newList = [...state.constructorList];
       const ingredientToMove = newList.find(ingredient => ingredient.uuid === action.sourceIngredientUuid);
       const fromIndex = newList.findIndex(ingredient => ingredient.uuid === action.sourceIngredientUuid);
@@ -69,7 +65,7 @@ export const burgerConstructorIngredients = (state = initialState, action: any) 
       } else {
           return state;
       };
-    case CONSTRUCTOR_LOAD_INGREDIENTS:
+    case 'CONSTRUCTOR_LOAD_INGREDIENTS':
       return {
         ...state,
         constructorList: action.constructorList,

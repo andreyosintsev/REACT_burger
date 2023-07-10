@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../declarations/hooks';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -12,9 +12,9 @@ type TBurgerTotal = {
 };
 
 const BurgerTotal: FC = () => {
-  const { constructorList, bun }: TBurgerTotal = useSelector(burgerConstructorIngredients);
+  const { constructorList, bun } = useSelector(burgerConstructorIngredients);
  
-    const bunPrice = bun ? bun.ingredient.price : 0;
+  const bunPrice = bun ? bun.ingredient.price : 0;
 
   const sum = constructorList
   ? constructorList.reduce((acc: number, curr: TConstructorIngredient) => acc + curr.ingredient.price, 0) + bunPrice * 2 

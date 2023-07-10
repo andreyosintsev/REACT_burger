@@ -1,6 +1,5 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
-import { TDispatch } from '../../utils/store'
+import { useDispatch } from '../../declarations/hooks';
 import { BrowserRouter as Router} from 'react-router-dom';
 
 import ModalSwitch from '../modal-switch/modal-switch';
@@ -15,7 +14,7 @@ import AppStyles from './app.module.css';
 
 
 const App: FC = () => {
-  const dispatch: TDispatch = useDispatch();
+  const dispatch = useDispatch();
   const accessToken: string = getCookie('accessToken');
 
   dispatch(getIngredients());

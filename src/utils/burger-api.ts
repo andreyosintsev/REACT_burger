@@ -62,7 +62,7 @@ export const postUserRegisterToApi = (payload: TRequestStringPayload): Promise<T
         body: JSON.stringify(payload)
       });
   } catch (error: any) {
-    console.error(`Не удалось отправить в API данные для регистрации пользователя: ${error.message || 'неизвестная ошибка'}`);
+    console.error(`Не удалось отправить в API данные для регистрации пользователя: $(error.message || 'неизвестная ошибка'}`);
     throw new Error(`Не удалось отправить в API данные для регистрации пользователя: ${error.message || 'неизвестная ошибка'}`);
   }
 };

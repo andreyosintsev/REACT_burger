@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState, FC, FocusEvent, FormEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { TDispatch } from '../../../utils/store';
+import { useSelector, useDispatch } from '../../../declarations/hooks';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -9,7 +8,9 @@ import  ProfileMenu  from '../../../components/profile-menu/profile-menu';
 import {  USER_DATA_UPDATE,
           USER_ROLLBACK,
           USER_ROLLBACK_UPDATE,
-          requestDataUser,
+  } from '../../../services/constants/user';
+
+import {  requestDataUser,
           updateUserData, 
           } from '../../../services/actions/user';
 
@@ -28,7 +29,7 @@ const Profile: FC = () => {
   const [isButtonsShow, setButtonsShow] = useState(false);
 
   const accessToken = getCookie('accessToken');
-  const dispatch: TDispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const { userName, 
           userEmail,

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../declarations/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from "react-dnd";
-import { TDispatch } from '../../utils/store'
 
 import { v4 as uuid } from 'uuid';
 
@@ -21,7 +20,7 @@ import {
   CONSTRUCTOR_ADD_INGREDIENT,
   CONSTRUCTOR_REMOVE_INGREDIENT,
   CONSTRUCTOR_LOAD_INGREDIENTS
-} from '../../services/actions/burger-constructor-ingredients';
+} from '../../services/constants/burger-constructor-ingredients';
 
 import { FC } from 'react';
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
@@ -45,7 +44,7 @@ const BurgerConstructor: FC = () => {
   const { constructorList, bun } = useSelector(burgerConstructorIngredients);
   const { userIsLogged } = useSelector(userData);
 
-  const dispatch: TDispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);
@@ -99,7 +98,7 @@ const BurgerConstructor: FC = () => {
       constructorList: constructorList,
       bun: bun
     });
-  }, []); // eslint-disable-line
+  }, [dispatch]);
 
   useEffect(() => {
     if (constructorList && bun) {
