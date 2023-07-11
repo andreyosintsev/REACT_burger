@@ -10,8 +10,6 @@ import BurgerIngredients from '../../components/burger-ingredients/burger-ingred
 
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
 
-import { TIngredients } from '../../declarations/types';
-
 import HomePageStyles from './homepage.module.css';
 
 const HomePage: FC = () => {

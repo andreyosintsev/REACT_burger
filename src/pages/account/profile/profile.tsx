@@ -103,7 +103,7 @@ const Profile: FC = () => {
   return (
     <div className={ProfileStyles.wrapper}>
       <main className={ProfileStyles.content}>
-        <ProfileMenu />
+        <ProfileMenu text="В этом разделе вы можете изменить свои персональные данные" />
         <form className={ProfileStyles.form} 
               action=""
               onSubmit={onSubmit} 

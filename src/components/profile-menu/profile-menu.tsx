@@ -11,7 +11,11 @@ import { getFromLocalStorage } from '../../utils/local-storage';
 
 import ProfileMenuStyles from './profile-menu.module.css';
 
-const ProfileMenu: FC = () => {
+type TProfileMenu = {
+  text: string;
+}
+
+const ProfileMenu: FC<TProfileMenu> = ({text}) => {
   const dispatch = useDispatch();
   const refreshToken = getFromLocalStorage('refreshToken');
 
@@ -37,7 +41,7 @@ const ProfileMenu: FC = () => {
         Выход
       </p>
       <p className="text text_type_main-default text_color_inactive">
-        В этом разделе вы можете изменить свои персональные данные.
+        {text}
       </p>
   </aside>    
   )

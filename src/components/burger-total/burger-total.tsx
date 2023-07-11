@@ -4,12 +4,7 @@ import { useSelector } from '../../declarations/hooks';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { burgerConstructorIngredients } from '../../services/selectors/burger-constructor';
-import { TConstructorIngredient, TConstructorIngredients } from '../../declarations/types';
-
-type TBurgerTotal = {
-  constructorList: TConstructorIngredients;
-  bun: TConstructorIngredient;
-};
+import { TConstructorIngredient } from '../../declarations/types';
 
 const BurgerTotal: FC = () => {
   const { constructorList, bun } = useSelector(burgerConstructorIngredients);

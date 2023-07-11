@@ -1,0 +1,18 @@
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center
+}
+.ingredient {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 15px;
+}
+.num_price p {
+  display: flex;
+  align-items: center;
+}
+.num_price span {
+  margin-right: 8px;
+}

@@ -1,6 +1,7 @@
 .cover {
   max-height: calc(100vh - 550px);
   min-height: calc(100vh - 550px);
+  width: 100%;
   overflow-y: overlay;
 }
 .cover::-webkit-scrollbar {

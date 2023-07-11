@@ -5,19 +5,16 @@
 .content {
   display: flex;
   width: 1240px;
-  margin-top: 300px;
+  margin-top: 10px;
   justify-content: left;
   align-items: center;
   gap: 60px;
 }
 .list {
   display: flex;
-  width: 480px;
+  width: 844px;
+  margin-top: 30px;
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-.list p {
-  top: '50px';
-  height: '380px';
 }

@@ -1,0 +1,38 @@
+.card {
+  display: block;
+  box-sizing: border-box;
+  width: calc(100% - 8px);
+  height: 100%;
+  margin-bottom: 24px;
+  border-radius: 40px;
+  background-color: #1C1C21;
+}
+.card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card_title {
+  text-align: left;
+}
+.card_status {
+  text-align: left;
+}
+.card_content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 68px;
+}
+.card_content_ingredients {
+  display: flex;
+  justify-content: left;
+  padding-left: 15px;
+}
+.card_content_price p {
+  display: flex;
+  align-items: center;
+}
+.card_content_price span {
+  margin-right: 8px;
+}

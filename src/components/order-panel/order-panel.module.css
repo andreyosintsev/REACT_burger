@@ -1,0 +1,29 @@
+.content {
+  width: 580px;
+  height: 700px;
+  margin-top: 96px;
+  overflow: hidden;
+}
+.header {
+  display: flex;
+  gap: 36px;
+}
+.header_ready, .header_process {
+  width: 272px;
+}
+.header_ready ul {
+  color: #00CCCC;
+}
+ul.order_list {
+  display: block;
+}
+ul.order_list li {
+  margin-bottom: 8px;
+  text-align: left;
+}
+ul.order_list li:nth-last-child(1) {
+  margin-bottom: 0;
+}
+.total_overall p, .total_today p {
+  text-shadow: 0px 4px 32px #3333FF80, 0px 0px 8px #3333FF40, 0px 0px 16px #3333FF40;
+}

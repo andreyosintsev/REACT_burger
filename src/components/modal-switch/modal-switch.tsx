@@ -5,6 +5,8 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AppHeader from '../app-header/app-header';
 import ForgotPassword  from '../../pages/registration/forgot-password/forgot-password';
 import HomePage  from '../../pages/homepage/homepage';
+import Feed from '../../pages/feed/feed';
+import OrderInfo from '../../pages/order-info/order-info';
 import Profile  from '../../pages/account/profile/profile';
 import ProfileOrders  from '../../pages/account/profile/profile-orders/profile-orders';
 import Registration  from '../../pages/registration/registration/registration';
@@ -59,7 +61,9 @@ const ModalSwitch: FC = () => {
                 anonymous={false}/>
               } />
         <Route path='/' element={<HomePage />} />
-        <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />         
+        <Route path='/feed' element={<Feed />} />
+        <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />    
+        <Route path='/feed/:id' element={<OrderInfo />} />     
         <Route path="*" element={<NotFound404 />} />   
       </Routes>
 
