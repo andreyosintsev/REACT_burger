@@ -11,12 +11,12 @@ const OrderInfo: FC = () => {
   return (
     <div className={OrderInfoStyles.wrapper}>
       <div className={OrderInfoStyles.content}>
-          <div className={`${OrderInfoStyles.order_num} mb-10`}>
+          <div className={`${OrderInfoStyles.order_num}`}>
             <p className="text text_type_digits-default">
               #034533
             </p>
           </div>
-          <div className={`${OrderInfoStyles.order_name} mb-3`}>
+          <div className={`${OrderInfoStyles.order_name} mt-10 mb-3`}>
             <p className="text text_type_main-medium">
               Black Hole Singularity острый бургер
             </p>
@@ -32,7 +32,7 @@ const OrderInfo: FC = () => {
             </p>
           </div>
           <div className={`${OrderInfoStyles.order_content} mb-10`}>
-            <AppScrollbar>
+            <AppScrollbar  style={{height: '300px'}}>
               <OrderInfoIngredient />
               <OrderInfoIngredient />
               <OrderInfoIngredient />
@@ -40,7 +40,7 @@ const OrderInfo: FC = () => {
               <OrderInfoIngredient />              
             </AppScrollbar>
           </div>          
-          <div className={`${OrderInfoStyles.order_footer} mb-10`}>
+          <div className={`${OrderInfoStyles.order_footer}`}>
             <div className = {OrderInfoStyles.order_footer_date}>
               <p className="text text_type_main-small text_color_inactive">
                 Сегодня, 16:20

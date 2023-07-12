@@ -56,8 +56,12 @@ const ModalSwitch: FC = () => {
                 element={<Profile />}
                 anonymous={false}/> /* Редирект при условии, что пользователь ЕЩЁ НЕ залогинен*/
               } />
-        <Route path='/orders' element={<ProtectedRouteElement 
+        <Route path='/profile/orders' element={<ProtectedRouteElement 
                 element={<ProfileOrders />}
+                anonymous={false}/>
+              } />
+        <Route path='/profile/orders/:id' element={<ProtectedRouteElement 
+                element={<OrderInfo />}
                 anonymous={false}/>
               } />
         <Route path='/' element={<HomePage />} />
@@ -76,6 +80,22 @@ const ModalSwitch: FC = () => {
                     </Modal>
                   }
           />
+          <Route path='/feed/:id' 
+                  element={
+                    <Modal onClick={handleModalClose}>
+                      <OrderInfo />
+                    </Modal>
+                  }
+          /> 
+          <Route path='/profile/orders/:id'
+                  element={<ProtectedRouteElement 
+                    element={
+                      <Modal onClick={handleModalClose}>
+                        <OrderInfo />
+                      </Modal>
+                    }
+                    anonymous={false}/>
+                  } />
         </Routes>
       )}
     </>

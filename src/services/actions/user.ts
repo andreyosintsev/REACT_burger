@@ -224,6 +224,7 @@ export const loginUser = (userEmail: string, userPassword: string) => {
       }
     )
     .then(data => {
+      console.log('User logged in');
       console.log(data);
       setCookie('accessToken', data.accessToken);
       saveToLocalStorage('refreshToken', data.refreshToken);

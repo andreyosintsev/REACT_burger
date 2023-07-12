@@ -18,6 +18,15 @@
 .card_status {
   text-align: left;
 }
+.created, .process {
+  color: #FFFFFF;
+}
+.fulfilled {
+  color: #00CCCC;
+}
+.cancelled {
+  color: #B03627; 
+}
 .card_content {
   display: flex;
   justify-content: space-between;
@@ -35,4 +44,7 @@
 }
 .card_content_price span {
   margin-right: 8px;
+}
+.link {
+  color: #FFFFFF;
 }

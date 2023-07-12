@@ -11,6 +11,7 @@ const OrderIngredient: FC<TOrderIngredient> = ({url, zIndex}) => {
   return (
     <div className = {orderIngredientStyles.content} 
       style={{backgroundImage: `url(${url})`, 'zIndex': zIndex}}>
+      {/* style={{backgroundImage: `url(${url})`}}> */}
     </div>
   )
 };

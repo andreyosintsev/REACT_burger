@@ -30,10 +30,10 @@ const ProfileMenu: FC<TProfileMenu> = ({text}) => {
 
   return (
     <aside className={ProfileMenuStyles.menu}>
-      <NavLink className={ setActiveStyle } to="/profile">
+      <NavLink className={ setActiveStyle } to="/profile" end>
         <p className={`text text_type_main-medium ${ProfileMenuStyles.clickable}`}>Профиль</p>
       </NavLink>
-      <NavLink className={ setActiveStyle } to="/orders">
+      <NavLink className={ setActiveStyle } to="/profile/orders">
         <p className={`text text_type_main-medium ${ProfileMenuStyles.clickable}`}>История заказов</p>
       </NavLink>
       <p className={`text text_type_main-medium mb-20 ${ProfileMenuStyles.clickable}`} 
