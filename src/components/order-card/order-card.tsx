@@ -8,7 +8,10 @@ import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-component
 
 import OrderIngredient from '../order-ingredient/order-ingredient';
 
+import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
 import { wsOrders } from '../../services/selectors/ws-middleware';
+
+import { convertStatus } from '../../utils/utils';
 
 import OrderCardStyles from './order-card.module.css';
 
@@ -19,26 +22,26 @@ type TOrderCard = {
 
 const OrderCard: FC<TOrderCard> = ({ id, displayStatus }) => {
   const orders = useSelector(wsOrders);
+  const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
   const location = useLocation();
-  console.log("Current Location");
-  console.log(location);
 
-  const link: string = location.pathname === '/profile/orders' ? '/profile/orders/id' : '/feed/id';
+  const link: string = location.pathname === '/profile/orders' 
+    ? `/profile/orders/${id}` 
+    : `/feed/${id}`;
 
   const order = orders!.find(order => order._id === id)!;
-  let status: string = '';
+  
+  const status = convertStatus(order.status);
 
-  switch (order.status) {
-    case 'done': status = "Выполнен"; break;
-    case 'cancelled': status = "Отменён"; break;
-  }
+  const text = order.ingredients.length > 5 
+  ? "+" + (order.ingredients.length - 5)
+  : "";
+
+  const sum = order.ingredients.reduce((acc, curr, i, arr) => 
+    acc += ingredientsList.find(data => data._id === arr[i])!.price, 0
+  );
   
   return (
-    // <Link key={_id}
-    //   to={`/ingredients/${_id}`}
-    //   state={{ background: location }}
-    //   className={BurgerIngredientStyles.link}
-    // >
     <Link
       to={link}
       state={{ background: location }}
@@ -73,15 +76,26 @@ const OrderCard: FC<TOrderCard> = ({ id, displayStatus }) => {
         }
         <div className = {`${OrderCardStyles.card_content} mt-6`}>
           <div className = {OrderCardStyles.card_content_ingredients}>
-            <OrderIngredient url="https://code.s3.yandex.net/react/code/bun-02-mobile.png" zIndex="50" />
-            <OrderIngredient url="https://code.s3.yandex.net/react/code/sauce-04-mobile.png" zIndex="40" />
-            <OrderIngredient url="https://code.s3.yandex.net/react/code/meat-01-mobile.png" zIndex="30" />
-            <OrderIngredient url="https://code.s3.yandex.net/react/code/meat-03-mobile.png" zIndex="20" />
-            <OrderIngredient url="https://code.s3.yandex.net/react/code/sp_1-mobile.png" zIndex="10" />
+            <ul>
+            {
+              order.ingredients.slice(0, 5).map((ingredient, i, arr) => {
+                const url = ingredientsList.find(data => data._id === ingredient)!.image_mobile;
+                const zIndex = (arr.length - i).toString();
+                return (
+                  <li key={ingredient + i} style={{'zIndex': zIndex}}>
+                    {i === arr.length - 1 
+                      ? <OrderIngredient url={url} text={text}/>
+                      : <OrderIngredient url={url}/>
+                    }
+                  </li>
+                )
+              })
+            }
+            </ul>
           </div>
           <div className = {`${OrderCardStyles.card_content_price}`}>
             <p className="text text_type_digits-default">
-              <span>480</span><CurrencyIcon type="primary" />
+              <span>{sum}</span><CurrencyIcon type="primary" />
             </p>
           </div>
         </div>

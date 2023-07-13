@@ -16,6 +16,9 @@
 }
 ul.order_list {
   display: block;
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
 }
 ul.order_list li {
   margin-bottom: 8px;

@@ -24,11 +24,13 @@ const OrderList: FC<TOrderList> = ({title, width}) => {
       }
       { orders &&
         <AppScrollbar style={{maxHeight: 'calc(100vh - 200px)'}}>
+          <ul className={OrderListStyles.card}>
           {
             orders.map(order => (
-              <OrderCard id={order._id} displayStatus={false}/> 
+              <li key={order._id}><OrderCard id={order._id} displayStatus={false}/></li>
             ))
           }
+          </ul>
         </AppScrollbar>
       }
     </section>

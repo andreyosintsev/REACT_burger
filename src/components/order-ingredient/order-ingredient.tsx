@@ -4,14 +4,19 @@ import orderIngredientStyles from './order-ingredient.module.css';
 
 type TOrderIngredient = {
   url: string;
-  zIndex: string;
+  text?: string;
 }
 
-const OrderIngredient: FC<TOrderIngredient> = ({url, zIndex}) => {
+const OrderIngredient: FC<TOrderIngredient> = ({url, text}) => {
+
+  const brightness = text ? "60%" : "100%"; 
+
   return (
     <div className = {orderIngredientStyles.content} 
-      style={{backgroundImage: `url(${url})`, 'zIndex': zIndex}}>
-      {/* style={{backgroundImage: `url(${url})`}}> */}
+      style={{backgroundImage: `url(${url})`, 'filter': `brightness(${brightness})`}}>
+        {text &&
+          <p className="text text_type_main-default">{text}</p> 
+        }
     </div>
   )
 };

@@ -6,6 +6,9 @@
   align-items: center;
   margin-top: 40px;
 }
+.content {
+  width: 600px;
+}
 .order_content {
   width: 640px;
   margin: 0 auto;

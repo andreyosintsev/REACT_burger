@@ -1,28 +1,48 @@
 import { FC } from 'react';
 
+import { useSelector } from '../../declarations/hooks';
+
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import OrderIngredient from '../order-ingredient/order-ingredient';
 
+import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
+
 import OrderInfoIngredientStyles from './order-info-ingredient.module.css';
 
-const OrderInfoIngredient: FC = () => {
+type TOrderInfoIngredient = {
+  id: string;
+  pts: number;
+}
+
+const OrderInfoIngredient: FC<TOrderInfoIngredient> = ({id, pts}) => {
+
+  const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
+
+  const ingredient = id && ingredientsList ? ingredientsList.find(ingredient => ingredient._id === id) : undefined;
+
+
+
   return (
+    <>
+    { ingredient &&
     <div className={`${OrderInfoIngredientStyles.content} mb-4`}>
       <div className={`${OrderInfoIngredientStyles.ingredient}`}>
-        <OrderIngredient url="https://code.s3.yandex.net/react/code/bun-02-mobile.png" zIndex="50" />
+        <OrderIngredient url={ingredient.image_mobile} />
         {/* <div className={`${OrderInfoIngredientStyles.name} ml-4`}> */}
           <p className="text text_type_main-small ml-4">
-            Флюоресцентная булка R2-D3
+            {ingredient.name}
           </p>
         {/* </div> */}
       </div>
       <div className={`${OrderInfoIngredientStyles.num_price} ml-4 mr-6`}>
         <p className="text text_type_digits-default">
-          <span>2 x 20</span><CurrencyIcon type="primary" />
+          <span>{pts.toString()} x {ingredient.price}</span><CurrencyIcon type="primary" />
         </p>
       </div>
-    </div>
+    </div> }
+    {!ingredient && null}
+    </>
   )
 }
 
