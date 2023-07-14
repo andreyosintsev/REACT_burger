@@ -8,8 +8,7 @@ import { TConstructorGetOrderNumActions }  from '../services/actions/burger-cons
 import { TIngredientsDetailsActions } from '../services/actions/burger-ingredients-details';
 import { TIngredientsRequestsActions } from '../services/actions/burger-ingredients-requests';
 import { TUserActions } from '../services/actions/user';
-import { TWSFeedActions } from '../services/actions/ws-feed-middleware';
-import { TWSProfileActions } from '../services/actions/ws-profile-middleware';
+import { TWSActions } from '../services/actions/ws-middleware';
 
 export type TIngredient = {
   _id: string;
@@ -55,8 +54,7 @@ export type TApplicationActions =
   | TIngredientsDetailsActions
   | TIngredientsRequestsActions
   | TUserActions
-  | TWSFeedActions
-  | TWSProfileActions;
+  | TWSActions;
 
 export type RootState = ReturnType<typeof store.getState>; 
 export type AppDispatch = ThunkDispatch<RootState, never, TApplicationActions>;

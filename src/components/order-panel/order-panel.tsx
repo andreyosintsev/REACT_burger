@@ -3,7 +3,7 @@ import { useSelector } from '../../declarations/hooks';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
 
-import { wsFeedMessage } from '../../services/selectors/ws-feed-middleware';
+import { wsFeedMessage } from '../../services/selectors/ws-middleware';
 
 import OrderPanelStyles from './order-panel.module.css';
 

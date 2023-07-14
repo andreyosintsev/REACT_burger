@@ -11,10 +11,7 @@ const composeEnhancers =
 
 const store = createStore(
   rootReducer, composeEnhancers(
-    applyMiddleware(thunk, socketMiddleware(
-      'wss://norma.nomoreparties.space/orders/all',
-      'wss://norma.nomoreparties.space/orders'
-    ))
+    applyMiddleware(thunk, socketMiddleware())
   )
 );
 

@@ -12,7 +12,7 @@ import AppScrollbar from '../../components/app-scrollbar/app-scrollbar';
 import OrderInfoIngredient from '../../components/order-info-ingredient/order-info-ingredient';
 
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
-import { wsFeedOrders } from '../../services/selectors/ws-feed-middleware';
+import { wsFeedOrders } from '../../services/selectors/ws-middleware';
 
 import { convertStatus } from '../../utils/utils';
 
@@ -23,12 +23,9 @@ type TIngredientsQuantity = {
 }
 
 const OrderInfo: FC = () => {
-
   const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
   const orders = useSelector(wsFeedOrders);
   const { id } = useParams();
-
-
 
   const order = id && orders ? orders.find(order => order._id === id) : undefined;
  
@@ -42,13 +39,6 @@ const OrderInfo: FC = () => {
     return acc;
   }, {}) 
   : undefined;
-
-  console.log('OrderInfo: id');
-  console.log(id);
-  console.log('OrderInfo: orderS');
-  console.log(orders);
-  console.log('OrderInfo: order');
-  console.log(order);
 
   return (
     <>
@@ -103,10 +93,14 @@ const OrderInfo: FC = () => {
       </div>
     </div>
     }
-    {orders && orders.length === 0 &&       
-      <p className="text text_type_main-medium">
-        <InfoIcon type="primary"/> Заказы отсутствуют.
-      </p>
+    {!order && 
+      <div className={OrderInfoStyles.wrapper}>
+        <div className={OrderInfoStyles.content}>
+          <p className={`${OrderInfoStyles.error} text text_type_main-medium`}>
+            <InfoIcon type="primary"/> Заказ не найден.
+          </p>
+        </div>
+      </div>
     }
     </>
   );

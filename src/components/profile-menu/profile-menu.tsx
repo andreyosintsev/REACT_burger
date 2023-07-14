@@ -4,6 +4,7 @@ import { useDispatch } from '../../declarations/hooks';
 import { NavLink } from 'react-router-dom';
 
 import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../../services/constants/burger-constructor-ingredients';
+import { WS_CONNECTION_CLOSE } from '../../services/constants/ws-middleware';
 
 import { logoutUser  } from '../../services/actions/user';
 
@@ -24,6 +25,10 @@ const ProfileMenu: FC<TProfileMenu> = ({text}) => {
       type: CONSTRUCTOR_CLEAR_INGREDIENTS
     });
     dispatch(logoutUser(refreshToken));
+    dispatch({
+      type: WS_CONNECTION_CLOSE,
+      role: 'wsProfile'
+    });
   };
 
   const setActiveStyle = ({isActive} : {isActive: boolean}) => isActive ? ProfileMenuStyles.active : ProfileMenuStyles.inactive;

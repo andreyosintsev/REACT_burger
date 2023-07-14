@@ -52,6 +52,8 @@ import {
   USER_UPDATE_USER_DATA_FAILED
 } from "../constants/user";
 
+import { WS_CONNECTION_START } from '../constants/ws-middleware';
+
 export type TUserDataUpdateAction = {
   readonly type: typeof USER_DATA_UPDATE;  
   readonly userName: string | undefined;
@@ -228,6 +230,10 @@ export const loginUser = (userEmail: string, userPassword: string) => {
       console.log(data);
       setCookie('accessToken', data.accessToken);
       saveToLocalStorage('refreshToken', data.refreshToken);
+      dispatch({
+        type: WS_CONNECTION_START,
+        role: 'wsProfile'
+      });
       dispatch({
         type: USER_LOGIN_SUCCESS
       });

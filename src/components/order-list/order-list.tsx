@@ -7,8 +7,8 @@ import AppScrollbar from '../app-scrollbar/app-scrollbar';
 import OrderCard from '../order-card/order-card';
 
 import { TWSOrder } from '../../declarations/ws-middleware';
-import { wsFeedOrders } from '../../services/selectors/ws-feed-middleware';
-import { wsProfileOrders } from '../../services/selectors/ws-profile-middleware';
+import { wsFeedOrders } from '../../services/selectors/ws-middleware';
+import { wsProfileOrders } from '../../services/selectors/ws-middleware';
 
 import OrderListStyles from './order-list.module.css';
 
@@ -22,10 +22,17 @@ const OrderList: FC<TOrderList> = ({title, width, role}) => {
   const feedOrders = useSelector(wsFeedOrders);
   const profileOrders = useSelector(wsProfileOrders);
   let orders: TWSOrder[] | undefined;
+  let displayStatus = false;
   
   switch (role) {
-    case 'feed': orders = feedOrders; break;
-    case 'profile': orders = profileOrders; break;
+    case 'feed':
+      orders = feedOrders;
+      displayStatus = false;
+      break;
+    case 'profile':
+      orders = profileOrders;
+      displayStatus = true;
+      break;
   } 
 
   return (
@@ -39,7 +46,7 @@ const OrderList: FC<TOrderList> = ({title, width, role}) => {
           {
             orders.map(order => (
               <li key={order._id}>
-                <OrderCard order={order} displayStatus={false}/>
+                <OrderCard order={order} displayStatus={displayStatus}/>
               </li>
             ))
           }
