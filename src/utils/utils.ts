@@ -7,6 +7,8 @@ export const convertStatus = (orderStatus: string) =>{
   let status: string = 'Ошибка';
 
   switch (orderStatus) {
+    case 'created': status = "Создан"; break;
+    case 'pending': status = "Готовится"; break;
     case 'done': status = "Выполнен"; break;
     case 'cancelled': status = "Отменён"; break;
   }

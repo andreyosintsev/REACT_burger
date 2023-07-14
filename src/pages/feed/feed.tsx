@@ -18,7 +18,7 @@ const Feed: FC = () => {
       }
       {true &&
         <>
-          <OrderList title="Лента заказов" />
+          <OrderList title="Лента заказов" role="feed"/>
           <OrderPanel />
         </>
       }

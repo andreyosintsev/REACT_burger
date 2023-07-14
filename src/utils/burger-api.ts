@@ -9,6 +9,8 @@ import {  TRequestOptions,
           TApiUserRegister,
           TOrderData} from '../declarations/burger-api-types';
 
+import { getCookie } from './cookie';
+
 
 export const NORMA_API = 'https://norma.nomoreparties.space/api';
 
@@ -40,11 +42,17 @@ export const getIngredientsFromApi = (): Promise<TApiIngredients> => {
 };
 
 export const postConstructorDataToApi = (payload: TRequestArrayPayload): Promise<TOrderData>=> {
+  let accessToken = getCookie('accessToken');
+  console.log('In POST TO API');
+  console.log(accessToken);
   try {  
     return request('/orders',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        headers: { 
+          'Content-Type': 'application/json;charset=utf-8',
+          'authorization': accessToken
+        },
         body: JSON.stringify(payload)
       });
   } catch (error: any) {

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useDispatch } from '../../declarations/hooks';
 import { BrowserRouter as Router} from 'react-router-dom';
 
@@ -7,12 +7,8 @@ import ModalSwitch from '../modal-switch/modal-switch';
 import { getIngredients } from '../../services/actions/burger-ingredients-requests';
 import { requestDataUser } from '../../services/actions/user';
 
-import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_CLOSE
-
-} from '../../services/constants/ws-middleware';
-
+import { WS_FEED_CONNECTION_START } from '../../services/constants/ws-feed-middleware';
+import { WS_PROFILE_CONNECTION_START } from '../../services/constants/ws-profile-middleware';
 
 import { getCookie } from '../../utils/cookie';
 
@@ -28,15 +24,11 @@ const App: FC = () => {
 
 
   dispatch({
-    type: WS_CONNECTION_START
+    type: WS_FEED_CONNECTION_START
   });
 
-  useEffect(() => {
-    return () =>{
-      dispatch({
-        type: WS_CONNECTION_CLOSE
-      })
-    }
+  dispatch({
+    type: WS_PROFILE_CONNECTION_START
   });
 
   return (

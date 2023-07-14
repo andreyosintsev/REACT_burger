@@ -8,28 +8,25 @@ import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-component
 
 import OrderIngredient from '../order-ingredient/order-ingredient';
 
+import { TWSOrder } from '../../declarations/ws-middleware';
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
-import { wsOrders } from '../../services/selectors/ws-middleware';
 
 import { convertStatus } from '../../utils/utils';
 
 import OrderCardStyles from './order-card.module.css';
 
 type TOrderCard = {
-  id: string;
+  order: TWSOrder;
   displayStatus: boolean;
 }
 
-const OrderCard: FC<TOrderCard> = ({ id, displayStatus }) => {
-  const orders = useSelector(wsOrders);
+const OrderCard: FC<TOrderCard> = ({ order, displayStatus }) => {
   const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
   const location = useLocation();
 
   const link: string = location.pathname === '/profile/orders' 
-    ? `/profile/orders/${id}` 
-    : `/feed/${id}`;
-
-  const order = orders!.find(order => order._id === id)!;
+    ? `/profile/orders/${order._id}` 
+    : `/feed/${order._id}`;
   
   const status = convertStatus(order.status);
 
@@ -40,7 +37,7 @@ const OrderCard: FC<TOrderCard> = ({ id, displayStatus }) => {
   const sum = order.ingredients.reduce((acc, curr, i, arr) => 
     acc += ingredientsList.find(data => data._id === arr[i])!.price, 0
   );
-  
+
   return (
     <Link
       to={link}
@@ -91,16 +88,16 @@ const OrderCard: FC<TOrderCard> = ({ id, displayStatus }) => {
                 )
               })
             }
-            </ul>
-          </div>
-          <div className = {`${OrderCardStyles.card_content_price}`}>
-            <p className="text text_type_digits-default">
-              <span>{sum}</span><CurrencyIcon type="primary" />
-            </p>
-          </div>
-        </div>
-      </div>
-    </Link>
+             </ul>
+           </div>
+           <div className = {`${OrderCardStyles.card_content_price}`}>
+             <p className="text text_type_digits-default">
+               <span>{sum}</span><CurrencyIcon type="primary" />
+             </p>
+           </div>
+         </div>
+       </div>
+     </Link>
   )
 }
 

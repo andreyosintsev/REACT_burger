@@ -7,7 +7,8 @@ export function getCookie(key: string): string {
 
 export function setCookie(key: string, value: string): void {
   value = encodeURIComponent(value);
-  document.cookie = key + '=' + value;
+  const daysToExpire = new Date(2147483647 * 1000).toUTCString()
+  document.cookie = key + '=' + value+'; expires=' + daysToExpire + '; path=/';
 } 
 
 export function deleteCookie(key: string): void {

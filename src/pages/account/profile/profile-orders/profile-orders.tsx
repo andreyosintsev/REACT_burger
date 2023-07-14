@@ -12,7 +12,7 @@ const ProfileOrders: FC = () => {
       <main className={ProfileOrdersStyles.content}>
         <ProfileMenu text = "В этом разделе вы можете просмотреть свою историю заказов"/>
         <div className={ProfileOrdersStyles.list}>
-          <OrderList width="100%"/>    
+          <OrderList width="100%" role="profile"/>    
         </div>
       </main>
     </div> 

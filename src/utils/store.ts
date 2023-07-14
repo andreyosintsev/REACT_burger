@@ -9,6 +9,13 @@ const composeEnhancers =
     ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk, socketMiddleware('wss://norma.nomoreparties.space/orders/all'))));
+const store = createStore(
+  rootReducer, composeEnhancers(
+    applyMiddleware(thunk, socketMiddleware(
+      'wss://norma.nomoreparties.space/orders/all',
+      'wss://norma.nomoreparties.space/orders'
+    ))
+  )
+);
 
 export default store;

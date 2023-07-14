@@ -356,7 +356,7 @@ export const requestDataUser = (accessToken: string) => {
   };
 };
 
-const refreshToken = (afterRefresh: any) => (dispatch: AppDispatch) => {
+export const refreshToken = (afterRefresh: any) => (dispatch: AppDispatch) => {
   console.log('In refreshToken');
   postRefreshTokenToApi(          
     {

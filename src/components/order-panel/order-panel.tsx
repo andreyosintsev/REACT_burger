@@ -3,12 +3,12 @@ import { useSelector } from '../../declarations/hooks';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
 
-import { wsMessage } from '../../services/selectors/ws-middleware';
+import { wsFeedMessage } from '../../services/selectors/ws-feed-middleware';
 
 import OrderPanelStyles from './order-panel.module.css';
 
 const OrderPanel: FC = () => {
-  const message = useSelector(wsMessage);
+  const message = useSelector(wsFeedMessage);
 
   const ordersDone = message 
   ? message.orders.filter(order =>(order.status === 'done')).slice(0, 10)

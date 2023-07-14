@@ -13,6 +13,9 @@
   width: 640px;
   margin: 0 auto;
 }
+.order_content li {
+  width: 100%;
+}
 .order_num {
   text-align: center;
 }
@@ -26,6 +29,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.order_footer_price {
+  margin-right: -40px;
 }
 .order_footer_price p {
   display: flex;

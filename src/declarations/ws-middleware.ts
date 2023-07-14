@@ -14,3 +14,8 @@ export type TWSMessage = {
   total: number;
   totalToday: number;
 }
+export type TWSState = {
+  wsConnected: boolean;
+  wsMessage?: TWSMessage;
+  wsError?: Event;
+}
