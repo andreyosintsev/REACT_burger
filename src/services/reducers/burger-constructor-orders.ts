@@ -3,13 +3,12 @@ import {
 } from "../actions/burger-constructor-orders";
 
 export type TConstructorOrderState = {
-  orderNum: string;
+  orderNum?: string;
   orderIsLoading: boolean;
   orderHasError: boolean;
 }
 
 const initialState: TConstructorOrderState = {
-  orderNum: '----',
   orderIsLoading: false,
   orderHasError: false
 };
@@ -35,6 +34,11 @@ export const burgerConstructorOrders = (state = initialState, action: TConstruct
         orderIsLoading: false,
         orderHasError: true,
         orderNum: 'Error!'
+      };
+    case 'CONSTRUCTOR_CLEAR_ORDERNUM':
+      return {
+        ...state,
+        orderNum: undefined
       };
     default:
       return state; 

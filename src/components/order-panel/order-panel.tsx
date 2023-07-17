@@ -3,12 +3,12 @@ import { useSelector } from '../../declarations/hooks';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
 
-import { wsFeedMessage } from '../../services/selectors/ws-middleware';
+import { wsMessage } from '../../services/selectors/ws-middleware';
 
 import OrderPanelStyles from './order-panel.module.css';
 
 const OrderPanel: FC = () => {
-  const message = useSelector(wsFeedMessage);
+  const message = useSelector(wsMessage);
 
   const ordersDone = message 
   ? message.orders.filter(order =>(order.status === 'done')).slice(0, 10)
@@ -24,7 +24,7 @@ const OrderPanel: FC = () => {
         <div className={`${OrderPanelStyles.header} mb-15`}>
           <div className={OrderPanelStyles.header_ready}>
             <p className="text text_type_main-medium mb-6">Готовы</p>
-            <ul className={OrderPanelStyles.order_list}>
+            <ul className={`${OrderPanelStyles.order_list} mb-15` }>
               {ordersDone.map(order => 
                 <li key={order.number}><p className="text text_type_digits-default">{order.number}</p></li>
               )}

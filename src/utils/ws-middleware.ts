@@ -1,149 +1,73 @@
 import type { Middleware, MiddlewareAPI } from 'redux';
 
-import { getCookie } from './cookie';
-
 import type { TApplicationActions, RootState, AppDispatch } from '../declarations/types';
 
-export const FEED_API = 'wss://norma.nomoreparties.space/orders/all';
-export const PROFILE_API = 'wss://norma.nomoreparties.space/orders';
+import { TWSStoreActions } from '../declarations/ws-middleware';
 
-export const socketMiddleware = (): Middleware => {
+export const socketMiddleware = (wsActions: TWSStoreActions): Middleware => {
     return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
-      let socketFeed: WebSocket | null = null;
-      let socketProfile: WebSocket | null = null;
+      let socket: WebSocket | null = null;
 
     return next => (action: TApplicationActions) => {
       const { dispatch } = store;
+      const { type } = action;
+      const { wsInit, onOpen, wsClose, onClosed, onError, onMessage } = wsActions;
 
-      if (action.type === 'WS_CONNECTION_START') {
-        switch (action.role) {
-          case 'wsFeed': {
-            console.log('WS FEED START: Открытие соединения для ленты');
-            socketFeed = (!socketFeed || socketFeed.readyState !== 1) ? new WebSocket(FEED_API) : socketFeed; 
-            if (socketFeed) {
-              console.log ('WS FEED START: Соединение для ленты открыто');
-            }
-            break;
-          }
-          case 'wsProfile': {
-            console.log('WS PROFILE START: Открытие соединения для профиля');
-            let accessToken = getCookie('accessToken');
-            if (accessToken.indexOf('Bearer') === 0) {
-              accessToken = accessToken.split('Bearer ')[1];
-            }
-            console.log('accessToken: ' + accessToken);
-            socketProfile = (!socketProfile || socketProfile.readyState !== 1) ? new WebSocket(`${PROFILE_API}?token=${accessToken}`) : socketProfile;
-            if (socketProfile) {
-              console.log ('WS PROFILE START: Соединение для профиля открыто');
-              console.log('readyState: '+socketProfile.readyState);
-            }
-          }
+
+      if (type === wsInit) {
+        console.log('WS START: Открытие соединения');
+        console.log(`WS START: ${action.url}`);
+        socket = (!socket || socket.readyState !== 1) 
+          ? new WebSocket(action.url) : socket; 
+        if (socket) {
+          console.log ('WS START: Соединение открыто');
+        } else {
+          console.error (`WS START: Не удалось открыть соединение, URL: ${action.url}`);
         }
       }
 
-      if (action.type === 'WS_CONNECTION_CLOSE') {
-        switch (action.role) {
-          case 'wsFeed': {
-            if (socketFeed) {
-              console.log('WS FEED CLOSE: Соединение для ленты заказов закрывается клиентом');
-              socketFeed.close(1000, 'Feed connection closed by client');
-              dispatch({ 
-                type: 'WS_CONNECTION_CLOSED',
-                role: 'wsFeed'
-              });
-            }
-            break;
-          }
-          case 'wsProfile': {
-            if (socketProfile) {
-              console.log('WS PROFILE CLOSE: Соединение для профиля закрывается клиентом');
-              socketProfile.close(1000, 'Profile connection closed by client');
-              dispatch({ 
-                type: 'WS_CONNECTION_CLOSED',
-                role: 'wsProfile'
-              });
-            }
-            break;       
-          }
+      if (type === wsClose) {
+        if (socket) {
+          console.log('WS CLOSE: Соединение закрывается клиентом');
+          socket.close(1000, 'Feed connection closed');
+          dispatch({ 
+            type: onClosed
+          });
         }
       }
 
-      if (socketFeed && socketFeed.readyState !== 1) {
+      if (socket && socket.readyState !== 1) {
 
-        socketFeed.onopen = event => {
-          console.log('WS FEED OPEN: Соединение для ленты установлено');
+        socket.onopen = event => {
+          console.log('WS OPEN: Соединение  установлено');
           dispatch({
-            type: 'WS_CONNECTION_SUCCESS',
-            role: 'wsFeed'
+            type: onOpen
           });
         };
 
-        socketFeed.onerror = event => {
-          console.error('WS FEED ERROR: Ошибка соединения для ленты');
+        socket.onerror = event => {
+          console.error('WS ERROR: Ошибка соединения');
           dispatch({
-            type: 'WS_CONNECTION_ERROR',
-            payload: event,
-            role: 'wsFeed'
+            type: onError,
+            payload: event
           });
         };
 
-        socketFeed.onmessage = event => {
-          console.log('WS FEED MESSAGE: Получено сообщение от сервера для ленты');
+        socket.onmessage = event => {
+          console.log('WS MESSAGE: Получено сообщение от сервера');
           const { data } = event;
+          console.log(JSON.parse(data));
           dispatch({
-            type: 'WS_GET_MESSAGE',
+            type: onMessage,
             payload: JSON.parse(data),
-            role: 'wsFeed'
           });
         };
         
-        socketFeed.onclose = event => {
-          console.log('WS FEED CLOSED: Соединение для ленты закрыто');
-          console.log('WS FEED CLOSED: Код закрытия для ленты ' + event.code);
+        socket.onclose = event => {
+          console.log('WS CLOSED: Соединение закрыто');
+          console.log('WS CLOSED: Код закрытия ' + event.code);
           dispatch({
-            type: 'WS_CONNECTION_CLOSED',
-            role: 'wsFeed'
-          });
-        };
-      }
-
-      if (socketProfile && socketProfile.readyState !== 1) {
-
-        socketProfile.onopen = event => {
-          console.log('WS PROFILE OPEN: Соединение для профиля установлено');
-          dispatch({
-            type: 'WS_CONNECTION_SUCCESS',
-            role: 'wsProfile'
-          });
-        };
-
-        socketProfile.onerror = event => {
-          console.error('WS PROFILE ERROR: Ошибка соединения для профиля');
-          dispatch({
-            type: 'WS_CONNECTION_ERROR',
-            payload: event,
-            role: 'wsProfile'
-          });
-        };
-
-        socketProfile.onmessage = event => {
-          console.log('WS PROFILE MESSAGE: Получено сообщение от сервера для профиля');
-          const { data } = event;
-          const parsedData = JSON.parse(data);
-          console.log(parsedData);
-          dispatch({
-            type: 'WS_GET_MESSAGE',
-            payload: JSON.parse(data),
-            role: 'wsProfile'
-          });
-        };
-        
-        socketProfile.onclose = event => {
-          console.log('WS PROFILE CLOSED: Соединение для профиля закрыто');
-          console.log('WS PROFILE CLOSED: Код закрытия для профиля ' + event.code);
-          dispatch({
-            type: 'WS_CONNECTION_CLOSED',
-            role: 'wsProfile'
+            type: onClosed
           });
         };
       }

@@ -1,39 +1,63 @@
-import { FC } from 'react';
-import { useSelector } from '../../declarations/hooks';
+import { FC, useEffect } from 'react';
+import { useSelector, useDispatch } from '../../declarations/hooks';
 
 import { InfoIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import AppScrollbar from '../app-scrollbar/app-scrollbar';
 import OrderCard from '../order-card/order-card';
 
-import { TWSOrder } from '../../declarations/ws-middleware';
-import { wsFeedOrders } from '../../services/selectors/ws-middleware';
-import { wsProfileOrders } from '../../services/selectors/ws-middleware';
+import { TWSRole, WS_ROLE_FEED, WS_ROLE_PROFILE } from '../../declarations/ws-middleware';
+import { wsOrders } from '../../services/selectors/ws-middleware';
+
+import { getCookie, trimTokenBearer } from '../../utils/cookie';
 
 import OrderListStyles from './order-list.module.css';
+
+import { 
+  WS_CONNECTION_START,
+  WS_CONNECTION_CLOSE
+} from '../../services/constants/ws-middleware';
+import { 
+  FEED_API, 
+  PROFILE_API
+} from '../../components/app/app';
 
 type TOrderList = {
   title?: string;
   width?: string;
-  role: 'feed' | 'profile';
+  role: TWSRole;
 }
 
 const OrderList: FC<TOrderList> = ({title, width, role}) => {
-  const feedOrders = useSelector(wsFeedOrders);
-  const profileOrders = useSelector(wsProfileOrders);
-  let orders: TWSOrder[] | undefined;
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const accessToken = trimTokenBearer(getCookie('accessToken'));
+
+    let url = '';
+
+    switch (role) {
+      case WS_ROLE_FEED: url = FEED_API; break;
+      case WS_ROLE_PROFILE: url = PROFILE_API+'?token='+accessToken; break;
+    }
+    
+    if (url) {    
+      dispatch({
+        type: WS_CONNECTION_START,
+        url
+      });
+    }
+
+    return (()=>{
+      dispatch({
+        type: WS_CONNECTION_CLOSE
+      })
+    })
+  }, []);
+
+  const orders = useSelector(wsOrders);
   let displayStatus = false;
-  
-  switch (role) {
-    case 'feed':
-      orders = feedOrders;
-      displayStatus = false;
-      break;
-    case 'profile':
-      orders = profileOrders;
-      displayStatus = true;
-      break;
-  } 
 
   return (
     <section className={OrderListStyles.content} style={width ? {'width': width} : undefined}>

@@ -231,10 +231,6 @@ export const loginUser = (userEmail: string, userPassword: string) => {
       setCookie('accessToken', data.accessToken);
       saveToLocalStorage('refreshToken', data.refreshToken);
       dispatch({
-        type: WS_CONNECTION_START,
-        role: 'wsProfile'
-      });
-      dispatch({
         type: USER_LOGIN_SUCCESS
       });
     })

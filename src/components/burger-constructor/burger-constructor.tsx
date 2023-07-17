@@ -15,6 +15,7 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 
 import { getOrderNumber } from '../../services/actions/burger-constructor-orders';
+import { CONSTRUCTOR_CLEAR_ORDERNUM } from '../../services/constants/burger-constructor-orders';
 
 import {
   CONSTRUCTOR_ADD_INGREDIENT,
@@ -81,6 +82,9 @@ const BurgerConstructor: FC = () => {
     }
     if (!modalShow && userIsLogged) {
       if (!bun) { return; }
+      dispatch({
+        type: CONSTRUCTOR_CLEAR_ORDERNUM
+      });
       dispatch(getOrderNumber(constructorList, bun));
       clearBurgerLocalStorage();
       setModalShow(true);

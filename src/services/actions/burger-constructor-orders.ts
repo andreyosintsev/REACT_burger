@@ -11,7 +11,8 @@ import {
 import {
   CONSTRUCTOR_GET_ORDERNUM,
   CONSTRUCTOR_GET_ORDERNUM_SUCCESS,
-  CONSTRUCTOR_GET_ORDERNUM_FAILED
+  CONSTRUCTOR_GET_ORDERNUM_FAILED,
+  CONSTRUCTOR_CLEAR_ORDERNUM
 } from '../constants/burger-constructor-orders';
 
 export type TConstructorGetOrderNumAction = {
@@ -27,10 +28,15 @@ export type TConstructorGetOrderNumFailedAction = {
   readonly type: typeof CONSTRUCTOR_GET_ORDERNUM_FAILED;
 };
 
+export type TConstructorClearOrderNumAction = {
+  readonly type: typeof CONSTRUCTOR_CLEAR_ORDERNUM;
+};
+
 export type TConstructorGetOrderNumActions = 
   | TConstructorGetOrderNumAction
   | TConstructorGetOrderNumSuccessAction
-  | TConstructorGetOrderNumFailedAction;
+  | TConstructorGetOrderNumFailedAction
+  | TConstructorClearOrderNumAction;
 
 export const getOrderNumber = (ingredients: TConstructorIngredients, bun: TConstructorIngredient) => {
   return function (dispatch: AppDispatch) {

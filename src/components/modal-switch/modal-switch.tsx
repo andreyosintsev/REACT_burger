@@ -19,6 +19,8 @@ import Modal from '../modal/modal';
 
 import { INGREDIENTS_DESELECT_INGREDIENT } from '../../services/constants/burger-ingredients-details';
 
+import { WS_ROLE_FEED, WS_ROLE_PROFILE } from '../../declarations/ws-middleware';
+
 const ModalSwitch: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -61,13 +63,13 @@ const ModalSwitch: FC = () => {
                 anonymous={false}/>
               } />
         <Route path='/profile/orders/:id' element={<ProtectedRouteElement 
-                element={<OrderInfo />}
+                element={<OrderInfo role={WS_ROLE_PROFILE} />}
                 anonymous={false}/>
               } />
         <Route path='/' element={<HomePage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/ingredients/:ingredientId' element={<IngredientDetails />} />    
-        <Route path='/feed/:id' element={<OrderInfo />} />     
+        <Route path='/feed/:id' element={<OrderInfo role={WS_ROLE_FEED} />} />     
         <Route path="*" element={<NotFound404 />} />   
       </Routes>
 
@@ -83,7 +85,7 @@ const ModalSwitch: FC = () => {
           <Route path='/feed/:id' 
                   element={
                     <Modal onClick={handleModalClose}>
-                      <OrderInfo />
+                      <OrderInfo role={WS_ROLE_FEED} />
                     </Modal>
                   }
           /> 
@@ -91,7 +93,7 @@ const ModalSwitch: FC = () => {
                   element={<ProtectedRouteElement 
                     element={
                       <Modal onClick={handleModalClose}>
-                        <OrderInfo />
+                        <OrderInfo role={WS_ROLE_PROFILE} />
                       </Modal>
                     }
                     anonymous={false}/>

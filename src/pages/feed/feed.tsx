@@ -1,10 +1,11 @@
-import { FC, useEffect } from 'react';
-
+import { FC } from 'react';
 
 import { InfoIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import OrderList from '../../components/order-list/order-list';
 import OrderPanel from '../../components/order-panel/order-panel';
+
+import { WS_ROLE_FEED } from '../../declarations/ws-middleware';
 
 import FeedStyles from './feed.module.css';
 
@@ -18,7 +19,7 @@ const Feed: FC = () => {
       }
       {true &&
         <>
-          <OrderList title="Лента заказов" role="feed"/>
+          <OrderList title="Лента заказов" role={WS_ROLE_FEED}/>
           <OrderPanel />
         </>
       }

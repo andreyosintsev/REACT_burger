@@ -1,43 +1,72 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from '../../declarations/hooks';
 
 import { 
   InfoIcon,
   CurrencyIcon, 
   FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { useSelector } from '../../declarations/hooks';
+import { getCookie, trimTokenBearer } from '../../utils/cookie';
 
 import AppScrollbar from '../../components/app-scrollbar/app-scrollbar';
 import OrderInfoIngredient from '../../components/order-info-ingredient/order-info-ingredient';
 
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
-import { wsFeedOrders } from '../../services/selectors/ws-middleware';
+import { wsOrders } from '../../services/selectors/ws-middleware';
 
 import { convertStatus } from '../../utils/utils';
 
 import OrderInfoStyles from './order-info.module.css';
 
-type TIngredientsQuantity = {
-  [key: string]: number;
+import { TWSRole, WS_ROLE_FEED, WS_ROLE_PROFILE } from '../../declarations/ws-middleware';
+
+import { 
+  WS_CONNECTION_START,
+} from '../../services/constants/ws-middleware';
+
+import { FEED_API } from '../../components/app/app';
+import { PROFILE_API } from '../../components/app/app';
+
+type TOrderInfo = {
+  role: TWSRole;
 }
 
-const OrderInfo: FC = () => {
+const OrderInfo: FC<TOrderInfo> = ({ role }) => {
+  console.log('In Order info');
   const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
-  const orders = useSelector(wsFeedOrders);
+  const orders = useSelector(wsOrders);
+  const dispatch = useDispatch();
+  
   const { id } = useParams();
 
+  const accessToken = trimTokenBearer(getCookie('accessToken'));
+
+  let url = '';
+
+  switch (role) {
+    case WS_ROLE_FEED: url = FEED_API; break;
+    case WS_ROLE_PROFILE: url = PROFILE_API+'?token='+accessToken; break;
+  }
+
+  useEffect(() => {
+    dispatch({
+      type: WS_CONNECTION_START,
+      url
+    });
+  }, []);
+  
   const order = id && orders ? orders.find(order => order._id === id) : undefined;
- 
+
   const sum = order ? order.ingredients.reduce((acc, curr, i, arr: string[]) => 
     acc += ingredientsList.find(data => data._id === arr[i])!.price, 0
   ) : undefined;
 
   const ingredientsQuantity = order 
-  ? order.ingredients.reduce((acc: TIngredientsQuantity, el: string) => {
+  ? order.ingredients.reduce((acc, el) => {
     acc[el] = (acc[el] || 0) + 1;
     return acc;
-  }, {}) 
+  }, {} as Record<string, number>) 
   : undefined;
 
   return (

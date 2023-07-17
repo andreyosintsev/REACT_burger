@@ -42,7 +42,7 @@ export const getIngredientsFromApi = (): Promise<TApiIngredients> => {
 };
 
 export const postConstructorDataToApi = (payload: TRequestArrayPayload): Promise<TOrderData>=> {
-  let accessToken = getCookie('accessToken');
+  const accessToken = getCookie('accessToken');
   console.log('In POST TO API');
   console.log(accessToken);
   try {  

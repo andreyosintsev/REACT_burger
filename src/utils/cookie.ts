@@ -5,6 +5,14 @@ export function getCookie(key: string): string {
   return matches ? decodeURIComponent(matches[1]) : "";
 }
 
+export function trimTokenBearer(token: string): string {
+  if (token.indexOf('Bearer') === 0) {
+    return token.split('Bearer ')[1];
+  } else {
+    return token;
+  }
+} 
+
 export function setCookie(key: string, value: string): void {
   value = encodeURIComponent(value);
   const daysToExpire = new Date(2147483647 * 1000).toUTCString()

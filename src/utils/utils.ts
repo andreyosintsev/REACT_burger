@@ -4,13 +4,14 @@ export const getIngredientDataById = (data: TIngredients, id: string): (TIngredi
                                       data.find(data => data._id === id);
 
 export const convertStatus = (orderStatus: string) =>{
-  let status: string = 'Ошибка';
+  let status: string;
 
   switch (orderStatus) {
-    case 'created': status = "Создан"; break;
-    case 'pending': status = "Готовится"; break;
-    case 'done': status = "Выполнен"; break;
+    case 'created':   status = "Создан"; break;
+    case 'pending':   status = "Готовится"; break;
+    case 'done':      status = "Выполнен"; break;
     case 'cancelled': status = "Отменён"; break;
+    default:          status = "Ошибка";
   }
 
   return status;
