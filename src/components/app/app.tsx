@@ -11,10 +11,6 @@ import { getCookie } from '../../utils/cookie';
 
 import AppStyles from './app.module.css';
 
-export const FEED_API = 'wss://norma.nomoreparties.space/orders/all';
-export const PROFILE_API = 'wss://norma.nomoreparties.space/orders';
-
-
 const App: FC = () => {
   const dispatch = useDispatch();
   const accessToken = getCookie('accessToken');

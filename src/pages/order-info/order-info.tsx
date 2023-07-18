@@ -25,8 +25,8 @@ import {
   WS_CONNECTION_START,
 } from '../../services/constants/ws-middleware';
 
-import { FEED_API } from '../../components/app/app';
-import { PROFILE_API } from '../../components/app/app';
+import { FEED_API } from '../../declarations/constants';
+import { PROFILE_API } from '../../declarations/constants';
 
 type TOrderInfo = {
   role: TWSRole;

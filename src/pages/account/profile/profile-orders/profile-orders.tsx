@@ -11,7 +11,7 @@ import { WS_CONNECTION_START,
          WS_CONNECTION_CLOSE
        } from '../../../../services/constants/ws-middleware';
 
-import { PROFILE_API } from '../../../../components/app/app';
+import { PROFILE_API } from '../../../../declarations/constants';
 
 import { getCookie, trimTokenBearer } from '../../../../utils/cookie';
 

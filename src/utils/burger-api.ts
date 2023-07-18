@@ -11,8 +11,7 @@ import {  TRequestOptions,
 
 import { getCookie } from './cookie';
 
-
-export const NORMA_API = 'https://norma.nomoreparties.space/api';
+import { NORMA_API } from '../declarations/constants';
 
 const checkFetchResponse = <T>(res: Response): Promise<T> => {
   return res.ok 

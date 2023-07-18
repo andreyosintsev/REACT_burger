@@ -20,7 +20,7 @@ import {
 import { 
   FEED_API, 
   PROFILE_API
-} from '../../components/app/app';
+} from '../../declarations/constants';
 
 type TOrderList = {
   title?: string;
