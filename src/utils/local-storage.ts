@@ -1,4 +1,6 @@
-import { TIngredient, TIngredients } from "../declarations/types";
+import { 
+  TConstructorIngredient,
+  TConstructorIngredients } from "../declarations/types";
 
 function saveToLocalStorage(key: string, value: string): void {
   localStorage.setItem(key, value);
@@ -11,7 +13,7 @@ function deleteFromLocalStorage(key: string): void {
   localStorage.removeItem(key);
 }
 
-function saveBurgerToLocalStorage(constructorList: TIngredients, bun: TIngredient): void {
+function saveBurgerToLocalStorage(constructorList: TConstructorIngredients, bun: TConstructorIngredient): void {
   localStorage.setItem('constructorList', JSON.stringify(constructorList));
   localStorage.setItem('bun', JSON.stringify(bun));  
 }
@@ -22,14 +24,14 @@ function clearBurgerLocalStorage(): void {
 }
 
 type TConstructorList = {
-  constructorList: TIngredients,
-  bun: TIngredient | null
+  constructorList: TConstructorIngredients,
+  bun: TConstructorIngredient | null
 }
 
 function loadBurgerFromLocalStorage(): TConstructorList {
   
-  let parsedConstructorList: TIngredients = [];
-  let parsedBun: TIngredient | null = null;
+  let parsedConstructorList: TConstructorIngredients = [];
+  let parsedBun: TConstructorIngredient | null = null;
 
   const constructorList: string = getFromLocalStorage('constructorList');
   if (constructorList.length > 0) {

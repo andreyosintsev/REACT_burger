@@ -1,7 +1,6 @@
 import { FC, useEffect, FormEvent } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../../declarations/hooks";
 import { Link, useNavigate } from 'react-router-dom';
-import { TDispatch } from '../../../utils/store';
 
 import { useForm } from '../../../hooks/useForm';
 
@@ -14,8 +13,8 @@ import SignInStyles from './sign-in.module.css';
 
 const SignIn: FC = () => {
   const { values, handleChange } = useForm({});
-  const {userIsLogged} = useSelector(userData); 
-  const dispatch: TDispatch = useDispatch();
+  const { userIsLogged } = useSelector(userData); 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(()=>{

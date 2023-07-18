@@ -1,3 +1,5 @@
+import {  AppDispatch } from '../../declarations/types';
+
 import {  postUserRegisterToApi,
           postUserLoginToApi,
           postUserLogoutToApi,
@@ -16,40 +18,176 @@ import {  getFromLocalStorage,
           deleteFromLocalStorage,
           clearBurgerLocalStorage } from "../../utils/local-storage";
 
-export const USER_DATA_UPDATE =     'USER_DATA_UPDATE';
-export const USER_ROLLBACK =        'USER_ROLLBACK';
-export const USER_ROLLBACK_UPDATE = 'USER_ROLLBACK_UPDATE';
+import {
+  USER_DATA_UPDATE,
+  USER_ROLLBACK,
+  USER_ROLLBACK_UPDATE,
 
-export const USER_REG =           'USER_REG';
-export const USER_REG_SUCCESS =   'USER_REG_SUCCESS';
-export const USER_REG_FAILED  =   'USER_REG_FAILED';
+  USER_REG,
+  USER_REG_SUCCESS,
+  USER_REG_FAILED,
 
-export const USER_LOGIN =         'USER_LOGIN';
-export const USER_LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
-export const USER_LOGIN_FAILED  =  'USER_LOGIN_FAILED';
+  USER_LOGIN,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAILED,
 
-export const USER_LOGOUT =         'USER_LOGOUT';
-export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS';
-export const USER_LOGOUT_FAILED  = 'USER_LOGOUT_FAILED';
+  USER_LOGOUT,
+  USER_LOGOUT_SUCCESS,
+  USER_LOGOUT_FAILED,
 
-export const USER_PASSWORD_REQUEST =          'USER_PASSWORD_REQUEST';
-export const USER_PASSWORD_REQUEST_SUCCESS =  'USER_PASSWORD_REQUEST_SUCCESS';
-export const USER_PASSWORD_REQUEST_FAILED =   'USER_PASSWORD_REQUEST_FAILED';
+  USER_PASSWORD_REQUEST,
+  USER_PASSWORD_REQUEST_SUCCESS,
+  USER_PASSWORD_REQUEST_FAILED,
 
-export const USER_PASSWORD_RESET =            'USER_PASSWORD_RESET';
-export const USER_PASSWORD_RESET_SUCCESS =    'USER_PASSWORD_RESET_SUCCESS';
-export const USER_PASSWORD_RESET_FAILED =     'USER_PASSWORD_RESET_FAILED';
+  USER_PASSWORD_RESET,
+  USER_PASSWORD_RESET_SUCCESS,
+  USER_PASSWORD_RESET_FAILED,
 
-export const USER_GET_USER_DATA =             'USER_GET_USER_DATA';
-export const USER_GET_USER_DATA_SUCCESS =     'USER_GET_USER_DATA_SUCCESS';
-export const USER_GET_USER_DATA_FAILED =      'USER_GET_USER_DATA_FAILED';
+  USER_GET_USER_DATA,
+  USER_GET_USER_DATA_SUCCESS,
+  USER_GET_USER_DATA_FAILED,
 
-export const USER_UPDATE_USER_DATA =          'USER_UPDATE_USER_DATA';
-export const USER_UPDATE_USER_DATA_SUCCESS =  'USER_UPDATE_USER_DATA_SUCCESS';
-export const USER_UPDATE_USER_DATA_FAILED =   'USER_UPDATE_USER_DATA_FAILED';
+  USER_UPDATE_USER_DATA,
+  USER_UPDATE_USER_DATA_SUCCESS,
+  USER_UPDATE_USER_DATA_FAILED
+} from "../constants/user";
+
+import { WS_CONNECTION_START } from '../constants/ws-middleware';
+
+export type TUserDataUpdateAction = {
+  readonly type: typeof USER_DATA_UPDATE;  
+  readonly userName: string | undefined;
+  readonly userEmail: string | undefined;
+}
+
+export type TUserRollbackAction = {
+  readonly type: typeof USER_ROLLBACK;  
+  readonly userRollbackName: string;
+  readonly userRollbackEmail: string;
+}
+
+export type TUserRollbackUpdateAction = {
+  readonly type: typeof USER_ROLLBACK_UPDATE;  
+  readonly userRollbackName: string;
+  readonly userRollbackEmail: string;
+}
+
+export type TUserRegAction = {
+  readonly type: typeof USER_REG;  
+}
+
+export type TUserRegSuccessAction = {
+  readonly type: typeof USER_REG_SUCCESS;  
+}
+
+export type TUserRegFailedAction = {
+  readonly type: typeof USER_REG_FAILED; 
+}
+
+export type TUserLoginAction = {
+  readonly type: typeof USER_LOGIN;  
+}
+
+export type TUserLoginSuccessAction = {
+  readonly type: typeof USER_LOGIN_SUCCESS;  
+}
+
+export type TUserLoginFailedAction = {
+  readonly type: typeof USER_LOGIN_FAILED; 
+}
+
+export type TUserLogoutAction = {
+  readonly type: typeof USER_LOGOUT;  
+}
+
+export type TUserLogoutSuccessAction = {
+  readonly type: typeof USER_LOGOUT_SUCCESS;  
+}
+
+export type TUserLogoutFailedAction = {
+  readonly type: typeof USER_LOGOUT_FAILED; 
+}
+
+export type TUserPasswordRequestAction = {
+  readonly type: typeof USER_PASSWORD_REQUEST;  
+}
+
+export type TUserPasswordRequestSuccessAction = {
+  readonly type: typeof USER_PASSWORD_REQUEST_SUCCESS;  
+}
+
+export type TUserPasswordRequestFailedAction = {
+  readonly type: typeof USER_PASSWORD_REQUEST_FAILED; 
+}
+
+export type TUserPasswordResetAction = {
+  readonly type: typeof USER_PASSWORD_RESET;  
+}
+
+export type TUserPasswordResetSuccessAction = {
+  readonly type: typeof USER_PASSWORD_RESET_SUCCESS;  
+}
+
+export type TUserPasswordResetFailedAction = {
+  readonly type: typeof USER_PASSWORD_RESET_FAILED; 
+}
+
+export type TUserGetUserDataAction = {
+  readonly type: typeof USER_GET_USER_DATA;  
+}
+
+export type TUserGetUserDataSuccessAction = {
+  readonly type: typeof USER_GET_USER_DATA_SUCCESS;
+  readonly userName: string;
+  readonly userEmail: string;
+}
+
+export type TUserGetUserDataFailedAction = {
+  readonly type: typeof USER_GET_USER_DATA_FAILED; 
+}
+
+export type TUserUpdateUserDataAction = {
+  readonly type: typeof USER_UPDATE_USER_DATA;  
+}
+
+export type TUserUpdateUserDataSuccessAction = {
+  readonly type: typeof USER_UPDATE_USER_DATA_SUCCESS;
+  readonly userName: string;
+  readonly userEmail: string;
+}
+
+export type TUserUpdateUserDataFailedAction = {
+  readonly type: typeof USER_UPDATE_USER_DATA_FAILED; 
+}
+
+export type TUserActions = 
+  | TUserDataUpdateAction
+  | TUserRollbackAction
+  | TUserRollbackUpdateAction
+  | TUserRegAction
+  | TUserRegSuccessAction
+  | TUserRegFailedAction
+  | TUserLoginAction
+  | TUserLoginSuccessAction
+  | TUserLoginFailedAction
+  | TUserLogoutAction
+  | TUserLogoutSuccessAction
+  | TUserLogoutFailedAction
+  | TUserPasswordRequestAction
+  | TUserPasswordRequestSuccessAction
+  | TUserPasswordRequestFailedAction
+  | TUserPasswordResetAction
+  | TUserPasswordResetSuccessAction
+  | TUserPasswordResetFailedAction
+  | TUserGetUserDataAction
+  | TUserGetUserDataSuccessAction
+  | TUserGetUserDataFailedAction
+  | TUserUpdateUserDataAction
+  | TUserUpdateUserDataSuccessAction
+  | TUserUpdateUserDataFailedAction;
 
 export const registerUser = (userEmail: string, userPassword: string, userName: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: USER_REG
     });
@@ -67,7 +205,7 @@ export const registerUser = (userEmail: string, userPassword: string, userName: 
         type: USER_REG_SUCCESS
       });
     })
-    .catch((error: any) => {
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: USER_REG_FAILED,
@@ -77,7 +215,7 @@ export const registerUser = (userEmail: string, userPassword: string, userName: 
 };
 
 export const loginUser = (userEmail: string, userPassword: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: USER_LOGIN
     });
@@ -88,6 +226,7 @@ export const loginUser = (userEmail: string, userPassword: string) => {
       }
     )
     .then(data => {
+      console.log('User logged in');
       console.log(data);
       setCookie('accessToken', data.accessToken);
       saveToLocalStorage('refreshToken', data.refreshToken);
@@ -95,7 +234,7 @@ export const loginUser = (userEmail: string, userPassword: string) => {
         type: USER_LOGIN_SUCCESS
       });
     })
-    .catch((error: any) => {
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: USER_LOGIN_FAILED
@@ -105,7 +244,7 @@ export const loginUser = (userEmail: string, userPassword: string) => {
 };
 
 export const logoutUser = (refreshToken: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: USER_LOGOUT
     });
@@ -123,7 +262,7 @@ export const logoutUser = (refreshToken: string) => {
         type: USER_LOGOUT_SUCCESS
       });
     })
-    .catch((error: any) => {
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: USER_LOGOUT_FAILED,
@@ -133,7 +272,7 @@ export const logoutUser = (refreshToken: string) => {
 };
 
 export const requestPasswordUser = (email: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: USER_PASSWORD_REQUEST
     });
@@ -148,7 +287,7 @@ export const requestPasswordUser = (email: string) => {
         type: USER_PASSWORD_REQUEST_SUCCESS
       });
     })
-    .catch((error: any) => {
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: USER_PASSWORD_REQUEST_FAILED,
@@ -158,7 +297,7 @@ export const requestPasswordUser = (email: string) => {
 };
 
 export const resetPasswordUser = (password: string, token: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: USER_PASSWORD_RESET
     });
@@ -174,7 +313,7 @@ export const resetPasswordUser = (password: string, token: string) => {
         type: USER_PASSWORD_RESET_SUCCESS
       });
     })
-    .catch((error: any) => {
+    .catch((error) => {
       console.error(error);
       dispatch({
         type: USER_PASSWORD_RESET_FAILED,
@@ -184,8 +323,8 @@ export const resetPasswordUser = (password: string, token: string) => {
 };
 
 export const requestDataUser = (accessToken: string) => {
-  console.log('In requestDataUser: '+accessToken);
-  return function (dispatch: any) {
+  console.log('In requestDataUser: ' + accessToken);
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: USER_GET_USER_DATA
     });
@@ -201,7 +340,7 @@ export const requestDataUser = (accessToken: string) => {
         userEmail: data.user.email
       });
     })
-    .catch((error: any) => {
+    .catch((error) => {
       if (error.message === 'jwt expired') {
         console.log('User request Failed: JWT EXPIRED');
         dispatch(
@@ -219,27 +358,24 @@ export const requestDataUser = (accessToken: string) => {
   };
 };
 
-const refreshToken = (afterRefresh: any) => (dispatch: any) => {
+export const refreshToken = (afterRefresh: any) => (dispatch: AppDispatch) => {
   console.log('In refreshToken');
   postRefreshTokenToApi(          
     {
     "token": getFromLocalStorage('refreshToken')
   })
   .then((data) => {
-    console.log('!!accessToken is refreshed!!');
-    console.log('!!accessToken: '+data.accessToken);
-    console.log('!!refreshToken: '+data.refreshToken);
     setCookie('accessToken', data.accessToken);
     saveToLocalStorage('refreshToken', data.refreshToken);
     dispatch(afterRefresh);
   })
-  .catch((error: any) => {
+  .catch((error) => {
     console.error('Token Refresh Failed: '+error.message);
   });
 };
 
 export const updateUserData = (userName: string, userEmail: string, accessToken: string) => {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: USER_UPDATE_USER_DATA
     });

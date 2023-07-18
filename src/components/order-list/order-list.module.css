@@ -1,0 +1,7 @@
+.content {
+  width: 600px;
+  min-height: 400px;
+}
+.content .card {
+  display: block;
+}

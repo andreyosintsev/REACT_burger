@@ -4,8 +4,11 @@
   left:50%;
 
   width: 720px;
-  height: 480px;
+  /* height: 480px; */
   overflow: hidden;
+
+  /* padding-top: 40px; */
+  padding-top: 0;
 
   border-radius: 40px;
   background-color: #1C1C21;

@@ -1,15 +1,45 @@
 import { postConstructorDataToApi } from '../../utils/burger-api';
 
-import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../actions/burger-constructor-ingredients';
+import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../constants/burger-constructor-ingredients';
 
-import { TConstructorIngredient, TConstructorIngredients } from '../../declarations/types';
+import { 
+  AppDispatch,
+  TConstructorIngredient, 
+  TConstructorIngredients
+} from '../../declarations/types';
 
-export const CONSTRUCTOR_GET_ORDERNUM =         'CONSTRUCTOR_GET_ORDERNUM';
-export const CONSTRUCTOR_GET_ORDERNUM_SUCCESS = 'CONSTRUCTOR_GET_ORDERNUM_SUCCESS';
-export const CONSTRUCTOR_GET_ORDERNUM_FAILED =  'CONSTRUCTOR_GET_ORDERNUM_FAILED';
+import {
+  CONSTRUCTOR_GET_ORDERNUM,
+  CONSTRUCTOR_GET_ORDERNUM_SUCCESS,
+  CONSTRUCTOR_GET_ORDERNUM_FAILED,
+  CONSTRUCTOR_CLEAR_ORDERNUM
+} from '../constants/burger-constructor-orders';
+
+export type TConstructorGetOrderNumAction = {
+  type: typeof CONSTRUCTOR_GET_ORDERNUM;
+}
+
+export type TConstructorGetOrderNumSuccessAction = {
+  readonly type: typeof CONSTRUCTOR_GET_ORDERNUM_SUCCESS;
+  readonly orderNum: number;
+};
+
+export type TConstructorGetOrderNumFailedAction = {
+  readonly type: typeof CONSTRUCTOR_GET_ORDERNUM_FAILED;
+};
+
+export type TConstructorClearOrderNumAction = {
+  readonly type: typeof CONSTRUCTOR_CLEAR_ORDERNUM;
+};
+
+export type TConstructorGetOrderNumActions = 
+  | TConstructorGetOrderNumAction
+  | TConstructorGetOrderNumSuccessAction
+  | TConstructorGetOrderNumFailedAction
+  | TConstructorClearOrderNumAction;
 
 export const getOrderNumber = (ingredients: TConstructorIngredients, bun: TConstructorIngredient) => {
-  return function (dispatch: any) {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: CONSTRUCTOR_GET_ORDERNUM
     });
@@ -25,7 +55,7 @@ export const getOrderNumber = (ingredients: TConstructorIngredients, bun: TConst
         type: CONSTRUCTOR_CLEAR_INGREDIENTS
       });
     })
-    .catch((error: any) => {
+    .catch((error) => {
       console.error(error || 'Неизвестная ошибка');
       dispatch({
         type: CONSTRUCTOR_GET_ORDERNUM_FAILED,

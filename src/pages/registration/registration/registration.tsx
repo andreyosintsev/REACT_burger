@@ -1,7 +1,6 @@
 import { FC, useState, useRef, FormEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../../declarations/hooks";
 import { Link } from "react-router-dom";
-import { TDispatch } from '../../../utils/store';
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -19,7 +18,7 @@ const Registration: FC = () => {
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
   
-  const dispatch: TDispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const togglePassword = () => {
     if (isPasswordShow) { 

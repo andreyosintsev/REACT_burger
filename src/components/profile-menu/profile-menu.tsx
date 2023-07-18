@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
-import { TDispatch } from '../../utils/store'
+import { useDispatch } from '../../declarations/hooks';
 
 import { NavLink } from 'react-router-dom';
 
-import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../../services/actions/burger-constructor-ingredients';
+import { CONSTRUCTOR_CLEAR_INGREDIENTS } from '../../services/constants/burger-constructor-ingredients';
+import { WS_CONNECTION_CLOSE } from '../../services/constants/ws-middleware';
 
 import { logoutUser  } from '../../services/actions/user';
 
@@ -12,8 +12,12 @@ import { getFromLocalStorage } from '../../utils/local-storage';
 
 import ProfileMenuStyles from './profile-menu.module.css';
 
-const ProfileMenu: FC = () => {
-  const dispatch: TDispatch = useDispatch();
+type TProfileMenu = {
+  text: string;
+}
+
+const ProfileMenu: FC<TProfileMenu> = ({text}) => {
+  const dispatch = useDispatch();
   const refreshToken = getFromLocalStorage('refreshToken');
 
   const onLogoutHandler = () => {
@@ -21,16 +25,20 @@ const ProfileMenu: FC = () => {
       type: CONSTRUCTOR_CLEAR_INGREDIENTS
     });
     dispatch(logoutUser(refreshToken));
+    dispatch({
+      type: WS_CONNECTION_CLOSE,
+      role: 'wsProfile'
+    });
   };
 
   const setActiveStyle = ({isActive} : {isActive: boolean}) => isActive ? ProfileMenuStyles.active : ProfileMenuStyles.inactive;
 
   return (
     <aside className={ProfileMenuStyles.menu}>
-      <NavLink className={ setActiveStyle } to="/profile">
+      <NavLink className={ setActiveStyle } to="/profile" end>
         <p className={`text text_type_main-medium ${ProfileMenuStyles.clickable}`}>Профиль</p>
       </NavLink>
-      <NavLink className={ setActiveStyle } to="/orders">
+      <NavLink className={ setActiveStyle } to="/profile/orders">
         <p className={`text text_type_main-medium ${ProfileMenuStyles.clickable}`}>История заказов</p>
       </NavLink>
       <p className={`text text_type_main-medium mb-20 ${ProfileMenuStyles.clickable}`} 
@@ -38,7 +46,7 @@ const ProfileMenu: FC = () => {
         Выход
       </p>
       <p className="text text_type_main-default text_color_inactive">
-        В этом разделе вы можете изменить свои персональные данные.
+        {text}
       </p>
   </aside>    
   )

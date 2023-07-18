@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../declarations/hooks';
 import { useLocation, Navigate } from 'react-router-dom';
 
 import { userData } from '../../services/selectors/user';
@@ -19,7 +19,7 @@ const ProtectedRouteElement: FC<TProtectedRouteElement> = ({element, anonymous =
   }
 
   if (!anonymous && !userIsLogged) {
-    return <Navigate to="/login" state={{ from: location}}/>;
+    return <Navigate to="/login" state={{ from: location }}/>;
   }
 
   return element;

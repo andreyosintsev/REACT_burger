@@ -5,7 +5,7 @@
 .content {
   display: flex;
   width: 1240px;
-  margin-top: 300px;
+  height: calc(100vh - 100px);
   justify-content: left;
   align-items: center;
   gap: 60px;

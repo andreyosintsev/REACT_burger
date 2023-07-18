@@ -1,7 +1,6 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect, useCallback } from 'react';
 
 import ReactDOM from 'react-dom';
-import { useEffect } from 'react';
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -16,11 +15,11 @@ type TModal = {
 
 const Modal: FC<TModal> = ({onClick, children}) => {
 
-  const onEscDown = (e: KeyboardEvent) => {
+  const onEscDown = useCallback((e: KeyboardEvent) => {
     if (e.code === 'Escape') {
       onClick();
     }
-  };
+  }, [onClick]);
 
   useEffect (()=>{
     document.addEventListener('keydown', onEscDown);            
@@ -28,8 +27,8 @@ const Modal: FC<TModal> = ({onClick, children}) => {
     return ()=> {
       document.removeEventListener('keydown', onEscDown);
     };
-  }, []); // eslint-disable-line
-
+  }, [onEscDown]);
+  
   const modalRoot: HTMLElement | null = document.querySelector("#modals");
 
   return ReactDOM.createPortal(

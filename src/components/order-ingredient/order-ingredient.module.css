@@ -1,0 +1,15 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  margin-left: -15px;
+  border-radius: 50%;
+  border: 3px solid #801AB2;
+  background-clip: border-box;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 180%;
+  background-color: #1C1C21;
+}

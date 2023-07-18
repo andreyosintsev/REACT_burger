@@ -1,6 +1,5 @@
 import { FC, MouseEvent, useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { TDispatch } from '../../utils/store'
+import { useSelector, useDispatch } from '../../declarations/hooks';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -9,7 +8,7 @@ import BurgerSection from '../burger-section/burger-section';
 
 import { 
   INGREDIENTS_SELECT_INGREDIENT
-} from "../../services/actions/burger-ingredients-details";
+} from "../../services/constants/burger-ingredients-details";
 
 import { burgerIngredientRequests } from '../../services/selectors/burger-ingredients';
 
@@ -21,8 +20,8 @@ import BurgerIngredientsStyles from './burger-ingredients.module.css';
 
 const BurgerIngredients: FC = () => {
 
-  const ingredientsList: TIngredients = useSelector(burgerIngredientRequests).ingredientsList;
-  const dispatch: TDispatch = useDispatch();
+  const ingredientsList = useSelector(burgerIngredientRequests).ingredientsList;
+  const dispatch = useDispatch();
 
   const [current, setCurrent] = useState('buns');
 

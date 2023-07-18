@@ -1,9 +1,8 @@
 import { FC, useEffect, FormEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../../declarations/hooks';
 import { Link, useNavigate } from "react-router-dom";
 
 import { useForm } from '../../../hooks/useForm';
-import { TDispatch } from '../../../utils/store';
 
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -17,7 +16,7 @@ const ResetPassword: FC = () => {
 
   const { userPasswordResetting } = useSelector(userData);
 
-  const dispatch: TDispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -30,7 +29,7 @@ const ResetPassword: FC = () => {
     if (!userPasswordResetting) {
       navigate('/forgot-password', {replace: true});
     }    
-  }, [userPasswordResetting]);
+  }, [userPasswordResetting, navigate]);
 
   return (
     <main className={ResetPasswordStyles.content}>

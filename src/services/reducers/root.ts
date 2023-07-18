@@ -5,11 +5,13 @@ import { burgerConstructorOrders } from './burger-constructor-orders';
 import { burgerIngredientsDetails } from './burger-ingredients-details';
 import { burgerIngredientsRequests } from './burger-ingredients-requests';
 import { user } from './user';
+import { ws } from './ws-middleware';
 
 export const rootReducer = combineReducers({
   burgerConstructorIngredients,
   burgerConstructorOrders,
   burgerIngredientsDetails,
   burgerIngredientsRequests,
-  user
+  user,
+  ws
 });

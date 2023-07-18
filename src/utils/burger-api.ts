@@ -9,8 +9,9 @@ import {  TRequestOptions,
           TApiUserRegister,
           TOrderData} from '../declarations/burger-api-types';
 
+import { getCookie } from './cookie';
 
-export const NORMA_API = 'https://norma.nomoreparties.space/api';
+import { NORMA_API } from '../declarations/constants';
 
 const checkFetchResponse = <T>(res: Response): Promise<T> => {
   return res.ok 
@@ -40,11 +41,17 @@ export const getIngredientsFromApi = (): Promise<TApiIngredients> => {
 };
 
 export const postConstructorDataToApi = (payload: TRequestArrayPayload): Promise<TOrderData>=> {
+  const accessToken = getCookie('accessToken');
+  console.log('In POST TO API');
+  console.log(accessToken);
   try {  
     return request('/orders',
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        headers: { 
+          'Content-Type': 'application/json;charset=utf-8',
+          'authorization': accessToken
+        },
         body: JSON.stringify(payload)
       });
   } catch (error: any) {
@@ -62,7 +69,7 @@ export const postUserRegisterToApi = (payload: TRequestStringPayload): Promise<T
         body: JSON.stringify(payload)
       });
   } catch (error: any) {
-    console.error(`Не удалось отправить в API данные для регистрации пользователя: ${error.message || 'неизвестная ошибка'}`);
+    console.error(`Не удалось отправить в API данные для регистрации пользователя: $(error.message || 'неизвестная ошибка'}`);
     throw new Error(`Не удалось отправить в API данные для регистрации пользователя: ${error.message || 'неизвестная ошибка'}`);
   }
 };

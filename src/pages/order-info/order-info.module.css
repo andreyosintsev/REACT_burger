@@ -1,0 +1,45 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+.content {
+  width: 600px;
+}
+.order_content {
+  width: 640px;
+  margin: 0 auto;
+}
+.order_content li {
+  width: 100%;
+}
+.order_num {
+  text-align: center;
+}
+.order_status {
+  color: #00CCCC;
+}
+.order_content {
+  margin-bottom: 40px;
+}
+.order_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.order_footer_price {
+  margin-right: -40px;
+}
+.order_footer_price p {
+  display: flex;
+  align-items: center;
+}
+.order_footer_price span {
+  margin-right: 8px;
+}
+.error {
+  text-align: center;
+}
