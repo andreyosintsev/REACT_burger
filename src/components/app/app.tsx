@@ -22,6 +22,7 @@ const App: FC = () => {
 
   return (
     <div className={AppStyles.wrapper}>
+      {/* <Router basename={'burger'}> */}
       <Router>
         <ModalSwitch /> 
       </Router>

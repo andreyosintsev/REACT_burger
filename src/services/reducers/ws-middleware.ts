@@ -40,8 +40,7 @@ export const ws = (state = initialState, action: TWSActions) => {
       return {
         ...state,
         wsError: undefined,
-        wsConnected: false,
-        wsMessage: undefined
+        wsConnected: false
       };
     default: return state;
   }

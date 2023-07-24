@@ -42,24 +42,24 @@ const IngredientDetails: FC = () => {
               />
             </div>
             <div className="mb-8">
-              <p className="text text_type_main-medium">{data.name}</p>
+              <p className="text text_type_main-medium" data-test="ingredient-name">{data.name}</p>
             </div>
             <div className={`${IngredientDetailsStyles.specs}`}>
               <div className={`${IngredientDetailsStyles.specs_item} mr-5`}>
                 <p className="text text_type_main-default text_color_inactive">Калории,ккал</p>
-                <p className="text text_type_digits-default text_color_inactive">{data.calories}</p>
+                <p className="text text_type_digits-default text_color_inactive" data-test="calories">{data.calories}</p>
               </div>
               <div className={`${IngredientDetailsStyles.specs_item} mr-5`}>
                 <p className="text text_type_main-default text_color_inactive">Белки, г</p>
-                <p className="text text_type_digits-default text_color_inactive">{data.proteins}</p>
+                <p className="text text_type_digits-default text_color_inactive" data-test="proteins">{data.proteins}</p>
               </div>
               <div className={`${IngredientDetailsStyles.specs_item} mr-5`}>
                 <p className="text text_type_main-default text_color_inactive">Жиры, г</p>
-                <p className="text text_type_digits-default text_color_inactive">{data.fat}</p>
+                <p className="text text_type_digits-default text_color_inactive" data-test="fat">{data.fat}</p>
               </div>
               <div className={`${IngredientDetailsStyles.specs_item}`}>
                 <p className="text text_type_main-default text_color_inactive">Углеводы, г</p>
-                <p className="text text_type_digits-default text_color_inactive">{data.carbohydrates}</p>
+                <p className="text text_type_digits-default text_color_inactive" data-test="carbohydrates">{data.carbohydrates}</p>
               </div>
             </div>
           </div>

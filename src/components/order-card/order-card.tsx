@@ -34,8 +34,10 @@ const OrderCard: FC<TOrderCard> = ({ order, displayStatus }) => {
   ? "+" + (order.ingredients.length - 5)
   : "";
 
-  const sum = order.ingredients.reduce((acc, curr, i, arr) => 
-    acc += ingredientsList.find(data => data._id === arr[i])!.price, 0
+  const sum = order.ingredients.reduce((acc, curr, i, arr) => {
+      const ingredient = ingredientsList.find(data => data._id === arr[i]);
+      return acc += ingredient ? ingredient.price : 0;
+    }, 0
   );
 
   return (
@@ -76,7 +78,10 @@ const OrderCard: FC<TOrderCard> = ({ order, displayStatus }) => {
             <ul>
             {
               order.ingredients.slice(0, 5).map((ingredient, i, arr) => {
-                const url = ingredientsList.find(data => data._id === ingredient)!.image_mobile;
+                
+                const url = ingredientsList.find(data => data._id === ingredient)
+                      ? ingredientsList.find(data => data._id === ingredient)!.image_mobile
+                      : '';
                 const zIndex = (arr.length - i).toString();
                 return (
                   <li key={ingredient + i} style={{'zIndex': zIndex}}>

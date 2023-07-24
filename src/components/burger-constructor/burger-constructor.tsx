@@ -127,7 +127,7 @@ const BurgerConstructor: FC = () => {
 
   return (
     <>
-      <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget}>
+      <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget} data-test='drop-zone'>
         
         <div className={BurgerConstructorStyles.topbottom}>
         {

@@ -35,8 +35,8 @@ const Modal: FC<TModal> = ({onClick, children}) => {
     (
       <>
         <ModalOverlay onClick={onClick} />
-        <div className={`${ModalStyles.modal} pr-10 pb-15`} onClick={e => e.stopPropagation()}>
-          <div className={ModalStyles.modal_close}>
+        <div className={`${ModalStyles.modal} pr-10 pb-15`} onClick={e => e.stopPropagation()} data-test="modal">
+          <div className={ModalStyles.modal_close} data-test="modal-close">
             <CloseIcon type="primary" onClick={onClick}/>
           </div>
           {children}
