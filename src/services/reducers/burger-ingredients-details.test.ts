@@ -21,10 +21,7 @@ describe('burgerIngredientsDetails reducer', () => {
  
   it('should return initial state', () => {
     expect(
-      burgerIngredientsDetails(
-        undefined,
-        {} as TIngredientsDetailsActions
-      )
+      burgerIngredientsDetails(undefined, {} as TIngredientsDetailsActions)
     ).toEqual(initialState);
   });
 
@@ -34,13 +31,11 @@ describe('burgerIngredientsDetails reducer', () => {
       ingredientSelected: ingredient
     }
     expect(
-      burgerIngredientsDetails(
-        initialState,
-        action
+      burgerIngredientsDetails(initialState, action
       )
     ).toEqual({
       ingredientSelected: ingredient
-      });
+    });
   });
 
   it('should perform INGREDIENTS_DESELECT_INGREDIENT', () => {
@@ -48,10 +43,7 @@ describe('burgerIngredientsDetails reducer', () => {
       type: TActionTypes.INGREDIENTS_DESELECT_INGREDIENT,
     }
     expect(
-      burgerIngredientsDetails(
-        initialState,
-        action
-      )
+      burgerIngredientsDetails(initialState, action)
     ).toEqual({
       ingredientSelected: null
       });

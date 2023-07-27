@@ -14,7 +14,7 @@ type TUserStore = {
   userRollbackEmail: string;
 }
 
-const initialState: TUserStore = {
+export const initialState: TUserStore = {
   userIsLogged: false,
   userPending:  false,
   userHasError: false,

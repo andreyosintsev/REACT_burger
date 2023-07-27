@@ -61,9 +61,7 @@ export type TUserDataUpdateAction = {
 }
 
 export type TUserRollbackAction = {
-  readonly type: typeof USER_ROLLBACK;  
-  readonly userRollbackName: string;
-  readonly userRollbackEmail: string;
+  readonly type: typeof USER_ROLLBACK;
 }
 
 export type TUserRollbackUpdateAction = {
