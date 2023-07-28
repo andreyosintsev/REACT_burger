@@ -6,7 +6,7 @@ import {
   TWSState
 } from '../../declarations/ws-middleware';
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
   wsConnected: false,
   wsMessage: undefined
 };
