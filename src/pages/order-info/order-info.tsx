@@ -58,8 +58,10 @@ const OrderInfo: FC<TOrderInfo> = ({ role }) => {
   
   const order = id && orders ? orders.find(order => order._id === id) : undefined;
 
-  const sum = order ? order.ingredients.reduce((acc, curr, i, arr: string[]) => 
-    acc += ingredientsList.find(data => data._id === arr[i])!.price, 0
+  const sum = order ? order.ingredients.reduce((acc, curr, i, arr: string[]) => {
+    const ingredient = ingredientsList.find(data => data._id === arr[i]);
+    return acc += ingredient ? ingredient.price : 0;
+  }, 0
   ) : undefined;
 
   const ingredientsQuantity = order 

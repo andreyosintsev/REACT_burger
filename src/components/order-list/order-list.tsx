@@ -41,8 +41,12 @@ const OrderList: FC<TOrderList> = ({title, width, role}) => {
       case WS_ROLE_FEED: url = FEED_API; break;
       case WS_ROLE_PROFILE: url = PROFILE_API+'?token='+accessToken; break;
     }
+
+    console.log('URL TO CONNECT: ' + url);
     
     if (url) {    
+      console.log('Order list mount');
+      console.log('Order list: connection start');
       dispatch({
         type: WS_CONNECTION_START,
         url
@@ -50,6 +54,8 @@ const OrderList: FC<TOrderList> = ({title, width, role}) => {
     }
 
     return (()=>{
+      console.log('Order list unmount');
+      console.log('Order list: connection close');
       dispatch({
         type: WS_CONNECTION_CLOSE
       })
@@ -57,6 +63,7 @@ const OrderList: FC<TOrderList> = ({title, width, role}) => {
   }, []);
 
   const orders = useSelector(wsOrders);
+
   let displayStatus = false;
 
   return (

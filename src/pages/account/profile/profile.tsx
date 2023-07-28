@@ -84,9 +84,7 @@ const Profile: FC = () => {
 
   const formReset = () => {
     dispatch({
-      type: USER_ROLLBACK,
-      userRollbackName,
-      userRollbackEmail
+      type: USER_ROLLBACK
     });
     setButtonsShow(false);
   };

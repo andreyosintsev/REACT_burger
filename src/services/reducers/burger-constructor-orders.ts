@@ -8,7 +8,7 @@ export type TConstructorOrderState = {
   orderHasError: boolean;
 }
 
-const initialState: TConstructorOrderState = {
+export const initialState: TConstructorOrderState = {
   orderIsLoading: false,
   orderHasError: false
 };

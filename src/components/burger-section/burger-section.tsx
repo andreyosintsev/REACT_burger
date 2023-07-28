@@ -17,10 +17,10 @@ const BurgerSection: FC<TBurgerSection> = ({id, title, ingredients, onShowDetail
     <>
       <h3 className="text text_type_main-medium mt-2" id={id}>{title}</h3>
         <div className={`${BurgerSectionStyles.sections} pl-4`}>
-          <ul>
+          <ul data-test={id}>
             { 
               ingredients.map((ingredient) => (
-                <li data-id={ingredient._id} key={ingredient._id} onClick={onShowDetails}>
+                <li data-id={ingredient._id} key={ingredient._id} onClick={onShowDetails} >
                   <Ingredient 
                     _id = {ingredient._id}
                     image = {ingredient.image} 

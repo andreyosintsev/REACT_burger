@@ -6,7 +6,7 @@ import {
   TWSState
 } from '../../declarations/ws-middleware';
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
   wsConnected: false,
   wsMessage: undefined
 };
@@ -40,8 +40,7 @@ export const ws = (state = initialState, action: TWSActions) => {
       return {
         ...state,
         wsError: undefined,
-        wsConnected: false,
-        wsMessage: undefined
+        wsConnected: false
       };
     default: return state;
   }

@@ -10,8 +10,7 @@ export type TBurgerIngredientsDetailState = {
   ingredientSelected: TIngredient | null;
 }
 
-const initialState: TBurgerIngredientsDetailState = {
-  //ingredientSelected: []
+export const initialState: TBurgerIngredientsDetailState = {
   ingredientSelected: null
 };
 
@@ -25,7 +24,6 @@ export const burgerIngredientsDetails = (state = initialState, action: TIngredie
     case 'INGREDIENTS_DESELECT_INGREDIENT':
       return {
         ...state,
-        //ingredientSelected: []
         ingredientSelected: null
       };
     default: return state;

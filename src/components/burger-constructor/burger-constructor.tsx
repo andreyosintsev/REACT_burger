@@ -50,10 +50,10 @@ const BurgerConstructor: FC = () => {
 
   const [modalShow, setModalShow] = useState(false);
 
-  const [, dropTarget] = useDrop<TIngredient, void, {isHover: boolean}>({
+  const [{isHover}, dropTarget] = useDrop<TIngredient, void, {isHover: boolean}>({
     accept: "ingredient",
     drop(item) {
-      onDropHandler(item._id);
+      if (item) onDropHandler(item._id);
     },
     collect: monitor => ({
       isHover: monitor.isOver(),
@@ -127,7 +127,7 @@ const BurgerConstructor: FC = () => {
 
   return (
     <>
-      <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget}>
+      <section className={`${BurgerConstructorStyles.content} mt-25`} ref={dropTarget} data-test='drop-zone'>
         
         <div className={BurgerConstructorStyles.topbottom}>
         {
